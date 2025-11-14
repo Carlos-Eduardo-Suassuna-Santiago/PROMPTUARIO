@@ -1,0 +1,67 @@
+/* Define o fundo da página */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('../img/imageTelaCadastro.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: right;
+    padding-right: 12%;
+    align-items: center;
+}
+
+/* Container do formulário */
+.cadastro-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+/* Cabeçalho */
+.cadastro-box h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+/* Grupos de formulário */
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.25rem;
+}
+
+.form-group input {
+    width: 92.5%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Botão */
+button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #048581;
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #025c59;
+}
