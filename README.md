@@ -53,7 +53,7 @@ O sistema foi projetado seguindo boas práticas de **engenharia de software**, *
 
 A aplicação segue a arquitetura **MVT – Model View Template** do Django.
 
-```mermaid
+```
 graph LR
   U[Usuário] --> F[Frontend - Templates Django]
   F --> V[Views]
@@ -120,8 +120,13 @@ docker-compose -f infra/docker-compose.dev.yml up --build
 ### **1. Crie o ambiente virtual**
 
 ```bash
+No LINUX
 python -m venv .venv
 source .venv/bin/activate
+
+No WINDOWS
+python -m venv .venv
+.venv/scripts/activate
 ```
 
 ### **2. Instale as dependências**
