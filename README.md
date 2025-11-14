@@ -53,6 +53,7 @@ O sistema foi projetado seguindo boas práticas de **engenharia de software**, *
 
 A aplicação segue a arquitetura **MVT – Model View Template** do Django.
 
+```mermaid
 graph LR
   U[Usuário] --> F[Frontend - Templates Django]
   F --> V[Views]
@@ -206,6 +207,10 @@ Arquivo localizado em:
 
 Protótipo:
 🔗 [https://www.figma.com/design/RC0t8XgR1IyobtWTo0uBZg/Promptuario](https://www.figma.com/design/RC0t8XgR1IyobtWTo0uBZg/Promptuario)
+
+Exemplo placeholder:
+
+![Tela exemplo](https://via.placeholder.com/900x500.png?text=Tela+do+Sistema)
 
 ---
 
