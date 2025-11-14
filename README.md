@@ -1,14 +1,3 @@
-Claro! Aqui está o **README completo em Markdown puro**, formatado exatamente como você usaria no GitHub — com todos os ícones, badges, tabelas, seções e estrutura profissional.
-
-Você pode **copiar e colar diretamente no seu repositório**.
-
----
-
-# 🧾 README.md (Markdown completo)
-
-````markdown
-<div align="center">
-
 # 🩺 **Promptuário**
 ### Sistema Web para Gestão de Prontuários Médicos  
 
@@ -18,8 +7,6 @@ Você pode **copiar e colar diretamente no seu repositório**.
 ![Docker](https://img.shields.io/badge/Docker-suportado-0db7ed?logo=docker)
 ![CI/CD](https://img.shields.io/badge/GitHub%20Actions-ativo-black?logo=githubactions)
 ![License](https://img.shields.io/badge/license-MIT-green)
-
-</div>
 
 ---
 
@@ -287,11 +274,8 @@ Licença **MIT** – livre para uso pessoal e comercial.
 
 ---
 
-<div align="center">
-
 Feito com ❤️ para ajudar na evolução tecnológica da área da saúde.
 
-</div>
 ```
 
 ---
