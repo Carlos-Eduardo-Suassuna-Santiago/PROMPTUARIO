@@ -1,0 +1,116 @@
+/* Define o fundo da página */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('../images/fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.lado {
+    flex: 1;
+    display: grid;
+    place-items: center; 
+}
+
+/* Container do formulário */
+.cadastro-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+/* Cabeçalho */
+.cadastro-box h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+/* Grupos de formulário */
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-group label, option, select {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.25rem;
+}
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* Botão */
+button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #048581;
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #025c59;
+}
+
+/* Link esqueceu a senha */
+.forgot-password {
+    display: block;
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #048581;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    padding-top: 5px;
+}
+
+.forgot-password:hover, a:hover {
+    text-decoration: underline;
+    color: #025c59;
+}
+
+/* Link quando o usuario não tem conta */
+.no-account {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #048581;
+}
+
+.no-account a {
+    color: #048581;
+    text-decoration: none;
+    font-weight: normal;
+    transition: 0.3s;
+}
+
+.no-account a:hover {
+    text-decoration: underline;
+    color: #025c59;
+}
+
