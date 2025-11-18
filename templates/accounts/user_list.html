@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Usuários{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Usuários</h2>
+        <a href="{% url 'accounts:user_create' %}" class="btn btn-success">Novo Usuário</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Tipo</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_obj in users %}
+            <tr>
+                <td>{{ user_obj.get_full_name }}</td>
+                <td>{{ user_obj.cpf }}</td>
+                <td>{{ user_obj.get_user_type_display }}</td>
+                <td>{{ user_obj.email }}</td>
+                <td>
+                    <a href="{% url 'accounts:user_detail' user_obj.pk %}" class="btn btn-primary">Ver</a>
+                    <a href="{% url 'accounts:user_update' user_obj.pk %}" class="btn btn-secondary">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
