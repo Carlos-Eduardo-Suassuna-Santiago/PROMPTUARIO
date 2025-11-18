@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Escolha o Tipo de Cadastro - Promptuario{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card-header">
+        <h2>Escolha o Tipo de Cadastro</h2>
+        <p>Selecione o tipo de usuário que deseja cadastrar</p>
+    </div>
+    <div class="card-body">
+        <div class="register-choice-grid">
+            <div class="choice-card">
+                <div class="choice-icon">👨‍⚕️</div>
+                <h3>Médico</h3>
+                <p>Cadastrar um novo médico no sistema com CRM e especialidade</p>
+                <a href="{% url 'accounts:register_doctor' %}" class="btn btn-primary">Cadastrar Médico</a>
+            </div>
+
+            <div class="choice-card">
+                <div class="choice-icon">👥</div>
+                <h3>Atendente</h3>
+                <p>Cadastrar um novo atendente para recepção e agendamentos</p>
+                <a href="{% url 'accounts:register_attendant' %}" class="btn btn-primary">Cadastrar Atendente</a>
+            </div>
+
+            <div class="choice-card">
+                <div class="choice-icon">🏥</div>
+                <h3>Paciente</h3>
+                <p>Cadastrar um novo paciente no sistema</p>
+                <a href="{% url 'accounts:register_patient' %}" class="btn btn-primary">Cadastrar Paciente</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">Voltar para Lista de Usuários</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-choice-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    .choice-card {
+        background-color: var(--white);
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .choice-card:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .choice-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .choice-card h3 {
+        color: var(--dark-text);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .choice-card p {
+        color: var(--gray-text);
+        margin-bottom: 1.5rem;
+        min-height: 3rem;
+    }
+
+    .choice-card .btn {
+        width: 100%;
+    }
+</style>
+{% endblock %}
