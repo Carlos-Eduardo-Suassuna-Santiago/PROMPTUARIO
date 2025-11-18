@@ -1,0 +1,361 @@
+:root {
+    --primary-color: #008080; /* Dark Teal/Green */
+    --accent-color: #E0FFFF; /* Light background for 'Avisos' */
+    --text-color: #333;
+    --white-color: #fff;
+    --gray-light: #f4f4f4;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif; /* Adjust font as needed */
+    background-color: var(--gray-light);
+}
+
+/* --- Top Bar (Header) --- */
+.topbar {
+    background-color: var(--white-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 80px; /* Adjust height */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.topbar-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome-message h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ccc; /* Gray circle */
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.logout-link {
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logout-link i {
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+/* --- App Layout (Sidebar + Main Content) --- */
+.app-layout {
+    display: flex;
+    min-height: calc(100vh - 80px); /* Full viewport height minus topbar height */
+}
+
+.aside-menu {
+    width: 250px; /* Sidebar width */
+    background-color: var(--white-color);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--gray-light);
+}
+
+/* --- Aside Menu Styling --- */
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.menu-header i {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.menu-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.menu-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-nav li a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.menu-nav li a i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 18px;
+    width: 20px; /* Keep icons aligned */
+}
+
+/* Highlight the active link ('Pacientes' in the image) */
+.menu-nav li.active a,
+.menu-nav li a:hover {
+    background-color: var(--gray-light);
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* --- Avisos Section Styling --- */
+.menu-avisos {
+    background-color: #C0E8E8; /* Light Green/Teal background */
+    margin: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.4;
+}
+
+.menu-avisos h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.menu-avisos p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* --- Ajuda Section Styling --- */
+.menu-ajuda {
+    margin-top: auto; /* Pushes the help link to the bottom */
+    padding: 10px 20px;
+}
+
+.menu-ajuda a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.menu-ajuda a i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* --- Variáveis de Cor (Ajuste para o tema) --- */
+:root {
+    --primary-teal: #008080;
+    --light-teal-bg: #E0FFFF;
+    --icon-bg-color: #2ED197; /* Verde/Teal dos ícones */
+    --card-bg-color: #fff;
+    --border-color: #eee;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* -------------------------------------- */
+/* 1. TOP ICON LINKS (Cards Superiores)   */
+/* -------------------------------------- */
+
+.icon-links-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.icon-link-card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px 10px;
+    border-radius: 10px;
+    background-color: var(--icon-bg-color); /* Fundo verde dos ícones */
+    color: var(--card-bg-color);
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+    box-shadow: var(--shadow-light);
+}
+
+.icon-link-card:hover {
+    transform: translateY(-3px);
+}
+
+.icon-link-card i {
+    font-size: 30px;
+    margin-bottom: 8px;
+    padding: 10px;
+    /* Para dar o formato quadrado com padding, mas o fundo é o card inteiro */
+}
+
+.icon-link-card .link-text {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.icon-link-card.disabled {
+    /* Estilo para o ícone de 'Alergias' riscado */
+    background-color: #ccc; /* Fundo cinza */
+    opacity: 0.6;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.icon-link-card.disabled i {
+    /* Adiciona uma linha de corte (simulando o risco na alergia) */
+    position: relative;
+}
+
+.icon-link-card.disabled i::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #FF4500; /* Cor laranja para o risco */
+    transform: rotate(45deg);
+}
+
+/* -------------------------------------- */
+/* 2. MAIN LAYOUT (Duas Colunas)          */
+/* -------------------------------------- */
+
+.dashboard-main-layout {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr; /* Coluna esquerda (card grande) maior que a direita (lista) */
+    gap: 30px;
+    align-items: start;
+    padding: 0 10px;
+}
+
+/* Estilo para o Card Grande da Esquerda (Simulado na cor clara) */
+.layout-left-card {
+    background-color: var(--light-teal-bg); /* Cor clara do card esquerdo na imagem */
+    min-height: 250px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+/* Estilo para o Card da Lista da Direita (Simulado na cor branca/mockup) */
+.layout-right-list {
+    background-color: var(--card-bg-color);
+    min-height: 250px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilização da Lista (Consultas de Hoje/Próximas) */
+.list-mock-card {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.list-mock-card .card-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 20px;
+    margin-bottom: 0;
+}
+
+.today-appointments-list {
+    list-style: none;
+    padding: 0 20px;
+    margin: 10px 0;
+}
+
+.today-appointments-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+}
+
+.today-appointments-list li:last-child {
+    border-bottom: none;
+}
+
+.today-appointments-list strong {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.view-all-link {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--gray-light); /* Fundo cinza claro para o link 'Ver Todos' */
+}
+
+.view-all-link a {
+    color: var(--primary-teal);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Mockup Lines (para simular a lista da direita quando não há dados) */
+.mock-line {
+    height: 12px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    margin: 15px 0;
+}
+
+.mock-line.short { width: 60%; }
+.mock-line.long { width: 90%; }
+
+/* --- Responsividade --- */
+@media (max-width: 992px) {
+    .dashboard-main-layout {
+        grid-template-columns: 1fr; /* Stack em telas menores */
+    }
+}
+
+@media (max-width: 768px) {
+    .icon-links-container {
+        flex-wrap: wrap;
+    }
+    .icon-link-card {
+        flex-basis: 48%; /* 2 cards por linha */
+        margin-bottom: 10px;
+    }
+}

@@ -10,62 +10,97 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <a href="{% url 'accounts:dashboard' %}">
-                    <h1>Promptuario</h1>
+    
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="welcome-message">
+                <h1>Bem Vindo {{ user.first_name|default:'Fulano' }}!</h1>
+            </div>
+            
+            <div class="user-controls">
+                
+                <a class="user-avatar" href="{% url 'accounts:profile' %}"></a>
+               
+                <a href="{% url 'accounts:logout' %}" class="logout-link">
+                    <i class="fas fa-sign-out-alt"></i> <span>logout</span>
                 </a>
             </div>
-            <div class="navbar-menu">
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <aside class="aside-menu">
+            <div class="menu-header">
+                <a href="{% url 'accounts:dashboard' %}"><i class="fas fa-notes-medical"></i><img src="{% static 'images/Logo.png' %}" alt="Logo Promptuario">Promptuario</a>
+            </div>
+            
+            <nav class="menu-nav">
                 <ul>
-                    <li><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
-                    
-                    {% if user.is_admin %}
-                    <li><a href="{% url 'accounts:user_list' %}">Usuários</a></li>
-                    <li><a href="{% url 'accounts:doctor_list' %}">Médicos</a></li>
-                    {% endif %}
+                    <li class="active"><a href="{% url 'accounts:dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
                     
                     {% if user.is_doctor or user.is_attendant %}
-                    <li><a href="{% url 'patients:patient_list' %}">Pacientes</a></li>
-                    <li><a href="{% url 'appointments:appointment_list' %}">Consultas</a></li>
+                    <li><a href="{% url 'patients:patient_list' %}"><i class="fas fa-user-friends"></i> Pacientes</a></li>
+                    <li><a href="{% url 'appointments:appointment_list' %}"><i class="fas fa-user-md"></i> Acompanhamento</a></li>
                     {% endif %}
                     
                     {% if user.is_doctor %}
-                    <li><a href="{% url 'medical_records:medical_record_list' %}">Prontuários</a></li>
+                    <li><a href="{% url 'medical_records:medical_record_list' %}"><i class="fas fa-file-signature"></i> Prescrição Eletrônica</a></li>
                     <li><a href="{% url 'reports:report_list' %}">Relatórios</a></li>
+                    <li><a href="#"><i class="fas fa-heartbeat"></i> Exames</a></li>
+                    <li><a href="#"><i class="fas fa-syringe"></i> Vacinas</a></li>
+                    <li><a href="#"><i class="fas fa-pills"></i> Medicamentos</a></li>
+                    <li><a href="#"><i class="fas fa-allergies"></i> Alergias</a></li>
+                    {% endif %}
+
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Agenda</a></li>
+                    
+                    {% if user.is_admin %}
+                    <li><a href="{% url 'accounts:user_list' %}"><i class="fas fa-users-cog"></i> Usuários</a></li>
+                    <li><a href="{% url 'accounts:doctor_list' %}"><i class="fas fa-user-nurse"></i> Médicos</a></li>
                     {% endif %}
                     
-                    {% if user.is_patient %}
-                    <li><a href="{% url 'appointments:appointment_list' %}">Minhas Consultas</a></li>
-                    <li><a href="{% url 'patients:patient_detail' user.patient_profile.pk %}">Meu Prontuário</a></li>
-                    {% endif %}
                 </ul>
-            </div>
-            <div class="navbar-user">
-                <span>Olá, {{ user.get_full_name }}</span>
-                <a href="{% url 'accounts:profile' %}">Perfil</a>
-                <a href="{% url 'accounts:logout' %}">Sair</a>
-            </div>
-        </div>
-    </nav>
-    {% endif %}
+            </nav>
 
-    <main class="main-content">
-        <div class="container">
-            {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
+            <div class="menu-avisos">
+                <div class="container">
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
                 </div>
-                {% endfor %}
+               
             </div>
-            {% endif %}
 
-            {% block content %}{% endblock %}
-        </div>
-    </main>
+            <div class="menu-ajuda">
+                <a href="#"><i class="fas fa-question-circle"></i> Ajuda</a>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+            <div class="container">
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    {% endif %}
 
     <footer class="footer">
         <div class="container">
