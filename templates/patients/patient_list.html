@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Pacientes{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Pacientes</h2>
+        <a href="{% url 'patients:patient_create' %}" class="btn btn-success">Novo Paciente</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Tipo Sanguíneo</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient.user.get_full_name }}</td>
+                <td>{{ patient.user.cpf }}</td>
+                <td>{{ patient.blood_type|default:"-" }}</td>
+                <td>{{ patient.user.phone }}</td>
+                <td>
+                    <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-primary">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
