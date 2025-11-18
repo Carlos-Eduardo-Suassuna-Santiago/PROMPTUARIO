@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Consultas{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Consultas</h2>
+        <a href="{% url 'appointments:appointment_create' %}" class="btn btn-success">Nova Consulta</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.scheduled_date }}</td>
+                <td>{{ appointment.scheduled_time }}</td>
+                <td>{{ appointment.patient.user.get_full_name }}</td>
+                <td>Dr(a). {{ appointment.doctor.user.get_full_name }}</td>
+                <td>{{ appointment.get_status_display }}</td>
+                <td>
+                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-primary">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
