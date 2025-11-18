@@ -11,7 +11,7 @@ db.sqlite3
 /staticfiles/
 media/
 .backups/
-.env
+#.env
 .DS_Store
 .idea/
 .vscode/
