@@ -22,7 +22,9 @@
                 <a class="user-avatar" href="{% url 'accounts:profile' %}"></a>
                
                 <a href="{% url 'accounts:logout' %}" class="logout-link">
-                    <i class="fas fa-sign-out-alt"></i> <span>logout</span>
+                    <i class="fas fa-sign-out-alt"></i>
+                        <img class="icon" src="{% static 'images/Logout.png' %}" alt="sair"> 
+                        <span>sair</span>
                 </a>
             </div>
         </div>
@@ -31,12 +33,43 @@
     <div class="app-layout">
         <aside class="aside-menu">
             <div class="menu-header">
-                <a href="{% url 'accounts:dashboard' %}"><i class="fas fa-notes-medical"></i><img src="{% static 'images/Logo.png' %}" alt="Logo Promptuario">Promptuario</a>
+                <a class="logo" href="{% url 'accounts:dashboard' %}">
+                    <i class="fas fa-notes-medical"></i>
+                    <img class="icon" src="{% static 'images/Logo.png' %}" alt="Logo Promptuario">Promptuario</a>
             </div>
             
             <nav class="menu-nav">
                 <ul>
-                    <li class="active"><a href="{% url 'accounts:dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="active">
+                        <a href="{% url 'accounts:dashboard' %}">
+                            <i class="fas fa-home"></i> 
+                            <img class="icon"  src="{% static 'images/Home.png' %}" alt="Ilustração Dashboard">Dashboard
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-home"></i> 
+                            <img class="icon"  src="{% static 'images/verifica (1) 1.png' %}" alt="Ilustração Exames">Exames
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-syringe"></i> 
+                            <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacinas
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-pills"></i> 
+                            <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-allergies"></i> 
+                            <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
+                        </a>
+                    </li>
                     
                     {% if user.is_admin %}
                     <li><a href="{% url 'accounts:user_list' %}">Usuários</a></li>
@@ -45,7 +78,12 @@
                     {% endif %}
                     
                     {% if user.is_doctor or user.is_attendant %}
-                    <li><a href="{% url 'patients:patient_list' %}"><i class="fas fa-user-friends"></i> Pacientes</a></li>
+                    <li>
+                        <a href="{% url 'patients:patient_list' %}">
+                        <i class="fas fa-user-friends"></i> 
+                        <img src="{% static 'images/Home.png' %}" alt="Ilustração Pacientes"> Pacientes
+                        </a>
+                    </li>
                     <li><a href="{% url 'appointments:appointment_list' %}"><i class="fas fa-user-md"></i> Acompanhamento</a></li>
                     {% endif %}
                     
@@ -58,7 +96,12 @@
                     <li><a href="#"><i class="fas fa-allergies"></i> Alergias</a></li>
                     {% endif %}
 
-                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Agenda</a></li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-calendar-alt"></i> 
+                            <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
+                        </a>
+                    </li>
                     
                     {% if user.is_admin %}
                     <li><a href="{% url 'accounts:user_list' %}"><i class="fas fa-users-cog"></i> Usuários</a></li>
@@ -86,7 +129,9 @@
             </div>
 
             <div class="menu-ajuda">
-                <a href="#"><i class="fas fa-question-circle"></i> Ajuda</a>
+                <a href="#"><i class="fas fa-question-circle"></i>
+                    <img class="icon"  src="{% static 'images/ideia (1) 1.png' %}" alt="Ilustração Lampada"> Ajuda
+                </a>
             </div>
 
         </aside>
@@ -109,9 +154,66 @@
     </div>
     {% endif %}
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Promptuario - Sistema de Prontuário Eletrônico</p>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Seção Promptuáruário -->
+            <div class="footer-section footer-brand">
+                <div class="brand-logo">
+                    <svg class="heart-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 35C20 35 3.75 26.25 3.75 15C3.75 7.5 8.75 3.75 13.75 3.75C16.875 3.75 19.375 5.625 20 7.5C20.625 5.625 23.125 3.75 26.25 3.75C31.25 3.75 36.25 7.5 36.25 15C36.25 26.25 20 35 20 35Z" fill="#FF9500"/>
+                        <path class="heartbeat" d="M8 20L12 20L14 15L18 25L22 15L24 20L28 20" stroke="#FF9500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h3>Promptuáruário</h3>
+                </div>
+                <p class="footer-description">
+                    Lorem ipsum dolor sit amet, consectetur sed do eiusmod tempor incididunt ut magna aliqua.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon facebook" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon skype" aria-label="Skype">
+                        <i class="fab fa-skype"></i>
+                    </a>
+                    <a href="#" class="social-icon twitter" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Seção Departments -->
+            <div class="footer-section">
+                <h4 class="footer-title">Deaprtments</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Pediatrics</a></li>
+                    <li><a href="#">Dermatology</a></li>
+                </ul>
+            </div>
+
+            <!-- Seção Quick Links -->
+            <div class="footer-section">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Shop Product</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Seção Blog Post -->
+            <div class="footer-section">
+                <h4 class="footer-title">Blog Post</h4>
+                <div class="blog-post">
+                    <p class="blog-date">22.05.2019</p>
+                    <p class="blog-excerpt">
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-bottom">
+            <p>Copyright 2019 All Rights Reserved.</p>
         </div>
     </footer>
 
