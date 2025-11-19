@@ -147,6 +147,20 @@ class Appointment(models.Model):
             return True
         return False
 
+    def get_status_color(self):
+        """Retorna a classe CSS de cor para o status."""
+        if self.status == 'scheduled':
+            return 'primary'
+        elif self.status == 'confirmed':
+            return 'info'
+        elif self.status == 'in_progress':
+            return 'warning'
+        elif self.status == 'completed':
+            return 'success'
+        elif self.status == 'cancelled' or self.status == 'no_show':
+            return 'danger'
+        return 'secondary'
+
 
 class AppointmentNotification(models.Model):
     """

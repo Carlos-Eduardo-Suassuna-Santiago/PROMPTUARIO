@@ -1,34 +1,150 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Lista de Pacientes{% endblock %}
+
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>Pacientes</h2>
-        <a href="{% url 'patients:patient_create' %}" class="btn btn-success">Novo Paciente</a>
+<div class="container">
+    <div class="header-section">
+        <h1>Pacientes Cadastrados</h1>
+        <form method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por nome, CPF..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-search">Buscar</button>
+        </form>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Tipo Sanguíneo</th>
-                <th>Telefone</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for patient in patients %}
-            <tr>
-                <td>{{ patient.user.get_full_name }}</td>
-                <td>{{ patient.user.cpf }}</td>
-                <td>{{ patient.blood_type|default:"-" }}</td>
-                <td>{{ patient.user.phone }}</td>
-                <td>
-                    <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-primary">Ver</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    {% if patients %}
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Nome Completo</th>
+                    <th>CPF</th>
+                    <th>Data de Nascimento</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.user.get_full_name }}</td>
+                    <td>{{ patient.user.cpf }}</td>
+                    <td>{{ patient.user.birth_date|default:"N/A" }}</td>
+                    <td>{{ patient.user.phone|default:"N/A" }}</td>
+                    <td>
+                        <a href="{% url 'patients:patient_detail' pk=patient.pk %}" class="btn btn-sm btn-info">Ver Prontuário</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Anterior</a>
+        {% endif %}
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Próxima</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p class="alert alert-warning">Nenhum paciente encontrado.</p>
+    {% endif %}
 </div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+    }
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    .search-form {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .search-form input[type="text"] {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 250px;
+    }
+    .btn-search {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .data-table th, .data-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .data-table th {
+        background-color: var(--light-gray);
+        color: var(--dark-text);
+        font-weight: 600;
+    }
+    .data-table tr:hover {
+        background-color: #f5f5f5;
+    }
+    .btn-info {
+        background-color: var(--info-color);
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.5rem;
+        gap: 1rem;
+    }
+    .pagination a, .pagination span {
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+    .pagination a {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    .pagination span.current {
+        background-color: var(--light-gray);
+        color: var(--dark-text);
+        font-weight: bold;
+    }
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 1rem;
+        border: 1px solid #ffeeba;
+        border-radius: 4px;
+        margin-top: 1rem;
+    }
+</style>
 {% endblock %}

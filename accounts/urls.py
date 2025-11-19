@@ -29,6 +29,7 @@ urlpatterns = [
     path('users/<int:pk>/', views.UserDetailView.as_view(), name='user_detail'),
     path('users/<int:pk>/edit/', views.UserUpdateView.as_view(), name='user_update'),
     path('users/<int:pk>/delete/', views.UserDeleteView.as_view(), name='user_delete'),
+    path('logs/', views.AccessLogListView.as_view(), name='access_log_list'),
     
     # Doctor Management
     path('doctors/', views.DoctorListView.as_view(), name='doctor_list'),
