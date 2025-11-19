@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Editar Prontuário{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Editar Prontuário de {{ medicalrecord.patient.user.get_full_name }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+        <a href="{% url 'medical_records:medical_record_detail' medicalrecord.pk %}" 
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+{% endblock %}

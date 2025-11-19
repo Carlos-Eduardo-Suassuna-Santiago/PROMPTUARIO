@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Meu Prontuário{% endblock %}
+
+{% block content %}
+<div class="card">
+
+    <div class="card-header">
+        <h2>Prontuário de {{ patient.user.get_full_name }}</h2>
+    </div>
+
+    <div class="card-body">
+
+        <h4>Informações Pessoais</h4>
+        <ul>
+            <li><strong>CPF:</strong> {{ patient.user.cpf }}</li>
+            <li><strong>Idade:</strong> {% if patient.get_age %}{{ patient.get_age }} anos{% else %}-{% endif %}</li>
+            <li><strong>Tipo Sanguíneo:</strong> {{ patient.blood_type|default:"-" }}</li>
+            <li><strong>Peso:</strong> {{ patient.weight|default:"-" }} kg</li>
+            <li><strong>Altura:</strong> {{ patient.height|default:"-" }} cm</li>
+            <li><strong>Telefone:</strong> {{ patient.user.phone }}</li>
+            <li><strong>Email:</strong> {{ patient.user.email }}</li>
+        </ul>
+
+        <hr>
+
+        <h4>Alergias</h4>
+        {% if allergies %}
+        <ul>
+            {% for a in allergies %}
+            <li><strong>{{ a.allergen }}</strong> — {{ a.get_severity_display }} {% if a.is_active %}(Ativa){% endif %}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p class="text-muted">Nenhuma alergia registrada.</p>
+        {% endif %}
+
+        <hr>
+
+        <h4>Vacinas</h4>
+        {% if vaccines %}
+        <ul>
+            {% for v in vaccines %}
+            <li>{{ v.name }} ({{ v.dose }}) — {{ v.application_date|date:"d/m/Y" }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p class="text-muted">Nenhuma vacina registrada.</p>
+        {% endif %}
+
+        <hr>
+
+        <h4>Medicamentos em uso</h4>
+        {% if medications %}
+        <ul>
+            {% for m in medications %}
+            <li>{{ m.name }} — {{ m.dosage }} ({{ m.frequency }}) {% if m.prescribed_by %}— Prescrito por: {{ m.prescribed_by.user.get_full_name }}{% endif %}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p class="text-muted">Nenhum medicamento ativo.</p>
+        {% endif %}
+
+        <hr>
+
+        <h4>Observações Médicas</h4>
+        <p>{{ patient.medical_notes|default:"Nenhuma observação registrada." }}</p>
+
+        <div class="mt-3">
+            <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-primary">Editar Informações</a>
+            <a href="{% url 'patients:patient_profile' %}" class="btn btn-secondary">Meu Perfil</a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

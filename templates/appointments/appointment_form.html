@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agendar Consulta{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Agendar Nova Consulta</h2>
+    </div>
+
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            {# Escolher médico #}
+            <div class="form-group">
+                <label for="id_doctor">Médico</label>
+                {{ form.doctor }}
+            </div>
+
+            {# Data e horário #}
+            <div class="form-group">
+                <label for="id_scheduled_date">Data</label>
+                {{ form.scheduled_date }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_scheduled_time">Horário</label>
+                {{ form.scheduled_time }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_reason">Motivo</label>
+                {{ form.reason }}
+            </div>
+
+            <button class="btn btn-success mt-3" type="submit">Agendar</button>
+            <a href="{% url 'appointments:appointment_list' %}" class="btn btn-secondary mt-3">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

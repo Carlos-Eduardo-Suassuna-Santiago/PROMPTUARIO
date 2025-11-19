@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Lista de Médicos{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Médicos</h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CRM</th>
+                <th>Especialidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.user.get_full_name }}</td>
+                <td>{{ doctor.crm }}</td>
+                <td>{{ doctor.specialty }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">
+                    Nenhum médico cadastrado.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

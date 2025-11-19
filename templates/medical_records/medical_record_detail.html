@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Prontuário{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Prontuário de {{ medicalrecord.patient.user.get_full_name }}</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <p><strong>Data:</strong> {{ medicalrecord.created_at }}</p>
+            <p><strong>Descrição:</strong> {{ medicalrecord.description }}</p>
+            <p><strong>Tratamento:</strong> {{ medicalrecord.treatment }}</p>
+        </div>
+    </div>
+
+    <a href="{% url 'medical_records:medical_record_list' %}" 
+       class="btn btn-secondary mt-3">Voltar</a>
+
+</div>
+{% endblock %}

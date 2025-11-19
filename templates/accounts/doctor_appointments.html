@@ -1,0 +1,18 @@
+<!-- doctor_appointments.html -->
+<h2>Consultas</h2>
+<a href="{% url 'accounts:doctor_appointment_create' %}">Nova Consulta</a>
+<table>
+  <tr><th>Paciente</th><th>Data</th><th>Hora</th></tr>
+  {% for a in appointments %}
+    <tr>
+      <td>{{ a.patient.user.get_full_name }}</td>
+      <td>{{ a.scheduled_date }}</td>
+      <td>{{ a.scheduled_time }}</td>
+    </tr>
+  {% empty %}
+  <tr><td colspan="3">Nenhuma consulta encontrada.</td></tr>
+  {% endfor %}
+</table>
+{% if not appointments %}
+  <p>Nenhuma consulta encontrada.</p>
+{% endif %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Excluir Prontuário{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Excluir Prontuário</h2>
+
+    <div class="alert alert-danger mt-3">
+        <p>Tem certeza de que deseja excluir o prontuário de:</p>
+        <h4>{{ medicalrecord.patient.user.get_full_name }}</h4>
+
+        <p><strong>Data:</strong> {{ medicalrecord.created_at }}</p>
+        <p><strong>Descrição:</strong> {{ medicalrecord.description|truncatewords:20 }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">Excluir</button>
+
+        <a href="{% url 'medical_records:medical_record_detail' medicalrecord.pk %}" 
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+{% endblock %}

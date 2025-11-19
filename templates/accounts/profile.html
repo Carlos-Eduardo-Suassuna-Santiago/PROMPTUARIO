@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Meu Perfil</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <h4>Informações Pessoais</h4>
+            <p><strong>Nome:</strong> {{ user.get_full_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Telefone:</strong> {{ user.phone }}</p>
+            <p><strong>CPF:</strong> {{ user.cpf }}</p>
+
+            {% if user.is_doctor %}
+            <hr>
+            <h4>Informações Médicas</h4>
+            <p><strong>Especialidade:</strong> {{ user.doctor_profile.specialty }}</p>
+            <p><strong>CRM:</strong> {{ user.doctor_profile.crm }}</p>
+            <p><strong>Biografia:</strong> {{ user.doctor_profile.bio }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary mt-3">Editar Perfil</a>
+
+</div>
+{% endblock %}

@@ -17,9 +17,22 @@ class AppointmentDetailView(LoginRequiredMixin, DetailView):
 
 class AppointmentCreateView(LoginRequiredMixin, CreateView):
     model = Appointment
-    template_name = 'appointments/appointment_form.html'
-    fields = ['patient', 'doctor', 'scheduled_date', 'scheduled_time', 'appointment_type', 'reason']
-    success_url = reverse_lazy('appointments:appointment_list')
+    template_name = "appointments/appointment_form.html"
+    # o form deve permitir escolher doctor, scheduled_date, scheduled_time, reason
+    fields = ["doctor", "reason", "scheduled_date", "scheduled_time"]
+    success_url = reverse_lazy("appointments:appointment_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        # opcional: apenas pacientes logados podem agendar por aqui
+        if not request.user.is_authenticated or not hasattr(request.user, 'patient_profile'):
+            messages.error(request, "Somente pacientes autenticados podem agendar consultas.")
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # atribui o patient automaticamente
+        form.instance.patient = self.request.user.patient_profile
+        return super().form_valid(form)
 
 class AppointmentCancelView(LoginRequiredMixin, View):
     def post(self, request, pk):

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cadastro de Usuário{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% if object %}
+        <h2>Editar Usuário</h2>
+    {% else %}
+        <h2>Cadastrar Usuário</h2>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">
+            {% if object %}Atualizar{% else %}Salvar{% endif %}
+        </button>
+
+        <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+{% endblock %}

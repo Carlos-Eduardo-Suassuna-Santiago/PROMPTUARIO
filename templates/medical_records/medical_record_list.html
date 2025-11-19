@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Lista de Prontuários{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Prontuários</h2>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for record in medicalrecord_list %}
+            <tr>
+                <td>{{ record.patient.user.get_full_name }}</td>
+                <td>{{ record.created_at }}</td>
+                <td>
+                    <a href="{% url 'medical_records:medical_record_detail' record.pk %}" 
+                       class="btn btn-primary btn-sm">
+                        Ver
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhum prontuário encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

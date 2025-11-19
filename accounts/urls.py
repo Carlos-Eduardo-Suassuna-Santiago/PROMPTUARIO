@@ -22,6 +22,21 @@ urlpatterns = [
     
     # Dashboard
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+
+    # === FUNCIONALIDADES DO MÉDICO ===
+    path('doctor/agenda/', views.DoctorAgendaView.as_view(), name='doctor_agenda'),
+    path('doctor/prontuarios/', views.DoctorMedicalRecordsView.as_view(), name='doctor_records'),
+    path('doctor/prontuarios/<int:pk>/', views.DoctorRecordDetailView.as_view(), name='doctor_record_detail'),
+    path('doctor/prontuarios/pesquisar/', views.DoctorMedicalRecordSearchView.as_view(), name='doctor_record_search'),
+
+    path('doctor/pacientes/', views.DoctorPatientListView.as_view(), name='doctor_patient_list'),
+    path('doctor/pacientes/<int:pk>/', views.DoctorPatientDetailView.as_view(), name='doctor_patient_detail'),
+
+    path('doctor/consultas/', views.DoctorAppointmentListView.as_view(), name='doctor_appointments'),
+    path('doctor/consultas/nova/', views.DoctorAppointmentCreateView.as_view(), name='doctor_appointment_create'),
+
+    path('doctor/relatorios/', views.DoctorReportView.as_view(), name='doctor_reports'),
+    path('doctor/relatorios/gerar/', views.generate_doctor_report, name='doctor_report_generate'),
     
     # User Management (Admin only)
     path('users/', views.UserListView.as_view(), name='user_list'),
@@ -38,6 +53,7 @@ urlpatterns = [
     # Profile
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('profile/edit/', views.ProfileUpdateView.as_view(), name='profile_update'),
+    
     # Registration
     path('register/', views.PatientRegistrationView.as_view(), name='register'),
     path('register/patient/', views.PatientRegistrationView.as_view(), name='register_patient'),

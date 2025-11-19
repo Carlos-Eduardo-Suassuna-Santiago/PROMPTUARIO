@@ -1,0 +1,7 @@
+<!-- doctor_reports.html -->
+<h2>Relatórios</h2>
+<p>Gerar relatório de consultas do médico</p>
+<a href="{% url 'accounts:doctor_report_generate' %}">Gerar PDF</a>
+{% if not reports %}
+  <p>Nenhum relatório disponível.</p>
+{% endif %}

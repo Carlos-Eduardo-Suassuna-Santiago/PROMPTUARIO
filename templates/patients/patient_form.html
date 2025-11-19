@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% if object %}
+        <h2>Editar Paciente</h2>
+    {% else %}
+        <h2>Novo Paciente</h2>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn btn-success" type="submit">Salvar</button>
+        <a href="{% url 'patients:patient_list' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+</div>
+{% endblock %}
+{% block title %}
+    {% if object %}
+        Editar Paciente
+    {% else %}
+        Cadastrar Paciente
+    {% endif %}
+{% endblock %}
