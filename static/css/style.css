@@ -1,0 +1,431 @@
+/*
+ * Estilização Base para o base.html
+ * Baseado nos frames Frame1.png (Top Bar) e Property1=Default.png (Side Menu)
+ */
+
+/* Variáveis de Cores */
+:root {
+    --color-primary: #00A99D; /* Cor principal, usada para ícones e links ativos */
+    --color-secondary: #007B70; /* Variação da cor principal */
+    --color-background: #FFFFFF; /* Fundo principal */
+    --color-sidebar-bg: #FFFFFF; /* Fundo da barra lateral */
+    --color-sidebar-text: #4A4A4A; /* Cor do texto da barra lateral */
+    --color-sidebar-active: #00A99D; /* Cor do link ativo na barra lateral */
+    --color-topbar-bg: #FFFFFF; /* Fundo da barra superior */
+    --color-topbar-border: #E0E0E0; /* Borda da barra superior */
+    --color-welcome-text: #000000; /* Cor do texto de boas-vindas */
+    --color-avatar-bg: #E0E0E0; /* Cor de fundo do avatar (círculo cinza) */
+    --color-avisos-bg: #E0F7F6; /* Fundo da seção de avisos (verde claro) */
+    --color-avisos-border: #00A99D; /* Borda da seção de avisos */
+    --color-footer-bg: #333333; /* Fundo do rodapé */
+    --color-footer-text: #FFFFFF; /* Cor do texto do rodapé */
+    --color-footer-link: #CCCCCC; /* Cor dos links do rodapé */
+}
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif; /* Fonte padrão */
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-sidebar-text);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Layout Principal da Aplicação */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    padding-left: 250px; /* Adiciona padding para compensar o aside fixo */
+    /* Removido padding-top daqui para permitir que o aside vá até o topo */
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    padding-top: 80px; /* Adiciona padding para compensar a topbar fixa */
+    background-color: #F8F9FA; /* Fundo levemente cinza para o conteúdo */
+}
+
+/* =================================
+ * TOP BAR (Frame1.png)
+ * ================================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    /* Ajustado left para começar após o menu lateral */
+    left: 250px;
+    width: calc(100% - 250px); /* Largura total menos a largura do aside */
+    height: 74px;
+    background-color: var(--color-topbar-bg);
+    border-bottom: 2px solid #6ECEF2; /* Linha azul clara abaixo da topbar */
+    z-index: 1000;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    max-width: 1200px; /* Limitar largura se necessário */
+    margin: 0 100px;
+}
+
+.welcome-message h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-welcome-text);
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-avatar-bg); /* Círculo cinza claro */
+    display: block;
+    cursor: pointer;
+}
+
+.logout-link {
+    display: flex;
+    align-items: center;
+    color: var(--color-primary);
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.logout-link:hover {
+    color: var(--color-secondary);
+}
+
+.logout-link .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* =================================
+ * SIDE MENU (Property1=Default.png)
+ * ================================= */
+.aside-menu {
+    position: fixed; /* Fixa o menu lateral */
+    top: 0; /* Começa no topo da tela */
+    left: 0;
+    width: 250px;
+    height: 100vh; /* Ocupa a altura total da viewport */
+    background-color: var(--color-sidebar-bg);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 999; /* Abaixo da topbar (z-index: 1000) */
+}
+
+.menu-header {
+    padding: 0 20px 20px;
+    border-bottom: 2px solid #6ECEF2;
+    margin-bottom: 20px;
+}
+
+.menu-header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.menu-header .logo .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Navegação */
+.menu-nav ul {
+    padding: 0 20px;
+}
+
+.menu-nav li {
+    margin-bottom: 5px;
+}
+
+.menu-nav a {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--color-sidebar-text);
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-nav a:hover {
+    color: var(--color-primary);
+}
+
+.menu-nav .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Estilo para o item ativo */
+.menu-nav li.active a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Seção de Avisos */
+.menu-avisos {
+    padding: 20px;
+    margin-top: auto; /* Empurra para o final da barra lateral */
+}
+
+.menu-avisos .container {
+    background-color: var(--color-avisos-bg);
+    border: 1px solid var(--color-avisos-border);
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+}
+
+.menu-avisos .container::before {
+    content: "Avisos";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background-color: var(--color-avisos-bg);
+    color: var(--color-avisos-border);
+    font-weight: bold;
+    padding: 0 5px;
+    font-size: 14px;
+}
+
+.menu-avisos p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--color-sidebar-text);
+}
+
+/* Seção de Ajuda */
+.menu-ajuda {
+    padding: 10px 20px 0;
+    border-top: 1px solid var(--color-topbar-border);
+    margin-top: 10px;
+}
+
+.menu-ajuda a {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--color-sidebar-text);
+    font-weight: 500;
+}
+
+.menu-ajuda a:hover {
+    color: var(--color-primary);
+}
+
+.menu-ajuda .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* =================================
+ * CONTEÚDO PRINCIPAL
+ * ================================= */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    padding-top: 80px; /* Adiciona padding para compensar a topbar fixa */
+    background-color: #F8F9FA; /* Fundo levemente cinza para o conteúdo */
+}
+
+.main-content .container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* =================================
+ * ESTILIZAÇÃO DASHBOARD (ÍCONES - Baseado na Imagem)
+ * ================================= */
+
+/* Contêiner para centralizar os links de ícones */
+.icon-links-row {
+    padding-top: 50px;
+    display: flex;
+    /* Para que os itens fiquem centralizados e com espaçamento se houver menos de 5 */
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+/* Estilo do Cartão de Ícone */
+.icon-link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Fundo verde-água da imagem */
+    background-color: var(--color-primary); 
+    color: var(--color-background); /* Texto e Ícone brancos */
+    border-radius: 8px; /* Borda levemente arredondada */
+    padding: 15px 10px; /* Preenchimento interno */
+    min-height: 150px; /* Altura mínima para padronização */
+    min-width: 150px;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 100%;
+}
+
+.icon-link-card:hover {
+    background-color: var(--color-secondary); /* Escurece um pouco ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de elevação sutil */
+    color: var(--color-background); /* Mantém a cor do texto no hover */
+}
+
+/* Estilo do Ícone */
+.icon-link-card .icon-lg {
+    font-size: 30px; /* Tamanho maior para o ícone */
+    margin-bottom: 5px;
+    color: var(--color-background); /* Cor do ícone */
+}
+
+/* Estilo do Texto */
+.icon-link-card .card-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-background); /* Cor do texto */
+}
+
+/* =================================
+ * RODAPÉ (Footer)
+ * ================================= */
+.site-footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    padding: 40px 20px 0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-brand .brand-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.footer-brand .brand-logo h3 {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.footer-brand .heart-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.footer-description {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.footer-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--color-primary);
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    color: var(--color-footer-link);
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--color-primary);
+}
+
+.social-icons a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    color: var(--color-footer-text);
+    transition: background-color 0.2s;
+}
+
+.social-icons a:hover {
+    background-color: var(--color-primary);
+}
+
+.blog-post p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.blog-date {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Ajuste para o menu de navegação que tem muitos itens */
+.menu-nav {
+    overflow-y: auto;
+    /* Ajustado max-height para considerar a altura total (100vh) menos o header e o footer do aside */
+    max-height: calc(100vh - 250px);
+}

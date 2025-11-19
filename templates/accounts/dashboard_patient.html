@@ -5,38 +5,45 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="h3 mb-4">Bem-vindo(a), {{ user.get_full_name }}</h1>
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Minhas Consultas</h5>
-                    <p class="card-text display-4"><i class="fas fa-calendar-alt"></i></p>
-                    <a href="{% url 'appointments:appointment_list' %}" class="btn btn-primary">Ver Todas</a>
-                </div>
-            </div>
+    <div class="row icon-links-row mb-4">
+        
+        <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <a href="{% url 'appointments:appointment_list' %}" class="icon-link-card">
+                <i class="fas fa-heartbeat icon-lg"></i>
+                <span class="card-text">Minhas Consultas</span>
+            </a>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Meu Prontuário</h5>
-                    <p class="card-text display-4"><i class="fas fa-file-medical"></i></p>
-                    <a href="{% url 'patients:my_medical_record' %}" class="btn btn-success">Acessar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Agendar Consulta</h5>
-                    <p class="card-text display-4"><i class="fas fa-calendar-plus"></i></p>
-                    <a href="{% url 'appointments:appointment_create' %}" class="btn btn-info">Novo Agendamento</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
+        <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <a href="#" class="icon-link-card">
+                <i class="fas fa-syringe icon-lg"></i>
+                <span class="card-text">Vacinas</span>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <a href="#" class="icon-link-card">
+                <i class="fas fa-pills icon-lg"></i>
+                <span class="card-text">Medicamentos</span>
+            </a>
+        </div>
+        
+        <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <a href="{% url 'appointments:appointment_create' %}" class="icon-link-card">
+                <i class="fas fa-calendar-plus icon-lg"></i>
+                <span class="card-text">Agendar Consulta</span>
+            </a>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <a href="{% url 'patients:my_medical_record' %}" class="icon-link-card">
+                <i class="fas fa-book-medical icon-lg"></i>
+                <span class="card-text">Meu Prontuário</span>
+            </a>
+        </div>
+
+        </div>
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Próximas Consultas</h5>
