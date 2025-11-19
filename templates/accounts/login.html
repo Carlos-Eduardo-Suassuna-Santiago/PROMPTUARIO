@@ -1,68 +1,67 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>login</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+=======
+    <title>Login - Promptuario</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+>>>>>>> feature/ajustes-na-estrutura-do-projeto
 </head>
 <body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Promptuario</h1>
+                <p>Sistema de Prontuário Eletrônico</p>
+            </div>
 
-    <div class="container">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
-        <!-- LADO DIREITO (área decorativa) -->
-        <div class="lado direito"></div>
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Usuário:</label>
+                    <input type="text" name="username" id="id_username" class="form-control" required autofocus>
+                </div>
 
+<<<<<<< HEAD
         <!-- LADO ESQUERDO (formulário) -->
         <div class="lado esquerdo">
             <div class="cadastro-box">
+=======
+                <div class="form-group">
+                    <label for="id_password">Senha:</label>
+                    <input type="password" name="password" id="id_password" class="form-control" required>
+                </div>
+>>>>>>> feature/ajustes-na-estrutura-do-projeto
 
-                <h1>Promptuário</h1>
-                <h2>Login</h2>
-
-                <!-- EXIBIÇÃO DE MENSAGENS DJANGO -->
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Usuário ou senha inválidos. Por favor, tente novamente.
                 </div>
                 {% endif %}
 
-                <form method="post" class="login-form">
-                    {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
 
-                    <div class="form-group">
-                        <label for="id_username">Usuário</label>
-                        <input type="text" name="username" id="id_username" required autofocus>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_password">Senha</label>
-                        <input type="password" name="password" id="id_password" required>
-                    </div>
-
-                    {% if form.errors %}
-                    <div class="alert alert-danger">
-                        Usuário ou senha inválidos. Por favor, tente novamente.
-                    </div>
-                    {% endif %}
-
-                    <button type="submit" class="btn-login">Entrar</button>
-                </form>
-
-                <div class="no-account">
-                    Não possui conta?
-                    <a href="{% url 'accounts:register' %}">Cadastre-se</a>
-                </div>
-
+            <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <p>Não possui uma conta? <a href="{% url 'accounts:register' %}" style="color: var(--primary-color); font-weight: 500;">Cadastre-se</a></p>
             </div>
         </div>
-
     </div>
-
 </body>
 </html>

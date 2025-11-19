@@ -4,9 +4,14 @@ from . import views
 app_name = 'medical_records'
 
 urlpatterns = [
-    path('', views.MedicalRecordListView.as_view(), name='medical_record_list'),
-    path('<int:pk>/', views.MedicalRecordDetailView.as_view(), name='medical_record_detail'),
-    path('create/<int:appointment_pk>/', views.MedicalRecordCreateView.as_view(), name='medical_record_create'),
-    path('<int:pk>/edit/', views.MedicalRecordUpdateView.as_view(), name='medical_record_update'),
-    path('<int:pk>/close/', views.MedicalRecordCloseView.as_view(), name='medical_record_close'),
+    # Rotas para Prontuário
+    path('record/<int:pk>/', views.MedicalRecordDetailView.as_view(), name='record_detail'),
+    path('appointment/<int:appointment_pk>/record/create/', views.MedicalRecordCreateView.as_view(), name='record_create'),
+    path('appointment/<int:appointment_pk>/record/update/', views.MedicalRecordUpdateView.as_view(), name='record_update'),
+    
+    # Rotas para Receita
+    path('record/<int:record_pk>/prescription/create/', views.PrescriptionCreateView.as_view(), name='prescription_create'),
+    
+    # Rotas para Exame
+    path('record/<int:record_pk>/exam/create/', views.ExamCreateView.as_view(), name='exam_create'),
 ]

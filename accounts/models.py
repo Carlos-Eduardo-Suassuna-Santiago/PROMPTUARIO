@@ -94,6 +94,18 @@ class User(AbstractUser):
     
     def __str__(self):
         return f"{self.get_full_name()} ({self.get_user_type_display()})"
+
+    def get_user_type_color(self):
+        """Retorna a classe CSS de cor para o tipo de usuário."""
+        if self.user_type == 'admin':
+            return 'danger'
+        elif self.user_type == 'doctor':
+            return 'primary'
+        elif self.user_type == 'attendant':
+            return 'warning'
+        elif self.user_type == 'patient':
+            return 'success'
+        return 'secondary'
     
     def is_admin(self):
         """Verifica se o usuário é administrador."""
@@ -256,41 +268,78 @@ class DoctorAbsence(models.Model):
     """
     Registro de ausências dos médicos.
     """
-    
     doctor = models.ForeignKey(
         DoctorProfile,
         on_delete=models.CASCADE,
         related_name='absences',
         verbose_name='Médico'
     )
-    
-    start_datetime = models.DateTimeField(
-        'Início da Ausência'
-    )
-    
-    end_datetime = models.DateTimeField(
-        'Fim da Ausência'
-    )
-    
-    reason = models.TextField(
-        'Motivo',
-        blank=True
-    )
-    
-    is_full_day = models.BooleanField(
-        'Dia Inteiro',
-        default=False
-    )
-    
-    created_at = models.DateTimeField(
-        'Criado em',
-        auto_now_add=True
-    )
-    
+    start_datetime = models.DateTimeField('Início da Ausência')
+    end_datetime = models.DateTimeField('Fim da Ausência')
+    reason = models.TextField('Motivo', blank=True)
+    is_full_day = models.BooleanField('Dia Inteiro', default=False)
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+
     class Meta:
         verbose_name = 'Ausência de Médico'
         verbose_name_plural = 'Ausências de Médicos'
         ordering = ['-start_datetime']
-    
+
     def __str__(self):
         return f"{self.doctor.user.get_full_name()} - {self.start_datetime.strftime('%d/%m/%Y')}"
+
+
+
+
+class AccessLog(models.Model):
+    """
+    Registro de acesso a dados sensíveis (LGPD).
+    """
+    
+    ACTION_CHOICES = (
+        ('login', 'Login'),
+        ('logout', 'Logout'),
+        ('view_patient', 'Visualização de Paciente'),
+        ('view_record', 'Visualização de Prontuário'),
+        ('create_record', 'Criação de Prontuário'),
+        ('update_record', 'Atualização de Prontuário'),
+        ('generate_pdf', 'Geração de PDF (Receita/Exame)'),
+    )
+    
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='access_logs',
+        verbose_name='Usuário'
+    )
+    
+    action = models.CharField(
+        'Ação',
+        max_length=50,
+        choices=ACTION_CHOICES
+    )
+    
+    timestamp = models.DateTimeField(
+        'Data/Hora',
+        auto_now_add=True
+    )
+    
+    ip_address = models.GenericIPAddressField(
+        'Endereço IP',
+        null=True,
+        blank=True
+    )
+    
+    details = models.TextField(
+        'Detalhes',
+        blank=True
+    )
+    
+    class Meta:
+        verbose_name = 'Log de Acesso'
+        verbose_name_plural = 'Logs de Acesso'
+        ordering = ['-timestamp']
+    
+    def __str__(self):
+        return f"[{self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}] {self.user.username if self.user else 'N/A'} - {self.get_action_display()}"

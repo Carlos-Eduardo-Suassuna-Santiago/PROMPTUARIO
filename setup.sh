@@ -28,7 +28,9 @@ else
 fi
 
 # Ativar ambiente virtual
-source venv/bin/activate
+
+source venv/bin/activate #Linux/Mac
+venv\Scripts\activate #Windows
 
 # Atualizar pip
 echo "Atualizando pip..."

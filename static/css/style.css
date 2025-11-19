@@ -1,17 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --primary-color: #008080;
     --accent-color: #E0FFFF;
     --text-color: #333;
     --white-color: #ffffff;
     --gray-light: #f4f4f4;
-    --border-color: #eee;
-    --icon-bg-color: #2ED197; /* Verde/Teal dos ícones */
-    --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.06);
+    --secondary-color: #1e40af;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --light-bg: #f3f4f6;
+    --dark-text: #1f2937;
+    --gray-text: #6b7280;
+    --border-color: #e5e7eb;
+    --white: #ffffff;
 }
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
     background-color: var(--gray-light);
     
     /* Configura o layout principal como Grid */
@@ -47,17 +61,28 @@ body {
 
 .topbar-content {
     width: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.navbar .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.icon {
-    width: 34px;
-    height: 34px;
-    padding-right: 10px;
-    object-fit: cover; /* Opcional: Garante que a imagem preencha o espaço sem distorção, cortando as bordas se necessário. */
-}
 
 .welcome-message h1 {
     font-size: 24px;

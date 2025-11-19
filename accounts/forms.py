@@ -196,21 +196,17 @@ class DoctorRegistrationForm(UserRegistrationForm):
         label='Especialidade',
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cardiologia'})
     )
-    bio = forms.CharField(
-        required=False,
-        label='Biografia',
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'rows': 3,
-            'placeholder': 'Breve descrição profissional...'
-        })
-    )
-    consultation_price = forms.DecimalField(
+    salary = forms.DecimalField(
         max_digits=10,
         decimal_places=2,
         required=False,
-        label='Valor da Consulta (R$)',
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '150.00'})
+        label='Salário (R$)',
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '3000.00'})
+    )
+    is_available = forms.BooleanField(
+        required=False,
+        label='Disponível para Consultas',
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
 
     def clean_crm(self):
@@ -231,8 +227,8 @@ class DoctorRegistrationForm(UserRegistrationForm):
                 user=user,
                 crm=self.cleaned_data.get('crm'),
                 specialty=self.cleaned_data.get('specialty'),
-                bio=self.cleaned_data.get('bio'),
-                consultation_price=self.cleaned_data.get('consultation_price')
+                salary=self.cleaned_data.get('salary'),
+                is_available=self.cleaned_data.get('is_available')
             )
         
         return user
@@ -268,3 +264,32 @@ class AttendantRegistrationForm(UserRegistrationForm):
             )
         
         return user
+
+
+# ==============================================================================
+# Formulários de Atualização de Perfil
+# ==============================================================================
+
+class DoctorProfileUpdateForm(forms.ModelForm):
+    """Formulário para atualização de perfil de Médico."""
+    
+    class Meta:
+        model = DoctorProfile
+        fields = ['crm', 'specialty', 'salary', 'is_available']
+        widgets = {
+            'crm': forms.TextInput(attrs={'class': 'form-control'}),
+            'specialty': forms.TextInput(attrs={'class': 'form-control'}),
+            'salary': forms.NumberInput(attrs={'class': 'form-control'}),
+            'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class AttendantProfileUpdateForm(forms.ModelForm):
+    """Formulário para atualização de perfil de Atendente."""
+    
+    class Meta:
+        model = AttendantProfile
+        fields = ['department', 'shift']
+        widgets = {
+            'department': forms.TextInput(attrs={'class': 'form-control'}),
+            'shift': forms.Select(attrs={'class': 'form-control'}),
+        }

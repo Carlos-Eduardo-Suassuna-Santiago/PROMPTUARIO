@@ -4,7 +4,7 @@ Configuração do Django Admin para o app accounts.
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, DoctorProfile, AttendantProfile, DoctorSchedule, DoctorAbsence
+from .models import User, DoctorProfile, AttendantProfile, DoctorSchedule, DoctorAbsence, AccessLog
 
 
 @admin.register(User)
@@ -67,3 +67,24 @@ class DoctorAbsenceAdmin(admin.ModelAdmin):
     search_fields = ['doctor__user__first_name', 'doctor__user__last_name', 'reason']
     raw_id_fields = ['doctor']
     date_hierarchy = 'start_datetime'
+
+
+@admin.register(AccessLog)
+class AccessLogAdmin(admin.ModelAdmin):
+    """Admin para o modelo AccessLog (LGPD)."""
+    
+    list_display = ['user', 'action', 'timestamp', 'ip_address']
+    list_filter = ['action', 'timestamp']
+    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'details', 'ip_address']
+    raw_id_fields = ['user']
+    date_hierarchy = 'timestamp'
+    readonly_fields = ['user', 'action', 'timestamp', 'ip_address', 'details']
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
