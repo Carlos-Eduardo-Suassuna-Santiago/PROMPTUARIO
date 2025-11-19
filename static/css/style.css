@@ -26,17 +26,6 @@ body {
     background-color: var(--light-bg);
 }
 
-.login-page, .register-page {
-    margin: 0;
-    padding: 0;
-    background-image: url('../images/fundo.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: 'Poppins', sans-serif;
-}
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -308,8 +297,7 @@ body {
 .login-container {
     max-width: 400px;
     margin: 5rem auto;
-    text-align: right;
-
+    flex-wrap: wrap;
 }
 
 .login-card {
@@ -317,7 +305,7 @@ body {
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-
+    
 }
 
 .login-header {
@@ -333,4 +321,14 @@ body {
 .login-form .btn {
     width: 100%;
     margin-top: 1rem;
+}
+
+.login-page, .register-page {
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
