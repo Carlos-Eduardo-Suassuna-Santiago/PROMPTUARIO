@@ -1,8 +1,0 @@
-<!-- doctor_records.html -->
-<h2>Prontuários dos Pacientes</h2>
-{% for p in patients %}
-  <a href="{% url 'accounts:doctor_record_detail' p.id %}">{{ p.user.get_full_name }}</a><br>
-{% endfor %}
-{% if not patients %}
-  <p>Nenhum paciente encontrado.</p>
-{% endif %}
