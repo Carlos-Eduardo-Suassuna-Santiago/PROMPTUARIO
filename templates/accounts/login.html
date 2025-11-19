@@ -4,15 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>login</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-=======
     <title>Login - Promptuario</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
->>>>>>> feature/ajustes-na-estrutura-do-projeto
 </head>
-<body>
+
+<body class="login-page">
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
@@ -38,16 +34,10 @@
                     <input type="text" name="username" id="id_username" class="form-control" required autofocus>
                 </div>
 
-<<<<<<< HEAD
-        <!-- LADO ESQUERDO (formulário) -->
-        <div class="lado esquerdo">
-            <div class="cadastro-box">
-=======
                 <div class="form-group">
                     <label for="id_password">Senha:</label>
                     <input type="password" name="password" id="id_password" class="form-control" required>
                 </div>
->>>>>>> feature/ajustes-na-estrutura-do-projeto
 
                 {% if form.errors %}
                 <div class="alert alert-danger">
