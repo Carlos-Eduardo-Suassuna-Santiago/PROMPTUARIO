@@ -1,36 +1,44 @@
 #!/bin/bash
 
-# Script de setup do projeto Promptuario
-
 echo "=== Setup do Promptuario ==="
 echo ""
 
-# Cores para output
+# Cores
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Verificar se Python está instalado
-if ! command -v python3.11 &> /dev/null; then
-    echo -e "${YELLOW}Python 3.11 não encontrado. Por favor, instale Python 3.11${NC}"
+# Detectar Python (3.10+)
+PYTHON=$(command -v python3 || command -v python || command -v py)
+
+if [ -z "$PYTHON" ]; then
+    echo -e "${YELLOW}Python não encontrado. Instale Python 3.10+${NC}"
     exit 1
 fi
 
-echo -e "${GREEN}✓ Python 3.11 encontrado${NC}"
+echo -e "${GREEN}✓ Python encontrado: $PYTHON${NC}"
 
 # Criar ambiente virtual
 if [ ! -d "venv" ]; then
     echo "Criando ambiente virtual..."
-    python3.11 -m venv venv
+    $PYTHON -m venv venv
     echo -e "${GREEN}✓ Ambiente virtual criado${NC}"
 else
     echo -e "${YELLOW}Ambiente virtual já existe${NC}"
 fi
 
-# Ativar ambiente virtual
+# Ativar venv conforme SO
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    # Git Bash / Windows
+    echo "Ativando venv (Windows)..."
+    source venv/Scripts/activate
+else
+    # Linux/Mac
+    echo "Ativando venv (Linux/Mac)..."
+    source venv/bin/activate
+fi
 
-source venv/bin/activate #Linux/Mac
-venv\Scripts\activate #Windows
+echo -e "${GREEN}✓ Ambiente virtual ativado${NC}"
 
 # Atualizar pip
 echo "Atualizando pip..."
@@ -42,7 +50,7 @@ echo "Instalando dependências..."
 pip install -r requirements.txt > /dev/null 2>&1
 echo -e "${GREEN}✓ Dependências instaladas${NC}"
 
-# Criar arquivo .env se não existir
+# Criar .env
 if [ ! -f ".env" ]; then
     echo "Criando arquivo .env..."
     cp .env.example .env
@@ -51,35 +59,20 @@ else
     echo -e "${YELLOW}.env já existe${NC}"
 fi
 
-# Executar migrações
+# Migrações
 echo "Executando migrações..."
 python manage.py migrate > /dev/null 2>&1
 echo -e "${GREEN}✓ Migrações executadas${NC}"
 
-# Criar usuários iniciais
-echo "Criando usuários de teste..."
+# Usuários iniciais
+echo "Criando usuários..."
 python manage.py create_initial_users
 echo -e "${GREEN}✓ Usuários criados${NC}"
 
-# Coletar arquivos estáticos
+# Static
 echo "Coletando arquivos estáticos..."
 python manage.py collectstatic --noinput > /dev/null 2>&1
 echo -e "${GREEN}✓ Arquivos estáticos coletados${NC}"
 
 echo ""
 echo -e "${GREEN}=== Setup concluído com sucesso! ===${NC}"
-echo ""
-echo "Para iniciar o servidor de desenvolvimento, execute:"
-echo "  source venv/bin/activate"
-echo "  python manage.py runserver"
-echo ""
-echo "Ou com Docker:"
-echo "  docker-compose up"
-echo ""
-echo "Acesse: http://localhost:8000"
-echo ""
-echo "Usuários de teste:"
-echo "  Admin:     admin / admin123"
-echo "  Médico:    medico / medico123"
-echo "  Atendente: atendente / atendente123"
-echo "  Paciente:  paciente / paciente123"
