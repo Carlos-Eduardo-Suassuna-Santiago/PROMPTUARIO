@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <!-- Informações Adicionais (Específicas do Perfil) -->
+            <!-- Informações do Paciente -->
             {% if user.is_patient and patient_form %}
             <div class="form-section">
                 <h3>Informações Médicas (Paciente)</h3>
@@ -108,9 +108,9 @@
                 </div>
             </div>
             {% endif %}
-            
-            <!-- Outros perfis (Médico, Atendente) teriam seus campos adicionados aqui -->
-            {% elif user.is_doctor and doctor_form %}
+
+            <!-- Informações do Médico -->
+            {% if user.is_doctor and doctor_form %}
             <div class="form-section">
                 <h3>Informações Profissionais (Médico)</h3>
                 <div class="form-row">
@@ -136,7 +136,10 @@
                     {% for error in doctor_form.bio.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
             </div>
-            {% elif user.is_attendant and attendant_form %}
+            {% endif %}
+
+            <!-- Informações do Atendente -->
+            {% if user.is_attendant and attendant_form %}
             <div class="form-section">
                 <h3>Informações Profissionais (Atendente)</h3>
                 <div class="form-row">
