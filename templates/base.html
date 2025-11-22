@@ -24,11 +24,13 @@
                 
                 <a class="user-avatar" href="{% url 'accounts:profile' %}"></a>
                
-                <a href="{% url 'accounts:logout' %}" class="logout-link">
-                    <i class="fas fa-sign-out-alt"></i>
-                        <img class="icon" src="{% static 'images/Logout.png' %}" alt="sair"> 
-                        <span>sair</span>
-                </a>
+                <form method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button-style">
+                        <img src="{% static 'images/Logout.png' %}" alt="Sair" class="icon">
+                        Sair
+                    </button>
+                </form>
             </div>
         </div>
     </header>

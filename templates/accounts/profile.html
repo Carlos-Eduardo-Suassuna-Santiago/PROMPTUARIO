@@ -1,113 +1,77 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Meu Perfil{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile_style.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width: 800px; margin: 0 auto;">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h2>Meu Perfil</h2>
-        <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary">Editar Perfil</a>
+<div class="profile-container">
+    <div class="profile-header-card">
+        <div class="profile-info-display">
+            <img src="{% if user_obj.profile_picture %}{{ user_obj.profile_picture.url }}{% else %}{% static 'img/default_avatar.png' %}{% endif %}" alt="{{ user_obj.get_full_name }}" class="profile-avatar">
+            <div>
+                <h3 class="profile-name">{{ user_obj.get_full_name|default:"Nome Não Informado" }}</h3>
+                <p class="profile-email">{{ user_obj.email }}</p>
+            </div>
+        </div>
+        
+        <a href="{% url 'accounts:profile_update' %}" class="btn-edit-profile">Edit</a>
     </div>
-    <div class="card-body">
-        <!-- Dados Pessoais -->
-        <div class="profile-section">
-            <h3>Dados Pessoais</h3>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Nome Completo:</strong> {{ user_obj.get_full_name }}</p>
-                    <p><strong>Nome de Usuário:</strong> {{ user_obj.username }}</p>
-                    <p><strong>CPF:</strong> {{ user_obj.cpf }}</p>
-                    <p><strong>Data de Nascimento:</strong> {{ user_obj.birth_date|default:"Não informado" }}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Email:</strong> {{ user_obj.email }}</p>
-                    <p><strong>Telefone:</strong> {{ user_obj.phone|default:"Não informado" }}</p>
-                    <p><strong>Tipo de Usuário:</strong> {{ user_obj.get_user_type_display }}</p>
-                </div>
-            </div>
+
+    <div class="profile-fields-grid">
+
+        <div class="field-group field-group-lg">
+            <label>Nome</label>
+            <div class="field-value-box field-lg">{{ user_obj.get_full_name }}</div>
+        </div>
+        <div class="field-group">
+            <label>Data Nascimento</label>
+            <div class="field-value-box">{{ user_obj.birth_date|date:"d/m/Y"|default:"Placeholder" }}</div>
         </div>
 
-        <!-- Endereço -->
-        <div class="profile-section">
-            <h3>Endereço</h3>
-            <p><strong>Endereço:</strong> {{ user_obj.address|default:"Não informado" }}</p>
-            <p><strong>Cidade/Estado/CEP:</strong> {{ user_obj.city|default:"Não informado" }} / {{ user_obj.state|default:"-" }} / {{ user_obj.zip_code|default:"Não informado" }}</p>
+        <div class="field-group">
+            <label>CPF</label>
+            <div class="field-value-box">{{ user_obj.cpf|default:"Placeholder" }}</div>
+        </div>
+        <div class="field-group">
+            <label>Telefone</label>
+            <div class="field-value-box">{{ user_obj.phone|default:"Placeholder" }}</div>
         </div>
 
-        <!-- Dados Específicos do Paciente -->
+        <div class="field-group field-group-lg">
+            <label>Email</label>
+            <div class="field-value-box field-lg">{{ user_obj.email }}</div>
+        </div>
+       
+        
+        <div class="field-group field-group-lg">
+            <label>Tipo de conta</label>
+            <div class="field-value-box field-lg">{{ user_obj.get_user_type_display }}</div>
+        </div>
+        <div class="field-group"></div>
+
+
         {% if user_obj.is_patient and patient_profile %}
-        <div class="profile-section">
-            <h3>Informações Médicas</h3>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Tipo Sanguíneo:</strong> {{ patient_profile.get_blood_type_display|default:"Não informado" }}</p>
-                    <p><strong>Altura:</strong> {{ patient_profile.height|default:"Não informado" }} cm</p>
-                    <p><strong>Peso:</strong> {{ patient_profile.weight|default:"Não informado" }} kg</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Contato de Emergência:</strong> {{ patient_profile.emergency_contact_name|default:"Não informado" }}</p>
-                    <p><strong>Telefone de Emergência:</strong> {{ patient_profile.emergency_contact_phone|default:"Não informado" }}</p>
-                </div>
-            </div>
-            <p><strong>Observações Médicas:</strong> {{ patient_profile.medical_notes|default:"Nenhuma observação." }}</p>
+        <h4 class="grid-section-title">Informações Médicas</h4>
+        <div class="field-group">
+            <label>Tipo Sanguíneo</label>
+            <div class="field-value-box">{{ patient_profile.get_blood_type_display|default:"Placeholder" }}</div>
+        </div>
+        <div class="field-group">
+            <label>Altura (cm)</label>
+            <div class="field-value-box">{{ patient_profile.height|default:"Placeholder" }}</div>
+        </div>
+
+
+         <div class="field-group">
+            <h4 class="grid-section-title">Alterar Senha</h4>
+            <a href="{% url 'accounts:password_change' %}" class="field-value-box password-link">Mudar Senha</a>
         </div>
         {% endif %}
 
-        <!-- Dados Específicos do Médico -->
-        {% if user_obj.is_doctor and doctor_profile %}
-        <div class="profile-section">
-            <h3>Informações Profissionais (Médico)</h3>
-            <p><strong>CRM:</strong> {{ doctor_profile.crm }}</p>
-            <p><strong>Especialidade:</strong> {{ doctor_profile.specialty }}</p>
-            <p><strong>Valor da Consulta:</strong> R$ {{ doctor_profile.consultation_price|default:"Não informado" }}</p>
-            <p><strong>Biografia:</strong> {{ doctor_profile.bio|default:"Não informada." }}</p>
-        </div>
-        {% endif %}
-
-        <!-- Dados Específicos do Atendente -->
-        {% if user_obj.is_attendant and attendant_profile %}
-        <div class="profile-section">
-            <h3>Informações Profissionais (Atendente)</h3>
-            <p><strong>Departamento:</strong> {{ attendant_profile.department|default:"Não informado" }}</p>
-            <p><strong>Turno:</strong> {{ attendant_profile.get_shift_display|default:"Não informado" }}</p>
-        </div>
-        {% endif %}
-
-        <!-- Opção de Alterar Senha -->
-        <div class="profile-section text-center">
-            <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary">Alterar Senha</a>
-        </div>
     </div>
 </div>
-
-<style>
-    .profile-section {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .profile-section:last-of-type {
-        border-bottom: none;
-    }
-    .profile-section h3 {
-        color: var(--primary-color);
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-    }
-    .profile-section p {
-        margin-bottom: 0.5rem;
-    }
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-right: -15px;
-        margin-left: -15px;
-    }
-    .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-</style>
 {% endblock %}
