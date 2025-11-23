@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="{% static 'images/hospital 1.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -22,7 +23,13 @@
             
             <div class="user-controls">
                 
-                <a class="user-avatar" href="{% url 'accounts:profile' %}"></a>
+                <a class="user-avatar" 
+                    href="{% url 'accounts:profile' %}"
+                    style="background-image: url(
+                            '{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static "images/default-avatar.png" %}{% endif %}'
+                    );">
+                </a>
+
                
                 <form method="post" action="{% url 'accounts:logout' %}">
                     {% csrf_token %}
@@ -159,68 +166,15 @@
     </div>
     {% endif %}
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <!-- Seção Promptuáruário -->
-            <div class="footer-section footer-brand">
-                <div class="brand-logo">
-                    <svg class="heart-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 35C20 35 3.75 26.25 3.75 15C3.75 7.5 8.75 3.75 13.75 3.75C16.875 3.75 19.375 5.625 20 7.5C20.625 5.625 23.125 3.75 26.25 3.75C31.25 3.75 36.25 7.5 36.25 15C36.25 26.25 20 35 20 35Z" fill="#FF9500"/>
-                        <path class="heartbeat" d="M8 20L12 20L14 15L18 25L22 15L24 20L28 20" stroke="#FF9500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <h3>Promptuáruário</h3>
-                </div>
-                <p class="footer-description">
-                    Lorem ipsum dolor sit amet, consectetur sed do eiusmod tempor incididunt ut magna aliqua.
-                </p>
-                <div class="social-icons">
-                    <a href="#" class="social-icon facebook" aria-label="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="social-icon skype" aria-label="Skype">
-                        <i class="fab fa-skype"></i>
-                    </a>
-                    <a href="#" class="social-icon twitter" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
+    <footer class="site-footer text-center py-3 mt-4" 
+        style="background: var(--color-primary);">
+    <div class="footer-bottom">
+        <p style="margin: 0; font-size: 14px; color: #fff;">
+            &copy; {{ now|date:"Y" }} <strong>PROMPTUÁRIO</strong> — Todos os direitos reservados.
+        </p>
+    </div>
+</footer>
 
-            <!-- Seção Departments -->
-            <div class="footer-section">
-                <h4 class="footer-title">Deaprtments</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Pediatrics</a></li>
-                    <li><a href="#">Dermatology</a></li>
-                </ul>
-            </div>
-
-            <!-- Seção Quick Links -->
-            <div class="footer-section">
-                <h4 class="footer-title">Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Shop Product</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <!-- Seção Blog Post -->
-            <div class="footer-section">
-                <h4 class="footer-title">Blog Post</h4>
-                <div class="blog-post">
-                    <p class="blog-date">22.05.2019</p>
-                    <p class="blog-excerpt">
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="footer-bottom">
-            <p>Copyright 2019 All Rights Reserved.</p>
-        </div>
-    </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}

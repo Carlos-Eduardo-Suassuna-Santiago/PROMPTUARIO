@@ -466,3 +466,15 @@ ul {
     /* Ajustado max-height para considerar a altura total (100vh) menos o header e o footer do aside */
     max-height: calc(100vh - 250px);
 }
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    background-color: #eee; /* fallback */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

@@ -72,16 +72,52 @@
                             <span class="badge bg-danger">Inativo</span>
                         {% endif %}
                     </td>
-                    <td>
-                        <a href="{% url 'accounts:user_detail' pk=user_obj.pk %}" class="btn btn-sm btn-info" title="Detalhes">
-                            <i class="fas fa-eye"></i>
+
+                    <!-- 🔧 BOTÕES RECRIADOS SEM BOOTSTRAP / FONTAWESOME -->
+                    <td style="display:flex; gap:6px;">
+
+                        <!-- Detalhes -->
+                        <a href="{% url 'accounts:user_detail' pk=user_obj.pk %}"
+                        style="
+                            padding:6px 10px;
+                            background:#17a2b8;
+                            color:white;
+                            border-radius:4px;
+                            font-size:14px;
+                            text-decoration:none;
+                            font-weight:600;
+                        ">
+                            Detalhes
                         </a>
-                        <a href="{% url 'accounts:user_update' pk=user_obj.pk %}" class="btn btn-sm btn-warning" title="Editar">
-                            <i class="fas fa-edit"></i>
+
+                        <!-- Editar -->
+                        <a href="{% url 'accounts:user_update' pk=user_obj.pk %}"
+                        style="
+                            padding:6px 10px;
+                            background:#ffc107;
+                            color:black;
+                            border-radius:4px;
+                            font-size:14px;
+                            text-decoration:none;
+                            font-weight:600;
+                        ">
+                            Editar
                         </a>
-                        <a href="{% url 'accounts:user_delete' pk=user_obj.pk %}" class="btn btn-sm btn-danger" title="Excluir">
-                            <i class="fas fa-trash"></i>
+
+                        <!-- Excluir -->
+                        <a href="{% url 'accounts:user_delete' pk=user_obj.pk %}"
+                        style="
+                            padding:6px 10px;
+                            background:#dc3545;
+                            color:white;
+                            border-radius:4px;
+                            font-size:14px;
+                            text-decoration:none;
+                            font-weight:600;
+                        ">
+                            Excluir
                         </a>
+
                     </td>
                 </tr>
                 {% endfor %}

@@ -9,159 +9,152 @@
 
 {% block content %}
 <div class="profile-update-container">
-    <form method="post" novalidate>
-        {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
 
-        <div class="profile-header-edit">
-            <div class="profile-info-display">
-                <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/default_avatar.png' %}{% endif %}" alt="{{ user.get_full_name }}" class="profile-avatar">
-                <div>
-                    <h3 class="profile-name">{{ user.get_full_name|default:"Nome Não Informado" }}</h3>
-                    <p class="profile-email">{{ user.email }}</p>
-                </div>
+    <div class="profile-header-edit">
+        <div class="profile-info-display">
+
+            <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/default_avatar.png' %}{% endif %}" 
+                 alt="{{ user.get_full_name }}" 
+                 class="profile-avatar">
+
+            <!-- ⭐ CAMPO DE ALTERAR FOTO DE PERFIL -->
+            <div class="profile-photo-upload">
+                <label class="upload-label">
+                    Alterar foto
+                    {{ form.profile_picture }}
+                </label>
+
+                {% for error in form.profile_picture.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                {% endfor %}
             </div>
-            
-            <button type="submit" class="btn-edit-profile">Salvar</button>
+            <!-- ⭐ FIM DO CAMPO -->
+
+            <div>
+                <h3 class="profile-name">{{ user.get_full_name|default:"Nome Não Informado" }}</h3>
+                <p class="profile-email">{{ user.email }}</p>
+            </div>
         </div>
+
+        <button type="submit" class="btn-edit-profile">Salvar</button>
+    </div>
+
 
         <div class="form-grid-fields">
 
+            <!-- NOME COMPLETO -->
             <div class="form-group field-group-lg">
-                <label for="{{ form.first_name.id_for_label }}">Nome Completo</label>
+                <label>Nome Completo</label>
                 {{ form.first_name }} {{ form.last_name }}
                 {% for error in form.first_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 {% for error in form.last_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
+
+            <!-- DATA DE NASCIMENTO -->
             <div class="form-group">
                 <label for="{{ form.birth_date.id_for_label }}">Data Nascimento</label>
                 {{ form.birth_date }}
                 {% for error in form.birth_date.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
 
+            <!-- CPF -->
             <div class="form-group">
                 <label for="{{ form.cpf.id_for_label }}">CPF</label>
                 {{ form.cpf }}
                 {% for error in form.cpf.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
+
+            <!-- TELEFONE -->
             <div class="form-group">
                 <label for="{{ form.phone.id_for_label }}">Telefone</label>
                 {{ form.phone }}
                 {% for error in form.phone.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
 
+            <!-- EMAIL -->
             <div class="form-group field-group-lg">
                 <label for="{{ form.email.id_for_label }}">Email</label>
                 {{ form.email }}
                 {% for error in form.email.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
+
+            <!-- SENHA -->
             <div class="form-group">
                 <label>Senha</label>
                 <a href="{% url 'accounts:password_change' %}" class="input-placeholder-link">Alterar Senha</a>
             </div>
 
+            <!-- TIPO DE CONTA — REMOVIDO (não existe no form!)
             <div class="form-group field-group-lg">
                 <label for="{{ form.user_type.id_for_label }}">Tipo de conta</label>
                 {{ form.user_type }}
-                {% for error in form.user_type.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
+            -->
+
             <div class="form-group"></div>
 
-
+            <!-- ENDEREÇO -->
             <div class="form-section-full">
                 <h3>Endereço</h3>
+
                 <div class="form-group">
                     <label for="{{ form.address.id_for_label }}">Endereço</label>
                     {{ form.address }}
-                    {% for error in form.address.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="{{ form.city.id_for_label }}">Cidade</label>
                         {{ form.city }}
-                        {% for error in form.city.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.state.id_for_label }}">Estado</label>
                         {{ form.state }}
-                        {% for error in form.state.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.zip_code.id_for_label }}">CEP</label>
                         {{ form.zip_code }}
-                        {% for error in form.zip_code.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                 </div>
             </div>
-            <!-- Informações do Paciente -->
+
+            {% if user.is_patient and patient_form %}
+            <div class="form-section">
+                <h3>Informações do Paciente</h3>
 
                 <div class="form-group">
                     <label for="{{ patient_form.medical_notes.id_for_label }}">{{ patient_form.medical_notes.label }}</label>
                     {{ patient_form.medical_notes }}
-                    {% for error in patient_form.medical_notes.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
             </div>
             {% endif %}
 
-            <!-- Informações do Médico -->
             {% if user.is_doctor and doctor_form %}
             <div class="form-section">
-
                 <h3>Informações Profissionais (Médico)</h3>
-                </div>
 
                 <div class="form-group">
                     <label for="{{ doctor_form.bio.id_for_label }}">{{ doctor_form.bio.label }}</label>
                     {{ doctor_form.bio }}
-                    {% for error in doctor_form.bio.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
             </div>
             {% endif %}
 
-            <!-- Informações do Atendente -->
             {% if user.is_attendant and attendant_form %}
             <div class="form-section">
-
                 <h3>Informações Profissionais (Atendente)</h3>
-                </div>
+            </div>
             {% endif %}
 
         </div>
+
         <div style="display: flex; gap: 1rem; margin-top: 3rem; justify-content: flex-end; padding-top: 20px; border-top: 1px solid var(--color-border-light);">
             <a href="{% url 'accounts:profile' %}" class="btn-cancel">Cancelar</a>
             <button type="submit" class="btn-save">Salvar Alterações</button>
         </div>
+
     </form>
 </div>
-
-<style>
-    .form-section {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .form-section:last-of-type {
-        border-bottom: none;
-    }
-    .form-section h3 {
-        color: var(--dark-text);
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-    }
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
-    .form-group input, .form-group select, .form-group textarea {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 0.25rem;
-    }
-    .text-danger {
-        color: var(--danger-color);
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-</style>
 {% endblock %}
