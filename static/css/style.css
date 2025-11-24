@@ -106,6 +106,7 @@ ul {
     cursor: pointer;
 }
 
+/* Estilo para links de logout (mantido por segurança) */
 .logout-link {
     display: flex;
     align-items: center;
@@ -121,6 +122,42 @@ ul {
 .logout-link .icon {
     width: 18px;
     height: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* --- CORREÇÃO FINAL: Estilo do Botão de Logout para remover fundo e aplicar cor --- */
+.logout-button-style {
+    /* PRIORIDADE MÁXIMA PARA REMOVER FUNDO E BORDA */
+    background: none !important; 
+    border: none !important;
+    background-color: transparent !important; 
+    box-shadow: none !important;
+    
+    /* Estilos de cor e layout */
+    color: var(--color-primary); 
+    font-weight: 600;
+    font-size: medium;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+/* Estado Hover/Focus */
+.logout-button-style:hover,
+.logout-button-style:focus {
+    color: var(--color-secondary); /* Cor mais escura no hover */
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Estilo do Ícone (imagem) dentro do botão */
+.logout-button-style .icon {
+    width: 25px;
+    height: 25px;
     margin-right: 5px;
     vertical-align: middle;
 }
@@ -428,4 +465,16 @@ ul {
     overflow-y: auto;
     /* Ajustado max-height para considerar a altura total (100vh) menos o header e o footer do aside */
     max-height: calc(100vh - 250px);
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    background-color: #eee; /* fallback */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }

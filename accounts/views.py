@@ -16,6 +16,10 @@ from django.contrib import messages
 from django.utils import timezone
 
 from .models import User, DoctorProfile, AttendantProfile, DoctorSchedule, DoctorAbsence, AccessLog
+from .forms import UserUpdateForm
+from .forms import DoctorProfileUpdateForm, AttendantProfileUpdateForm, UserUpdateForm
+
+
 
 
 class LoginView(BaseLoginView):
@@ -81,10 +85,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             context['total_users'] = User.objects.count()
             context['total_doctors'] = DoctorProfile.objects.count()
             context['total_patients'] = Patient.objects.count()
+
+            # ➕ ADICIONADO: TOTAL DE ADMINS E ATENDENTES
+            context['total_admins'] = User.objects.filter(user_type='admin').count()
+            context['total_attendants'] = User.objects.filter(user_type='attendant').count()
         
         return context
-
-
+    
 class AdminRequiredMixin(UserPassesTestMixin):
     """Mixin que requer que o usuário seja administrador."""
     
@@ -241,7 +248,8 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Atualização do perfil do usuário logado."""
     model = User
     template_name = 'accounts/profile_form.html'
-    fields = ['email', 'first_name', 'last_name', 'phone', 'address', 'city', 'state', 'zip_code']
+    form_class = UserUpdateForm  # ✔ agora inclui foto
+
     success_url = reverse_lazy('accounts:profile')
     
     def get_object(self):
@@ -264,19 +272,21 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return context
     
     def post(self, request, *args, **kwargs):
+        """Processa tanto dados quanto arquivos (foto de perfil)."""
         self.object = self.get_object()
-        form = self.get_form()
-        
+        form = self.form_class(request.POST, request.FILES, instance=self.object)
+
         if form.is_valid():
             user = form.save()
             
+            # Processar perfis extras
             if user.is_patient():
                 from patients.forms import PatientProfileUpdateForm
                 patient_form = PatientProfileUpdateForm(request.POST, instance=user.patient_profile)
                 if patient_form.is_valid():
                     patient_form.save()
                 else:
-                    messages.error(request, 'Erro ao atualizar informações médicas: ' + str(patient_form.errors))
+                    messages.error(request, 'Erro ao atualizar informações médicas.')
                     return self.render_to_response(self.get_context_data(form=form, patient_form=patient_form))
             
             elif user.is_doctor():
@@ -284,7 +294,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
                 if doctor_form.is_valid():
                     doctor_form.save()
                 else:
-                    messages.error(request, 'Erro ao atualizar informações do médico: ' + str(doctor_form.errors))
+                    messages.error(request, 'Erro ao atualizar informações do médico.')
                     return self.render_to_response(self.get_context_data(form=form, doctor_form=doctor_form))
             
             elif user.is_attendant():
@@ -292,14 +302,13 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
                 if attendant_form.is_valid():
                     attendant_form.save()
                 else:
-                    messages.error(request, 'Erro ao atualizar informações do atendente: ' + str(attendant_form.errors))
+                    messages.error(request, 'Erro ao atualizar informações do atendente.')
                     return self.render_to_response(self.get_context_data(form=form, attendant_form=attendant_form))
             
             messages.success(request, 'Perfil atualizado com sucesso!')
             return redirect(self.get_success_url())
-        else:
-            return self.form_invalid(form)
 
+        return self.form_invalid(form)
 
 # ========== VIEWS DE REGISTRO ==========
 

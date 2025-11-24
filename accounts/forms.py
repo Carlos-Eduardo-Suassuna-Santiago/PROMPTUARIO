@@ -9,6 +9,10 @@ from .models import User, DoctorProfile, AttendantProfile
 from patients.models import Patient
 
 
+# ==============================================================================
+# Formulários de Registro
+# ==============================================================================
+
 class UserRegistrationForm(UserCreationForm):
     """Formulário base para registro de usuários."""
     
@@ -98,14 +102,12 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].label = 'Confirme a Senha'
 
     def clean_cpf(self):
-        """Valida se o CPF já não está cadastrado."""
         cpf = self.cleaned_data.get('cpf')
         if User.objects.filter(cpf=cpf).exists():
             raise ValidationError('Este CPF já está cadastrado no sistema.')
         return cpf
 
     def clean_email(self):
-        """Valida se o email já não está cadastrado."""
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise ValidationError('Este email já está cadastrado no sistema.')
@@ -162,7 +164,6 @@ class PatientRegistrationForm(UserRegistrationForm):
     )
 
     def save(self, commit=True):
-        """Salva o usuário e cria o perfil de paciente."""
         user = super().save(commit=False)
         user.user_type = 'patient'
         
@@ -182,7 +183,7 @@ class PatientRegistrationForm(UserRegistrationForm):
 
 
 class DoctorRegistrationForm(UserRegistrationForm):
-    """Formulário de registro para médicos (apenas admin)."""
+    """Formulário de registro para médicos (admin)."""
     
     crm = forms.CharField(
         max_length=20,
@@ -210,14 +211,12 @@ class DoctorRegistrationForm(UserRegistrationForm):
     )
 
     def clean_crm(self):
-        """Valida se o CRM já não está cadastrado."""
         crm = self.cleaned_data.get('crm')
         if DoctorProfile.objects.filter(crm=crm).exists():
             raise ValidationError('Este CRM já está cadastrado no sistema.')
         return crm
 
     def save(self, commit=True):
-        """Salva o usuário e cria o perfil de médico."""
         user = super().save(commit=False)
         user.user_type = 'doctor'
         
@@ -235,7 +234,7 @@ class DoctorRegistrationForm(UserRegistrationForm):
 
 
 class AttendantRegistrationForm(UserRegistrationForm):
-    """Formulário de registro para atendentes (apenas admin)."""
+    """Formulário de registro para atendentes (admin)."""
     
     department = forms.CharField(
         max_length=100,
@@ -244,14 +243,19 @@ class AttendantRegistrationForm(UserRegistrationForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Recepção'})
     )
     shift = forms.ChoiceField(
-        choices=[('', 'Selecione'), ('morning', 'Manhã'), ('afternoon', 'Tarde'), ('night', 'Noite'), ('full', 'Integral')],
+        choices=[
+            ('', 'Selecione'),
+            ('morning', 'Manhã'),
+            ('afternoon', 'Tarde'),
+            ('night', 'Noite'),
+            ('full', 'Integral')
+        ],
         required=False,
         label='Turno',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
     def save(self, commit=True):
-        """Salva o usuário e cria o perfil de atendente."""
         user = super().save(commit=False)
         user.user_type = 'attendant'
         
@@ -267,7 +271,73 @@ class AttendantRegistrationForm(UserRegistrationForm):
 
 
 # ==============================================================================
-# Formulários de Atualização de Perfil
+# Formulário de Atualização do Usuário (NOVO)
+# ==============================================================================
+
+class UserUpdateForm(forms.ModelForm):
+    """Formulário para atualização do perfil básico do usuário."""
+
+    profile_picture = forms.ImageField(
+        required=False,
+        label='Foto de Perfil',
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'email',
+            'cpf', 'phone', 'birth_date',
+            'address', 'city', 'state', 'zip_code',
+            'profile_picture'
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'cpf': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '000.000.000-00',
+                'onkeyup': 'formatCPF(this)'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '(00) 00000-0000',
+                'onkeyup': 'formatPhone(this)'
+            }),
+            'birth_date': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date'
+            }),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'state': forms.TextInput(attrs={
+                'class': 'form-control',
+                'maxlength': '2',
+                'placeholder': 'SP'
+            }),
+            'zip_code': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '00000-000',
+                'onkeyup': 'formatCEP(this)'
+            }),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exclude(id=self.instance.id).exists():
+            raise ValidationError('Este e-mail já está cadastrado.')
+        return email
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if User.objects.filter(cpf=cpf).exclude(id=self.instance.id).exists():
+            raise ValidationError('Este CPF já está cadastrado.')
+        return cpf
+
+
+# ==============================================================================
+# Formulários de Atualização de Perfis Específicos
 # ==============================================================================
 
 class DoctorProfileUpdateForm(forms.ModelForm):
@@ -282,6 +352,7 @@ class DoctorProfileUpdateForm(forms.ModelForm):
             'salary': forms.NumberInput(attrs={'class': 'form-control'}),
             'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
 
 class AttendantProfileUpdateForm(forms.ModelForm):
     """Formulário para atualização de perfil de Atendente."""

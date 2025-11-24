@@ -5,49 +5,90 @@
 
 {% block content %}
 <div class="container mt-4">
+
     <h1 class="h3 mb-4">Dashboard do Administrador</h1>
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Total de Usuários</h5>
-                    <p class="card-text display-4">{{ total_users }}</p>
-                    <a href="{% url 'accounts:user_list' %}" class="btn btn-primary">Gerenciar Usuários</a>
-                </div>
+    <!-- ==== CARDS DE ESTATÍSTICAS ==== -->
+    <div class="row g-4 mb-4 stats-container">
+
+        <div class="col-md-4 d-flex">
+            <div class="stat-card w-100">
+                <h5>Total de Usuários</h5>
+                <p class="stat-value">{{ total_users }}</p>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Médicos Cadastrados</h5>
-                    <p class="card-text display-4">{{ total_doctors }}</p>
-                    <a href="{% url 'accounts:doctor_list' %}" class="btn btn-success">Ver Médicos</a>
-                </div>
+
+        <div class="col-md-4 d-flex">
+            <div class="stat-card w-100">
+                <h5>Médicos Cadastrados</h5>
+                <p class="stat-value">{{ total_doctors }}</p>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Pacientes Cadastrados</h5>
-                    <p class="card-text display-4">{{ total_patients }}</p>
-                    <a href="{% url 'patients:patient_list' %}" class="btn btn-info">Ver Pacientes</a>
-                </div>
+
+        <div class="col-md-4 d-flex">
+            <div class="stat-card w-100">
+                <h5>Pacientes Cadastrados</h5>
+                <p class="stat-value">{{ total_patients }}</p>
             </div>
         </div>
+
+        <!-- NOVO CARD: TOTAL DE ADMINS -->
+        <div class="col-md-4 d-flex">
+            <div class="stat-card w-100">
+                <h5>Admins Cadastrados</h5>
+                <p class="stat-value">{{ total_admins }}</p>
+            </div>
+        </div>
+
+        <!-- NOVO CARD: TOTAL DE ATENDENTES -->
+        <div class="col-md-4 d-flex">
+            <div class="stat-card w-100">
+                <h5>Atendentes Cadastrados</h5>
+                <p class="stat-value">{{ total_attendants }}</p>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">Ações Rápidas</h5>
+    <!-- ==== CARDS DE AÇÕES RÁPIDAS ==== -->
+    <h4 class="fw-bold mb-3">Ações Rápidas</h4>
+
+    <div class="row g-4 quick-actions-container">
+
+        <div class="col-md-3 d-flex">
+            <a href="{% url 'accounts:register_doctor' %}" class="quick-card w-100">
+                <div class="quick-card-inner shadow">
+                    <span class="icon-lg">👨‍⚕️</span>
+                    <span class="quick-text">Cadastrar Médico</span>
+                </div>
+            </a>
         </div>
-        <div class="card-body">
-            <div class="d-flex flex-wrap gap-3">
-                <a href="{% url 'accounts:register_doctor' %}" class="btn btn-outline-primary">Cadastrar Médico</a>
-                <a href="{% url 'accounts:register_attendant' %}" class="btn btn-outline-primary">Cadastrar Atendente</a>
-                <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-success">Gerenciar Consultas</a>
-                <a href="{% url 'reports:report_list' %}" class="btn btn-outline-info">Gerar Relatórios</a>
-            </div>
+
+        <div class="col-md-3 d-flex">
+            <a href="{% url 'accounts:register_attendant' %}" class="quick-card w-100">
+                <div class="quick-card-inner shadow">
+                    <span class="icon-lg">💼</span>
+                    <span class="quick-text">Cadastrar Atendente</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3 d-flex">
+            <a href="{% url 'appointments:appointment_list' %}" class="quick-card w-100">
+                <div class="quick-card-inner shadow">
+                    <span class="icon-lg">📅</span>
+                    <span class="quick-text">Gerenciar Consultas</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3 d-flex">
+            <a href="{% url 'reports:report_list' %}" class="quick-card w-100">
+                <div class="quick-card-inner shadow">
+                    <span class="icon-lg">📊</span>
+                    <span class="quick-text">Gerar Relatórios</span>
+                </div>
+            </a>
         </div>
     </div>
 </div>

@@ -19,6 +19,21 @@ class User(AbstractUser):
         ('attendant', 'Atendente'),
         ('patient', 'Paciente'),
     )
+
+    profile_picture = models.ImageField(
+        'Foto de Perfil',
+        upload_to='profile_pictures/',
+        blank=True,
+        null=True
+    )
+
+    user_type = models.CharField(
+        'Tipo de Usuário',
+        max_length=20,
+        choices=USER_TYPE_CHOICES,
+        default='patient'
+    )
+
     
     user_type = models.CharField(
         'Tipo de Usuário',
