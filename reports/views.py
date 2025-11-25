@@ -4,6 +4,15 @@ from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import timedelta
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from datetime import datetime
+import tempfile
+from django.views import View
 
 from appointments.models import Appointment
 from medical_records.models import MedicalRecord
@@ -77,3 +86,138 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
 
 class ReportGenerateView(LoginRequiredMixin, TemplateView):
     template_name = 'reports/report_generate.html'
+
+    def post(self, request, *args, **kwargs):
+        """
+        Gera os dados completos do relatório e os envia para o template.
+        """
+        user = request.user
+        
+        # Verifica se é médico (se quiser permitir só médicos)
+        if not user.is_doctor():
+            return self.render_to_response({
+                "error": "Apenas médicos podem gerar este relatório."
+            })
+
+        doctor_profile = user.doctor_profile
+        
+        # ---------------------------
+        # 1. Agendamentos do médico
+        # ---------------------------
+        appointments = Appointment.objects.filter(doctor=doctor_profile)
+
+        total_appointments = appointments.count()
+        completed_appointments = appointments.filter(status='completed').count()
+        cancelled_appointments = appointments.filter(status='cancelled').count()
+
+        # ---------------------------
+        # 2. Prontuários
+        # ---------------------------
+        medical_records = MedicalRecord.objects.filter(doctor=doctor_profile)
+        total_medical_records = medical_records.count()
+
+        # ---------------------------
+        # 3. Pacientes únicos
+        # ---------------------------
+        unique_patients_attended = (
+            medical_records.values('patient').distinct().count()
+        )
+
+        # ---------------------------
+        # 4. Atividade nos últimos 30 dias
+        # ---------------------------
+        thirty_days_ago = timezone.now().date() - timedelta(days=30)
+        recent_appointments = appointments.filter(
+            scheduled_date__gte=thirty_days_ago
+        )
+        recent_appointments_count = recent_appointments.count()
+
+        # ---------------------------
+        # 5. Top diagnósticos
+        # ---------------------------
+        top_diagnoses = (
+            medical_records.values('diagnosis')
+            .annotate(count=Count('diagnosis'))
+            .order_by('-count')[:5]
+        )
+
+        # ---------------------------
+        # Enviar tudo para o template
+        # ---------------------------
+        context = {
+            "doctor": doctor_profile,
+            "generated_at": timezone.now(),
+
+            "total_appointments": total_appointments,
+            "completed_appointments": completed_appointments,
+            "cancelled_appointments": cancelled_appointments,
+
+            "total_medical_records": total_medical_records,
+            "unique_patients_attended": unique_patients_attended,
+
+            "recent_appointments_count": recent_appointments_count,
+
+            "top_diagnoses": top_diagnoses,
+        }
+
+        return self.render_to_response(context)
+    
+class ReportPDFView(View):
+    def get(self, request, *args, **kwargs):
+        # Nome do arquivo
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="relatorio.pdf"'
+
+        # Criador do PDF
+        pdf = SimpleDocTemplate(response, pagesize=A4)
+        styles = getSampleStyleSheet()
+        story = []
+
+        # Cabeçalho
+        story.append(Paragraph("<b>Relatório Médico</b>", styles['Title']))
+        story.append(Spacer(1, 20))
+
+        # Informações do médico
+        doctor_name = request.user.get_full_name() or request.user.username
+        story.append(Paragraph(f"Médico responsável: <b>{doctor_name}</b>", styles['Normal']))
+        story.append(Paragraph(f"Data de emissão: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
+        story.append(Spacer(1, 20))
+
+        # Conteúdo principal
+        story.append(Paragraph("<b>Resumo Geral</b>", styles['Heading2']))
+        story.append(Paragraph(
+            "Este relatório contém informações compiladas do sistema, incluindo dados do paciente, "
+            "consultas, diagnósticos recentes e outras informações relevantes.",
+            styles['Normal']
+        ))
+        story.append(Spacer(1, 15))
+
+        # Exemplo de tabela
+        data = [
+            ["Campo", "Valor"],
+            ["Total de Pacientes", "54"],
+            ["Consultas no mês", "128"],
+            ["Diagnósticos recentes", "32"],
+        ]
+
+        table = Table(data, colWidths=[200, 200])
+        table.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+            ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("GRID", (0, 0), (-1, -1), 1, colors.grey),
+            ("BOX", (0, 0), (-1, -1), 2, colors.black),
+        ]))
+
+        story.append(table)
+        story.append(Spacer(1, 20))
+
+        # Assinatura
+        story.append(Paragraph("<br/><br/>__________________________________", styles['Normal']))
+        story.append(Paragraph("Assinatura do Médico", styles['Normal']))
+
+        # Gerar PDF
+        pdf.build(story)
+
+        return response

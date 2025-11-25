@@ -4,6 +4,44 @@
 {% block title %}Logs de Acesso (LGPD){% endblock %}
 
 {% block content %}
+
+<style>
+    /* Tabela com espaçamento e quebra de texto */
+    .logs-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .logs-table th, .logs-table td {
+        padding: 12px !important;
+        vertical-align: middle !important;
+        text-align: center !important; /* CENTRALIZA TUDO */
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    /* Largura por coluna */
+    .col-id       { width: 6%;  }
+    .col-user     { width: 18%; }
+    .col-action   { width: 15%; }
+    .col-datetime { width: 18%; }
+    .col-ip       { width: 12%; }
+    .col-details  { width: 30%; }
+
+    /* Cores personalizadas por ação */
+    .action-login {
+        background-color: #28a745 !important; /* verde */
+    }
+
+    .action-logout {
+        background-color: #dc3545 !important; /* vermelho */
+    }
+
+    .action-view {
+        background-color: #0d6efd !important; /* azul */
+    }
+</style>
+
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">Logs de Acesso (LGPD)</h1>
@@ -33,21 +71,22 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-striped">
-            <thead class="table-dark">
+        <table class="table table-hover table-striped logs-table">
+            <thead class="table-dark text-center">
                 <tr>
-                    <th>ID</th>
-                    <th>Usuário</th>
-                    <th>Ação</th>
-                    <th>Data/Hora</th>
-                    <th>IP</th>
-                    <th>Detalhes</th>
+                    <th class="col-id">ID</th>
+                    <th class="col-user">Usuário</th>
+                    <th class="col-action">Ação</th>
+                    <th class="col-datetime">Data/Hora</th>
+                    <th class="col-ip">IP</th>
+                    <th class="col-details">Detalhes</th>
                 </tr>
             </thead>
             <tbody>
                 {% for log in logs %}
                 <tr>
                     <td>{{ log.pk }}</td>
+
                     <td>
                         {% if log.user %}
                             <span class="badge bg-{{ log.user.get_user_type_color }}">{{ log.user.get_full_name }}</span>
@@ -55,7 +94,20 @@
                             <span class="badge bg-secondary">N/A</span>
                         {% endif %}
                     </td>
-                    <td><span class="badge bg-info">{{ log.get_action_display }}</span></td>
+
+                    <!-- Cor dinâmica por ação -->
+                    <td>
+                        <span class="badge
+                            {% if log.action == 'login' %}action-login
+                            {% elif log.action == 'logout' %}action-logout
+                            {% elif log.action == 'view' %}action-view
+                            {% else %}bg-info
+                            {% endif %}
+                        ">
+                            {{ log.get_action_display }}
+                        </span>
+                    </td>
+
                     <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
                     <td>{{ log.ip_address|default:"N/A" }}</td>
                     <td>{{ log.details|default:"-" }}</td>
@@ -95,4 +147,5 @@
     </nav>
     {% endif %}
 </div>
+
 {% endblock %}

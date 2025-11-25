@@ -9,6 +9,7 @@ from datetime import datetime
 import os
 from django.conf import settings
 from django.http import Http404
+from django.views import View
 
 from .models import MedicalRecord, Prescription, Exam
 from .forms import MedicalRecordForm, PrescriptionForm, ExamForm
@@ -128,7 +129,30 @@ class MedicalRecordCreateView(MedicalRecordCreateUpdateMixin, CreateView):
         initial['patient'] = appointment.patient
         initial['doctor'] = self.request.user.doctor_profile
         return initial
+    
+class MedicalRecordQuickCreateView(LoginRequiredMixin, DoctorRequiredMixin, View):
+    """Criação rápida de prontuário sem vínculo obrigatório com consulta."""
+    def get(self, request, patient_pk):
+        patient = get_object_or_404(Patient, pk=patient_pk)
+        doctor = request.user.doctor_profile
 
+        # Verifica se já existe um prontuário
+        existing = MedicalRecord.objects.filter(patient=patient).first()
+        if existing:
+            messages.warning(request, "O prontuário deste paciente já existe.")
+            return redirect('medical_records:record_detail', pk=existing.pk)
+
+        # Cria prontuário simples
+        record = MedicalRecord.objects.create(
+            patient=patient,
+            doctor=doctor
+        )
+
+        # Log opcional
+        log_access(request, 'create_record', f'Criou prontuário rápido para {patient.user.get_full_name()}.')
+
+        messages.success(request, "Prontuário criado com sucesso!")
+        return redirect('medical_records:record_detail', pk=record.pk)
 
 class MedicalRecordUpdateView(MedicalRecordCreateUpdateMixin, UpdateView):
     """Atualização de prontuário existente."""
@@ -139,6 +163,16 @@ class MedicalRecordUpdateView(MedicalRecordCreateUpdateMixin, UpdateView):
             return MedicalRecord.objects.get(appointment=appointment)
         except MedicalRecord.DoesNotExist:
             raise Http404("Prontuário não encontrado para esta consulta.")
+        
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import MedicalRecord
+
+class MedicalRecordListView(LoginRequiredMixin, ListView):
+    model = MedicalRecord
+    template_name = 'medical_records/medical_record_list.html'
+    context_object_name = 'records'
+
 
 
 class PrescriptionCreateView(DoctorRequiredMixin, LoginRequiredMixin, CreateView):
