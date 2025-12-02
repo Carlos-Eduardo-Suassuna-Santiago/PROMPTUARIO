@@ -6,45 +6,13 @@
 {% block content %}
 
 <style>
-    /* Tabela com espaçamento e quebra de texto */
-    .logs-table {
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    .logs-table th, .logs-table td {
-        padding: 12px !important;
-        vertical-align: middle !important;
-        text-align: center !important; /* CENTRALIZA TUDO */
-        word-wrap: break-word;
-        white-space: normal;
-    }
-
-    /* Largura por coluna */
-    .col-id       { width: 6%;  }
-    .col-user     { width: 18%; }
-    .col-action   { width: 15%; }
-    .col-datetime { width: 18%; }
-    .col-ip       { width: 12%; }
-    .col-details  { width: 30%; }
-
-    /* Cores personalizadas por ação */
-    .action-login {
-        background-color: #28a745 !important; /* verde */
-    }
-
-    .action-logout {
-        background-color: #dc3545 !important; /* vermelho */
-    }
-
-    .action-view {
-        background-color: #0d6efd !important; /* azul */
-    }
+    
 </style>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">Logs de Acesso (LGPD)</h1>
+        <br>
     </div>
 
     <div class="card shadow-sm mb-4">
@@ -69,7 +37,7 @@
             </form>
         </div>
     </div>
-
+<br>
     <div class="table-responsive">
         <table class="table table-hover table-striped logs-table">
             <thead class="table-dark text-center">

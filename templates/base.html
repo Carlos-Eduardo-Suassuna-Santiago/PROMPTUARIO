@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tabela.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -18,7 +19,7 @@
     <header class="topbar">
         <div class="topbar-content">
             <div class="welcome-message">
-                <h1>Bem Vindo {{ user.first_name|default:'Fulano' }}!</h1>
+                <h1>Bem Vindo {{ user.first_name|default:'Fulano' }}</h1>
             </div>
             
             <div class="user-controls">
@@ -30,7 +31,6 @@
                     );">
                 </a>
 
-               
                 <form method="post" action="{% url 'accounts:logout' %}">
                     {% csrf_token %}
                     <button type="submit" class="logout-button-style">
@@ -58,6 +58,11 @@
                             <img class="icon"  src="{% static 'images/Home.png' %}" alt="Ilustração Dashboard">Dashboard
                         </a>
                     </li>
+
+                    <!-- =============================== -->
+                    <!-- REMOVENDO EXAMES ETC. PARA ADM -->
+                    <!-- =============================== -->
+                    {% if user.user_type != "admin" %}
                     <li class="active">
                         <a href="#">
                             <i class="fas fa-home"></i> 
@@ -82,11 +87,34 @@
                             <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
                         </a>
                     </li>
-                    
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-calendar-alt"></i> 
+                            <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
+                        </a>
+                    </li>    
+                    {% endif %}
+                    <!-- =============================== -->
+
                     {% if user.is_admin %}
-                    <li><a href="{% url 'accounts:user_list' %}">Usuários</a></li>
-                    <li><a href="{% url 'accounts:doctor_list' %}">Médicos</a></li>
-                    <li><a href="{% url 'accounts:access_log_list' %}">Logs (LGPD)</a></li>
+                    <li class="active">
+                        <a href="{% url 'accounts:user_list' %}">
+                           <i class="fas fa-home"></i>
+                           <img class="icon"  src="{% static 'images/conta (1) 1.png' %}" alt="Ilustração Usuarios">Usuários
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'accounts:doctor_list' %}"
+                           <i class="fas fa-home"></i>
+                           <img class="icon"  src="{% static 'images/equipe-medica (2) 2.png' %}" alt="Ilustração Medicos">Médicos
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'accounts:access_log_list' %}">
+                           <i class="fas fa-home"></i>
+                           <img class="icon"  src="{% static 'images/escudo-de-seguranca (1) 1.png' %}" alt="Ilustração Logs">Logs (LGPD)
+                        </a>
+                    </li>
                     {% endif %}
                     
                     {% if user.is_doctor or user.is_attendant %}
@@ -106,21 +134,13 @@
                     <li><a href="#"><i class="fas fa-syringe"></i> Vacinas</a></li>
                     <li><a href="#"><i class="fas fa-pills"></i> Medicamentos</a></li>
                     <li><a href="#"><i class="fas fa-allergies"></i> Alergias</a></li>
-                    {% endif %}
-
                     <li class="active">
                         <a href="#">
                             <i class="fas fa-calendar-alt"></i> 
                             <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
                         </a>
-                    </li>
-                    
-                    {% if user.is_admin %}
-                    <li><a href="{% url 'accounts:user_list' %}"><i class="fas fa-users-cog"></i> Usuários</a></li>
-                    <li><a href="{% url 'accounts:doctor_list' %}"><i class="fas fa-user-nurse"></i> Médicos</a></li>
-                    <li><a href="{% url 'reports:doctor_report' %}">Relatórios</a></li>
-                    {% endif %}
-                    
+                    </li>    
+                    {% endif %}                
                 </ul>
             </nav>
 
@@ -135,9 +155,7 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-
                 </div>
-               
             </div>
 
             <div class="menu-ajuda">
@@ -166,14 +184,16 @@
     </div>
     {% endif %}
 
-    <footer class="site-footer text-center py-3 mt-4" 
-        style="background: var(--color-primary);">
-    <div class="footer-bottom">
-        <p style="margin: 0; font-size: 14px; color: #fff;">
+    <footer class="site-footer mt-4" 
+    style="background: var(--color-primary); padding: 12px 0; display: flex; justify-content: center; align-items: center;">
+    
+    <div class="footer-bottom" style="text-align: center; width: 100%;">
+        <p style="margin: 0; font-size: 14px; color: #fff; text-align: center; width: 100%;">
             &copy; {{ now|date:"Y" }} <strong>PROMPTUÁRIO</strong> — Todos os direitos reservados.
         </p>
     </div>
-</footer>
+
+    </footer>
 
 
     <script src="{% static 'js/main.js' %}"></script>
