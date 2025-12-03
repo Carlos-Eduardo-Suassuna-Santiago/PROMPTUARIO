@@ -1,0 +1,27 @@
+graph TD
+    subgraph "Usuários"
+        A[Paciente] --> B{Navegador}
+        C[Médico] --> B
+        D[Atendente] --> B
+        E[Admin] --> B
+    end
+
+    subgraph "Infraestrutura"
+        B --> F[Nginx]
+        F --> G[Gunicorn]
+        G --> H{Aplicação Django}
+        H --> I[Banco de Dados]
+    end
+
+    subgraph "Aplicação Django"
+        H --> J[Accounts]
+        H --> K[Patients]
+        H --> L[Appointments]
+        H --> M[Medical Records]
+        H --> N[Reports]
+    end
+
+    subgraph "Serviços Externos"
+        O[GitHub Actions] --> P{Deploy}
+        P --> F
+    end

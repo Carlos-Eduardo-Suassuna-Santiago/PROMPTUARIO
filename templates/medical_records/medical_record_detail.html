@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Prontuário de {{ record.patient.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'patients:patient_detail' pk=record.patient.pk %}">Prontuário do Paciente</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Prontuário #{{ record.pk }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Prontuário Médico</h1>
+        <div>
+            {% if user.is_doctor and not record.is_closed %}
+            <a href="{% url 'medical_records:record_update' appointment_pk=record.appointment.pk %}" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Editar Prontuário
+            </a>
+            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#closeRecordModal">
+                <i class="fas fa-lock"></i> Fechar Prontuário
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Informações da Consulta</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Paciente:</strong> <a href="{% url 'patients:patient_detail' pk=record.patient.pk %}">{{ record.patient.user.get_full_name }}</a></p>
+                    <p><strong>Médico:</strong> {{ record.doctor.user.get_full_name }}</p>
+                    <p><strong>Consulta:</strong> <a href="{% url 'appointments:appointment_detail' pk=record.appointment.pk %}">#{{ record.appointment.pk }} - {{ record.appointment.scheduled_date|date:"d/m/Y" }} às {{ record.appointment.scheduled_time|time:"H:i" }}</a></p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Criado em:</strong> {{ record.created_at|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Última Atualização:</strong> {{ record.updated_at|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if record.is_closed %}
+                            <span class="badge bg-danger">Fechado em {{ record.closed_at|date:"d/m/Y H:i" }}</span>
+                        {% else %}
+                            <span class="badge bg-success">Aberto</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Detalhes do Atendimento</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Queixa Principal</h6>
+                    <p>{{ record.chief_complaint|linebreaksbr }}</p>
+                    
+                    <h6>Sintomas</h6>
+                    <p>{{ record.symptoms|default_if_none:"N/A"|linebreaksbr }}</p>
+                    
+                    <h6>Exame Físico</h6>
+                    <p>{{ record.physical_examination|default_if_none:"N/A"|linebreaksbr }}</p>
+                    
+                    <h6>Diagnóstico</h6>
+                    <p>{{ record.diagnosis|linebreaksbr }}</p>
+                    
+                    <h6>Plano de Tratamento</h6>
+                    <p>{{ record.treatment_plan|default_if_none:"N/A"|linebreaksbr }}</p>
+                    
+                    <h6>Observações</h6>
+                    <p>{{ record.observations|default_if_none:"N/A"|linebreaksbr }}</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Receitas Médicas</h5>
+                    {% if user.is_doctor and not record.is_closed %}
+                    <a href="{% url 'medical_records:prescription_create' record_pk=record.pk %}" class="btn btn-light btn-sm">
+                        <i class="fas fa-plus"></i> Nova Receita
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if prescriptions %}
+                        <ul class="list-group list-group-flush">
+                            {% for prescription in prescriptions %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Receita de {{ prescription.created_at|date:"d/m/Y" }}</strong>
+                                    <small class="text-muted d-block">Válida até: {{ prescription.valid_until|default_if_none:"Indeterminado"|date:"d/m/Y" }}</small>
+                                </div>
+                                <div>
+                                    <a href="#" class="btn btn-outline-primary btn-sm me-2" title="Visualizar Receita">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if prescription.prescription_file %}
+                                    <a href="{{ prescription.prescription_file.url }}" target="_blank" class="btn btn-outline-success btn-sm" title="Baixar PDF">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    {% else %}
+                                    <button class="btn btn-outline-success btn-sm" disabled title="PDF em geração (Fase 9)">
+                                        <i class="fas fa-file-pdf"></i> Gerar PDF
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma receita médica emitida neste prontuário.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Exames Solicitados</h5>
+                    {% if user.is_doctor and not record.is_closed %}
+                    <a href="{% url 'medical_records:exam_create' record_pk=record.pk %}" class="btn btn-light btn-sm">
+                        <i class="fas fa-plus"></i> Solicitar Exame
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if exams %}
+                        <ul class="list-group list-group-flush">
+                            {% for exam in exams %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ exam.exam_name }} ({{ exam.get_exam_type_display }})</strong>
+                                    <small class="d-block">Status: <span class="badge bg-info">{{ exam.get_status_display }}</span></small>
+                                </div>
+                                <div>
+                                    <a href="#" class="btn btn-outline-primary btn-sm" title="Detalhes do Exame">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhum exame solicitado neste prontuário.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Histórico de Auditoria</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for history in record.history.all %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ history.timestamp|date:"d/m/Y H:i" }}</small>
+                            <p class="mb-0"><strong>{{ history.get_action_display }}</strong> por {{ history.user.get_full_name }}</p>
+                            {% if history.description %}
+                            <p class="text-muted small mb-0">{{ history.description }}</p>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Fechar Prontuário -->
+<div class="modal fade" id="closeRecordModal" tabindex="-1" aria-labelledby="closeRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="closeRecordModalLabel">Fechar Prontuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza de que deseja fechar este prontuário? Uma vez fechado, ele não poderá mais ser editado.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="post" action="{% url 'medical_records:record_close' pk=record.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Fechar Definitivamente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

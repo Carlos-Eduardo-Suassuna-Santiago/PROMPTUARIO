@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lista de Prontuários</h2>
+
+<ul>
+    {% for record in records %}
+        <li>
+            {{ record.patient }} - {{ record.created_at }}
+        </li>
+    {% empty %}
+        <li>Nenhum prontuário encontrado.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

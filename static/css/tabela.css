@@ -1,0 +1,146 @@
+ /* ===== PADRONIZAÇÃO DA TABELA ===== */
+
+    .custom-table th,
+    .custom-table td {
+        text-align: center !important;
+        vertical-align: middle !important;
+        padding: 14px 10px !important;
+        white-space: normal !important;   /* permite quebra de linha */
+        word-wrap: break-word !important;  /* força quebra de linha */
+    }
+
+    .custom-table {
+        border-collapse: separate !important;
+        border-spacing: 0 8px !important; /* espaçamento entre as linhas */
+    }
+
+    .custom-table tbody tr {
+        background: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 6px;
+    }
+
+    .custom-table tbody tr td:first-child {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+    .custom-table tbody tr td:last-child {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .custom-table thead th {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    /* Badges Login/Logout */
+    .badge-login {
+        background: #28a745;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .badge-logout {
+        background: #dc3545;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    /* Botões lado a lado */
+    .filter-btns {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Botões de ação (editar, excluir, detalhes) */
+    .action-btn {
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .btn-details { background: #17a2b8; color: #fff; }
+    .btn-edit { background: #ffc107; color: #000; }
+    .btn-delete { background: #dc3545; color: #fff; }
+
+
+    .btn-novo-usuario {
+        background: linear-gradient(135deg, #00b894, #009874);
+        color: white !important;
+        font-weight: 600;
+        border: none;
+        padding: 6px 14px; /* menor, proporcional ao texto */
+        border-radius: 8px;
+        display: inline-flex;   /* garante que o botão só tenha o tamanho do conteúdo */
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;    /* impede quebra de linha */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease-in-out;
+        margin-top: 20px;
+    }
+
+    .btn-novo-usuario i {
+        font-size: 14px;
+    }
+
+    .btn-novo-usuario:hover {
+        background: linear-gradient(135deg, #009874, #007f63);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-novo-usuario:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+/* Tabela com espaçamento e quebra de texto */
+    .logs-table {
+        table-layout: fixed;
+        width: 100%;
+        
+    }
+
+    .logs-table th, .logs-table td {
+        padding: 12px !important;
+        vertical-align: middle !important;
+        text-align: center !important; /* CENTRALIZA TUDO */
+        word-wrap: break-word;
+        white-space: normal;
+        background: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 6px;
+        
+    }
+
+    /* Largura por coluna */
+    .col-id       { width: 6%;  }
+    .col-user     { width: 18%; }
+    .col-action   { width: 15%; }
+    .col-datetime { width: 18%; }
+    .col-ip       { width: 12%; }
+    .col-details  { width: 30%; }
+
+    /* Cores personalizadas por ação */
+    .action-login {
+        background-color: #28a745 !important; /* verde */
+    }
+
+    .action-logout {
+        background-color: #dc3545 !important; /* vermelho */
+    }
+
+    .action-view {
+        background-color: #0d6efd !important; /* azul */
+    }
+    

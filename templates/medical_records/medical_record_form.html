@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Editar Prontuário
+    {% else %}
+        Criar Prontuário
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'patients:patient_detail' pk=patient.pk %}">
+                    Prontuário do Paciente
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {% if form.instance.pk %}
+                    Editar Prontuário
+                {% else %}
+                    Criar Prontuário
+                {% endif %}
+            </li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">
+            {% if form.instance.pk %}
+                Editar Prontuário Médico
+            {% else %}
+                Criar Novo Prontuário Médico
+            {% endif %}
+        </h1>
+    </div>
+
+    <!-- Informações da Consulta (Opcional) -->
+    {% if appointment %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                Consulta #{{ appointment.pk }} – {{ appointment.scheduled_date|date:"d/m/Y" }}
+                às {{ appointment.scheduled_time|time:"H:i" }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Paciente:</strong> {{ patient.user.get_full_name }}</p>
+            <p><strong>Médico:</strong> {{ user.get_full_name }}</p>
+            <p><strong>Queixa principal informada na consulta:</strong> {{ appointment.reason|default:"N/A" }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <strong>Atenção:</strong> Este prontuário não está vinculado a uma consulta específica.
+    </div>
+    {% endif %}
+
+    <!-- FORMULÁRIO DO PRONTUÁRIO -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Queixa Principal (Relato do Médico)</label>
+                        {{ form.chief_complaint }}
+                        {% if form.chief_complaint.errors %}
+                            <div class="text-danger">{{ form.chief_complaint.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sintomas</label>
+                        {{ form.symptoms }}
+                        {% if form.symptoms.errors %}
+                            <div class="text-danger">{{ form.symptoms.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Exame Físico</label>
+                        {{ form.physical_examination }}
+                        {% if form.physical_examination.errors %}
+                            <div class="text-danger">{{ form.physical_examination.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Diagnóstico (CID-10, se aplicável)</label>
+                        {{ form.diagnosis }}
+                        {% if form.diagnosis.errors %}
+                            <div class="text-danger">{{ form.diagnosis.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Plano de Tratamento</label>
+                        {{ form.treatment_plan }}
+                        {% if form.treatment_plan.errors %}
+                            <div class="text-danger">{{ form.treatment_plan.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Observações Adicionais</label>
+                        {{ form.observations }}
+                        {% if form.observations.errors %}
+                            <div class="text-danger">{{ form.observations.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    {% if form.instance.pk %}
+                        Salvar Alterações
+                    {% else %}
+                        Criar Prontuário
+                    {% endif %}
+                </button>
+
+                <a href="{% url 'patients:patient_detail' pk=patient.pk %}" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalhes do Usuário - {{ user_obj.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="user-form-card">
+    <div class="card shadow-sm mb-4">
+        <div class="user-form-title">
+            <h2 class="mb-0">Informações Básicas</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome Completo:</strong> {{ user_obj.get_full_name }}</p>
+                    <p><strong>Nome de Usuário:</strong> {{ user_obj.username }}</p>
+                    <p><strong>E-mail:</strong> {{ user_obj.email }}</p>
+                    <p><strong>CPF:</strong> {{ user_obj.cpf }}</p>
+                    <p><strong>Telefone:</strong> {{ user_obj.phone }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Tipo de Usuário:</strong> <span class="badge bg-{{ user_obj.get_user_type_color }}">{{ user_obj.get_user_type_display }}</span></p>
+                    <p><strong>Status:</strong> 
+                        {% if user_obj.is_active %}
+                            <span class="badge bg-success">Ativo</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inativo</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Data de Nascimento:</strong> {{ user_obj.birth_date|date:"d/m/Y"|default:"N/A" }}</p>
+                    <p><strong>Criado em:</strong> {{ user_obj.created_at|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Última Atualização:</strong> {{ user_obj.updated_at|date:"d/m/Y H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user_obj.is_doctor %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Informações do Médico</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>CRM:</strong> {{ user_obj.doctor_profile.crm }}</p>
+            <p><strong>Especialidade:</strong> {{ user_obj.doctor_profile.specialty }}</p>
+            <p><strong>Salário:</strong> R$ {{ user_obj.doctor_profile.salary|default:"N/A" }}</p>
+            <p><strong>Disponível:</strong> 
+                {% if user_obj.doctor_profile.is_available %}
+                    <span class="badge bg-success">Sim</span>
+                {% else %}
+                    <span class="badge bg-danger">Não</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if user_obj.is_attendant %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Informações do Atendente</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Departamento:</strong> {{ user_obj.attendant_profile.department|default:"N/A" }}</p>
+            <p><strong>Turno:</strong> {{ user_obj.attendant_profile.get_shift_display }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if user_obj.is_patient %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Informações do Paciente</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Tipo Sanguíneo:</strong> {{ user_obj.patient_profile.blood_type|default:"N/A" }}</p>
+            <p><strong>Alergias:</strong> {{ user_obj.patient_profile.allergies|default:"Nenhuma" }}</p>
+            <p><strong>Condições Crônicas:</strong> {{ user_obj.patient_profile.chronic_conditions|default:"Nenhuma" }}</p>
+            <a href="{% url 'patients:patient_detail' pk=user_obj.patient_profile.pk %}" class="btn btn-sm btn-primary">
+                <i class="fas fa-file-medical"></i> Ver Prontuário
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h2 class="mb-0">Endereço</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Endereço:</strong> {{ user_obj.address|default:"N/A" }}</p>
+            <p><strong>Cidade:</strong> {{ user_obj.city|default:"N/A" }}</p>
+            <p><strong>Estado:</strong> {{ user_obj.state|default:"N/A" }}</p>
+            <p><strong>CEP:</strong> {{ user_obj.zip_code|default:"N/A" }}</p>
+        </div>
+    </div>
+      <br>
+
+     {% if user_obj.is_doctor and user_obj.doctor_profile %}
+     <a href="{% url 'accounts:doctor_schedule' pk=user_obj.doctor_profile.pk %}" 
+        class="btn btn-sm btn-primary">
+        <i class="fas fa-calendar-alt"></i> Gerenciar Agenda
+     </a>
+     {% endif %}
+
+</div>
+{% endblock %}

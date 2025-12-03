@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Prontuário de {{ patient.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Cabeçalho do Paciente -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">Prontuário Eletrônico</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>{{ patient.user.get_full_name }}</h3>
+                    <p class="text-muted">CPF: {{ patient.user.cpf }} | Idade: {{ patient.get_age }} anos</p>
+                </div>
+                <div class="col-md-4 text-md-right">
+                    <p><strong>Tipo Sanguíneo:</strong> {{ patient.blood_type|default:"Não informado" }}</p>
+                    <p><strong>Altura:</strong> {{ patient.height|default:"Não informado" }} cm</p>
+                    <p><strong>Peso:</strong> {{ patient.weight|default:"Não informado" }} kg</p>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Contato de Emergência:</strong> {{ patient.emergency_contact_name|default:"Não informado" }}</p>
+                    <p><strong>Telefone de Emergência:</strong> {{ patient.emergency_contact_phone|default:"Não informado" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Observações Médicas:</strong></p>
+                    <p>{{ patient.medical_notes|default:"Nenhuma observação." }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div class="tab-content" id="myTabContent">
+        <!-- Consultas -->
+        <div class="tab-pane fade show active" id="records" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Histórico de Consultas</h4>
+                    {% if request.user.is_doctor %}
+                    <a href="{% url 'appointments:appointment_create' %}?patient_id={{ patient.pk }}" class="btn btn-primary">Agendar Nova Consulta</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% for record in medical_records %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Prontuário de {{ record.created_at|date:"d/m/Y" }} com Dr(a). {{ record.doctor.user.get_full_name }}</h5>
+                                <p class="card-text"><strong>Queixa Principal:</strong> {{ record.chief_complaint|truncatechars:100 }}</p>
+                                <p class="card-text"><strong>Diagnóstico:</strong> {{ record.diagnosis|truncatechars:100 }}</p>
+                                <a href="{% url 'medical_records:record_detail' pk=record.pk %}" class="btn btn-sm btn-outline-primary">Ver Detalhes do Prontuário</a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>Nenhum registro de consulta encontrado.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Alergias -->
+        <div class="tab-pane fade" id="allergies" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Alergias</h4>
+                    {% if request.user.is_doctor %}
+                    <a href="#" class="btn btn-primary">Adicionar Alergia</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for allergy in allergies %}
+                            <li class="list-group-item">
+                                <strong>{{ allergy.allergen }}</strong> (Gravidade: {{ allergy.get_severity_display }})
+                                <p>{{ allergy.reaction }}</p>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">Nenhuma alergia registrada.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vacinas -->
+        <div class="tab-pane fade" id="vaccines" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Vacinas</h4>
+                    {% if request.user.is_doctor %}
+                    <a href="#" class="btn btn-primary">Adicionar Vacina</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for vaccine in vaccines %}
+                            <li class="list-group-item">
+                                <strong>{{ vaccine.name }}</strong> - {{ vaccine.dose }} ({{ vaccine.application_date|date:"d/m/Y" }})
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">Nenhuma vacina registrada.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicamentos -->
+        <div class="tab-pane fade" id="medications" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Medicamentos em Uso</h4>
+                    {% if request.user.is_doctor %}
+                    <a href="#" class="btn btn-primary">Adicionar Medicamento</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for medication in medications %}
+                            <li class="list-group-item">
+                                <strong>{{ medication.name }}</strong> ({{ medication.dosage }}) - {{ medication.frequency }}
+                                <p>Início: {{ medication.start_date|date:"d/m/Y" }} | Fim: {{ medication.end_date|date:"d/m/Y"|default:"Contínuo" }}</p>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">Nenhum medicamento em uso registrado.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

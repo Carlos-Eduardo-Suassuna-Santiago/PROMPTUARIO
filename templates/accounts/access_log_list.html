@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Logs de Acesso (LGPD){% endblock %}
+
+{% block content %}
+
+<style>
+    
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Logs de Acesso (LGPD)</h1>
+        <br>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label for="id_q" class="form-label">Pesquisar (Usuário, IP, Detalhes)</label>
+                    <input type="text" name="q" id="id_q" class="form-control" value="{{ request.GET.q }}" placeholder="Termo de pesquisa">
+                </div>
+                <div class="col-md-4">
+                    <label for="id_action" class="form-label">Filtrar por Ação</label>
+                    <select name="action" id="id_action" class="form-select">
+                        <option value="">Todas as Ações</option>
+                        {% for value, label in logs.model.ACTION_CHOICES %}
+                            <option value="{{ value }}" {% if request.GET.action == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<br>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped logs-table">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th class="col-id">ID</th>
+                    <th class="col-user">Usuário</th>
+                    <th class="col-action">Ação</th>
+                    <th class="col-datetime">Data/Hora</th>
+                    <th class="col-ip">IP</th>
+                    <th class="col-details">Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.pk }}</td>
+
+                    <td>
+                        {% if log.user %}
+                            <span class="badge bg-{{ log.user.get_user_type_color }}">{{ log.user.get_full_name }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">N/A</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Cor dinâmica por ação -->
+                    <td>
+                        <span class="badge
+                            {% if log.action == 'login' %}action-login
+                            {% elif log.action == 'logout' %}action-logout
+                            {% elif log.action == 'view' %}action-view
+                            {% else %}bg-info
+                            {% endif %}
+                        ">
+                            {{ log.get_action_display }}
+                        </span>
+                    </td>
+
+                    <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
+                    <td>{{ log.ip_address|default:"N/A" }}</td>
+                    <td>{{ log.details|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum log de acesso encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+
+<nav aria-label="Page navigation">
+    <div class="pagination-wrapper">
+
+        <!-- PREV (esquerda) -->
+        <div class="pag-nav pag-prev">
+            {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a>
+            {% else %}
+                <span class="page-link disabled">Anterior</span>
+            {% endif %}
+        </div>
+
+        <!-- NÚMEROS (centro) -->
+        <ul class="pagination-centered">
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <!-- NEXT (direita) -->
+        <div class="pag-nav pag-next">
+            {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a>
+            {% else %}
+                <span class="page-link disabled">Próxima</span>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+{% endif %}
+</div>
+
+{% endblock %}

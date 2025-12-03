@@ -1,322 +1,480 @@
-/* Reset e configurações básicas */
+/*
+ * Estilização Base para o base.html
+ * Baseado nos frames Frame1.png (Top Bar) e Property1=Default.png (Side Menu)
+ */
+
+/* Variáveis de Cores */
+:root {
+    --color-primary: #00A99D; /* Cor principal, usada para ícones e links ativos */
+    --color-secondary: #007B70; /* Variação da cor principal */
+    --color-background: #FFFFFF; /* Fundo principal */
+    --color-sidebar-bg: #FFFFFF; /* Fundo da barra lateral */
+    --color-sidebar-text: #4A4A4A; /* Cor do texto da barra lateral */
+    --color-sidebar-active: #00A99D; /* Cor do link ativo na barra lateral */
+    --color-topbar-bg: #FFFFFF; /* Fundo da barra superior */
+    --color-topbar-border: #E0E0E0; /* Borda da barra superior */
+    --color-welcome-text: #000000; /* Cor do texto de boas-vindas */
+    --color-avatar-bg: #E0E0E0; /* Cor de fundo do avatar (círculo cinza) */
+    --color-avisos-bg: #E0F7F6; /* Fundo da seção de avisos (verde claro) */
+    --color-avisos-border: #00A99D; /* Borda da seção de avisos */
+    --color-footer-bg: #333333; /* Fundo do rodapé */
+    --color-footer-text: #FFFFFF; /* Cor do texto do rodapé */
+    --color-footer-link: #CCCCCC; /* Cor dos links do rodapé */
+}
+
+/* Reset Básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #2563eb;
-    --secondary-color: #1e40af;
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --info-color: #3b82f6;
-    --light-bg: #f3f4f6;
-    --dark-text: #1f2937;
-    --gray-text: #6b7280;
-    --border-color: #e5e7eb;
-    --white: #ffffff;
+    font-family: 'Arial', sans-serif; /* Fonte padrão */
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-sidebar-text);
     line-height: 1.6;
-    color: var(--dark-text);
-    background-color: var(--light-bg);
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-/* Navbar */
-.navbar {
-    background-color: var(--white);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
-    margin-bottom: 2rem;
+ul {
+    list-style: none;
 }
 
-.navbar .container {
+/* Layout Principal da Aplicação */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    padding-left: 250px; /* Adiciona padding para compensar o aside fixo */
+    /* Removido padding-top daqui para permitir que o aside vá até o topo */
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    padding-top: 80px; /* Adiciona padding para compensar a topbar fixa */
+    background-color: #F8F9FA; /* Fundo levemente cinza para o conteúdo */
+}
+
+/* =================================
+ * TOP BAR (Frame1.png)
+ * ================================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    /* Ajustado left para começar após o menu lateral */
+    left: 250px;
+    width: calc(100% - 250px); /* Largura total menos a largura do aside */
+    height: 74px;
+    background-color: var(--color-topbar-bg);
+    border-bottom: 2px solid #6ECEF2; /* Linha azul clara abaixo da topbar */
+    z-index: 1000;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.topbar-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
+    max-width: 1200px; /* Limitar largura se necessário */
+    margin: 0 100px;
 }
 
-.navbar-brand h1 {
-    color: var(--primary-color);
-    font-size: 1.5rem;
+.welcome-message h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-welcome-text);
 }
 
-.navbar-brand a {
-    text-decoration: none;
-}
-
-.navbar-menu ul {
-    display: flex;
-    list-style: none;
-    gap: 1.5rem;
-}
-
-.navbar-menu a {
-    text-decoration: none;
-    color: var(--dark-text);
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.navbar-menu a:hover {
-    color: var(--primary-color);
-}
-
-.navbar-user {
+.user-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 15px;
 }
 
-.navbar-user span {
-    color: var(--gray-text);
-}
-
-.navbar-user a {
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: 500;
-}
-
-/* Main Content */
-.main-content {
-    min-height: calc(100vh - 200px);
-    padding: 2rem 0;
-}
-
-/* Messages/Alerts */
-.messages {
-    margin-bottom: 1.5rem;
-}
-
-.alert {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.alert-success {
-    background-color: #d1fae5;
-    color: #065f46;
-    border-left: 4px solid var(--success-color);
-}
-
-.alert-danger {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border-left: 4px solid var(--danger-color);
-}
-
-.alert-warning {
-    background-color: #fef3c7;
-    color: #92400e;
-    border-left: 4px solid var(--warning-color);
-}
-
-.alert-info {
-    background-color: #dbeafe;
-    color: #1e40af;
-    border-left: 4px solid var(--info-color);
-}
-
-/* Cards */
-.card {
-    background-color: var(--white);
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.card-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-}
-
-.card-header h2 {
-    color: var(--dark-text);
-    font-size: 1.5rem;
-}
-
-.card-body {
-    padding: 0;
-}
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 0.375rem;
-    font-size: 1rem;
-    font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white);
-}
-
-.btn-primary:hover {
-    background-color: var(--secondary-color);
-}
-
-.btn-success {
-    background-color: var(--success-color);
-    color: var(--white);
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    color: var(--white);
-}
-
-.btn-secondary {
-    background-color: var(--gray-text);
-    color: var(--white);
-}
-
-/* Forms */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-avatar-bg); /* Círculo cinza claro */
     display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--dark-text);
+    cursor: pointer;
 }
 
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.375rem;
-    font-size: 1rem;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-/* Tables */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--white);
-}
-
-.table th,
-.table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.table th {
-    background-color: var(--light-bg);
+/* Estilo para links de logout (mantido por segurança) */
+.logout-link {
+    display: flex;
+    align-items: center;
+    color: var(--color-primary);
     font-weight: 600;
-    color: var(--dark-text);
+    transition: color 0.2s;
 }
 
-.table tr:hover {
-    background-color: var(--light-bg);
+.logout-link:hover {
+    color: var(--color-secondary);
 }
 
-/* Dashboard Grid */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+.logout-link .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
-.dashboard-card {
-    background-color: var(--white);
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* --- CORREÇÃO FINAL: Estilo do Botão de Logout para remover fundo e aplicar cor --- */
+.logout-button-style {
+    /* PRIORIDADE MÁXIMA PARA REMOVER FUNDO E BORDA */
+    background: none !important; 
+    border: none !important;
+    background-color: transparent !important; 
+    box-shadow: none !important;
+    
+    /* Estilos de cor e layout */
+    color: var(--color-primary); 
+    font-weight: 600;
+    font-size: medium;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
 }
 
-.dashboard-card h3 {
-    color: var(--dark-text);
-    margin-bottom: 1rem;
+/* Estado Hover/Focus */
+.logout-button-style:hover,
+.logout-button-style:focus {
+    color: var(--color-secondary); /* Cor mais escura no hover */
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-.dashboard-card .stat {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
+/* Estilo do Ícone (imagem) dentro do botão */
+.logout-button-style .icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
-/* Footer */
-.footer {
-    background-color: var(--white);
-    padding: 2rem 0;
-    margin-top: 3rem;
+/* =================================
+ * SIDE MENU (Property1=Default.png)
+ * ================================= */
+.aside-menu {
+    position: fixed; /* Fixa o menu lateral */
+    top: 0; /* Começa no topo da tela */
+    left: 0;
+    width: 250px;
+    height: 100vh; /* Ocupa a altura total da viewport */
+    background-color: var(--color-sidebar-bg);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 999; /* Abaixo da topbar (z-index: 1000) */
+}
+
+.menu-header {
+    padding: 0 20px 20px;
+    border-bottom: 2px solid #6ECEF2;
+    margin-bottom: 20px;
+}
+
+.menu-header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.menu-header .logo .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Navegação */
+.menu-nav ul {
+    padding: 0 20px;
+}
+
+.menu-nav li {
+    margin-bottom: 5px;
+}
+
+.menu-nav a {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--color-sidebar-text);
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-nav a:hover {
+    color: var(--color-primary);
+}
+
+.menu-nav .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Estilo para o item ativo */
+.menu-nav li.active a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Seção de Avisos */
+.menu-avisos {
+    padding: 20px;
+    margin-top: auto; /* Empurra para o final da barra lateral */
+}
+
+.menu-avisos .container {
+    background-color: var(--color-avisos-bg);
+    border: 1px solid var(--color-avisos-border);
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+}
+
+.menu-avisos .container::before {
+    content: "Avisos";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background-color: var(--color-avisos-bg);
+    color: var(--color-avisos-border);
+    font-weight: bold;
+    padding: 0 5px;
+    font-size: 14px;
+}
+
+.menu-avisos p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--color-sidebar-text);
+}
+
+/* Seção de Ajuda */
+.menu-ajuda {
+    padding: 10px 20px 0;
+    border-top: 1px solid var(--color-topbar-border);
+    margin-top: 10px;
+}
+
+.menu-ajuda a {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--color-sidebar-text);
+    font-weight: 500;
+}
+
+.menu-ajuda a:hover {
+    color: var(--color-primary);
+}
+
+.menu-ajuda .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* =================================
+ * CONTEÚDO PRINCIPAL
+ * ================================= */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    padding-top: 80px; /* Adiciona padding para compensar a topbar fixa */
+    background-color: #F8F9FA; /* Fundo levemente cinza para o conteúdo */
+}
+
+.main-content .container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* =================================
+ * ESTILIZAÇÃO DASHBOARD (ÍCONES - Baseado na Imagem)
+ * ================================= */
+
+/* Contêiner para centralizar os links de ícones */
+.icon-links-row {
+    padding-top: 50px;
+    display: flex;
+    /* Para que os itens fiquem centralizados e com espaçamento se houver menos de 5 */
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+/* Estilo do Cartão de Ícone */
+.icon-link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    color: var(--gray-text);
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .navbar .container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .navbar-menu ul {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Login Page */
-.login-container {
-    max-width: 400px;
-    margin: 5rem auto;
-}
-
-.login-card {
-    background-color: var(--white);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.login-header h1 {
-    color: var(--primary-color);
-    font-size: 2rem;
-}
-
-.login-form .btn {
+    /* Fundo verde-água da imagem */
+    background-color: var(--color-primary); 
+    color: var(--color-background); /* Texto e Ícone brancos */
+    border-radius: 8px; /* Borda levemente arredondada */
+    padding: 15px 10px; /* Preenchimento interno */
+    min-height: 150px; /* Altura mínima para padronização */
+    min-width: 150px;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
     width: 100%;
-    margin-top: 1rem;
+}
+
+.icon-link-card:hover {
+    background-color: var(--color-secondary); /* Escurece um pouco ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de elevação sutil */
+    color: var(--color-background); /* Mantém a cor do texto no hover */
+}
+
+/* Estilo do Ícone */
+.icon-link-card .icon-lg {
+    font-size: 30px; /* Tamanho maior para o ícone */
+    margin-bottom: 5px;
+    color: var(--color-background); /* Cor do ícone */
+}
+
+/* Estilo do Texto */
+.icon-link-card .card-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-background); /* Cor do texto */
+}
+
+/* =================================
+ * RODAPÉ (Footer)
+ * ================================= */
+.site-footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    padding: 40px 20px 0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-brand .brand-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.footer-brand .brand-logo h3 {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.footer-brand .heart-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.footer-description {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.footer-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--color-primary);
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    color: var(--color-footer-link);
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--color-primary);
+}
+
+.social-icons a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    color: var(--color-footer-text);
+    transition: background-color 0.2s;
+}
+
+.social-icons a:hover {
+    background-color: var(--color-primary);
+}
+
+.blog-post p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.blog-date {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Ajuste para o menu de navegação que tem muitos itens */
+.menu-nav {
+    overflow-y: auto;
+    /* Ajustado max-height para considerar a altura total (100vh) menos o header e o footer do aside */
+    max-height: calc(100vh - 250px);
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    background-color: #eee; /* fallback */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }

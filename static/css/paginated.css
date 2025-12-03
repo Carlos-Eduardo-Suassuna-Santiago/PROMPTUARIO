@@ -1,0 +1,59 @@
+/* Container que organiza os três blocos (prev - páginas - next) */
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* prev esquerda / pages centro / next direita */
+    gap: 12px;
+    padding: 8px 12px;
+}
+
+/* Lista de páginas ficará centralizada e responsiva */
+.pagination-centered {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1 1 auto;            /* ocupa espaço entre prev e next */
+    justify-content: center;   /* centraliza os números */
+}
+
+/* Prev/Next ocupam apenas o necessário */
+.pag-nav {
+    flex: 0 0 auto;
+}
+
+/* Ajustes visuais básicos (se você usa Bootstrap, isso apenas complementa) */
+.pagination-wrapper .page-link,
+.pagination-wrapper .page-item span,
+.pagination-wrapper .page-item a {
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid transparent;
+}
+
+.pagination-wrapper .page-item.active .page-link,
+.pagination-wrapper .page-item.active span {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.pagination-wrapper .page-item.disabled .page-link,
+.pagination-wrapper .page-item.disabled span {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Em telas pequenas, empilha com bom espaçamento */
+@media (max-width: 480px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .pagination-centered { order: 2; }
+    .pag-nav { order: 1; }
+    .pag-next { order: 3; }
+}

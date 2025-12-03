@@ -1,280 +1,166 @@
-# 🩺 **Promptuário**
-### Sistema Web para Gestão de Prontuários Médicos  
+# Promptuario - Sistema de Prontuário Eletrônico
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue)
-![Django](https://img.shields.io/badge/Django-4.3-092E20?logo=django)
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)
-![Docker](https://img.shields.io/badge/Docker-suportado-0db7ed?logo=docker)
-![CI/CD](https://img.shields.io/badge/GitHub%20Actions-ativo-black?logo=githubactions)
-![License](https://img.shields.io/badge/license-MIT-green)
+![Versão](https://img.shields.io/badge/version-1.0.0-blue)
+![Licença](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.11-blue?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/django-4.2-green?logo=django&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-ready-blue?logo=docker&logoColor=white)
 
----
+O **Promptuario** é um sistema web de prontuário eletrônico projetado para otimizar a gestão de informações de pacientes em unidades de saúde. Ele centraliza o histórico médico, agendamentos, receitas e outros dados clínicos, facilitando o acesso seguro para médicos, atendentes e pacientes.
 
-# 📖 Sobre o Projeto
+## 🧾 Informações Gerais
 
-O **Promptuário** é um sistema web desenvolvido para otimizar o fluxo de atendimento em unidades de saúde, oferecendo:
+- **Área de Aplicação:** Saúde
+- **Público-alvo:** Unidades de saúde públicas, médicos, atendentes e pacientes.
+- **Tipo de Sistema:** Aplicação Web
 
-✔ Cadastro de pacientes  
-✔ Gerenciamento de consultas  
-✔ Prontuário médico detalhado  
-✔ Geração e anexação de relatórios e prescrições  
-✔ Controle de vacinas, alergias e medicamentos  
-✔ Agenda médica completa  
-✔ Painel administrativo  
+## 🏗️ Diagrama de Arquitetura
 
-O sistema foi projetado seguindo boas práticas de **engenharia de software**, **segurança da informação** e **LGPD**.
+O diagrama abaixo ilustra a arquitetura geral do sistema, desde a interação do usuário até a infraestrutura de backend.
 
----
+![Diagrama de Arquitetura](architecture.png)
 
-# 🧱 Tecnologias Utilizadas
+## ✨ Funcionalidades Principais
 
-### **Backend**
-- 🐍 Python 3.11  
-- 🧩 Django 4.3 (MVT)  
-- 🗄️ SQLite (dev) / PostgreSQL (prod)  
+O sistema é dividido nos seguintes módulos:
 
-### **Frontend**
-- 🎨 HTML5  
-- 🧼 CSS3  
-- 🖼️ Django Templates  
+- **Gestão de Contas e Perfis:**
+  - Autenticação segura com diferentes níveis de acesso (Admin, Médico, Atendente, Paciente).
+  - Perfis detalhados para cada tipo de usuário.
 
-### **Infra / DevOps**
-- 🐳 Docker / Docker Compose  
-- 🎛 Gunicorn (produção)  
-- ☁️ GitHub Actions (CI/CD)
+- **Gestão de Pacientes:**
+  - Cadastro completo de pacientes com informações pessoais e médicas.
+  - Registro de alergias, vacinas e medicamentos de uso contínuo.
 
-### **Testes**
-- 🧪 pytest  
-- 📏 coverage  
+- **Agendamento de Consultas:**
+  - Marcação de consultas e retornos.
+  - Calendário de disponibilidade dos médicos.
+  - Cancelamento de consultas com regras de negócio (24h de antecedência).
 
----
+- **Prontuário Eletrônico:**
+  - Histórico completo de todas as consultas e procedimentos.
+  - Geração de receitas médicas em PDF.
+  - Solicitação e registro de resultados de exames.
 
-# 🏗️ Arquitetura Geral
+- **Administração do Sistema:**
+  - Gerenciamento de usuários (médicos e atendentes).
+  - Configuração de quadros de horários e plantões.
 
-A aplicação segue a arquitetura **MVT – Model View Template** do Django.
+- **Relatórios:**
+  - Geração de relatórios sobre consultas, pacientes e atividades médicas.
 
-```
-graph LR
-  U[Usuário] --> F[Frontend - Templates Django]
-  F --> V[Views]
-  V --> M[Models]
-  M --> DB[(Banco de Dados)]
-  V --> A[Arquivos (Relatórios/Prescrições)]
-````
+## 🛠️ Tecnologias Utilizadas
 
----
+- **Backend:** Python 3.11, Django 4.2
+- **Frontend:** Django Templates, CSS3, JavaScript
+- **Banco de Dados:** SQLite (desenvolvimento), PostgreSQL (produção)
+- **Testes:** Pytest, Pytest-Django, Coverage
+- **Qualidade de Código:** Black, Flake8, iSort
+- **Infraestrutura:** Docker, Docker Compose, Nginx
+- **CI/CD:** GitHub Actions
 
-# 📂 Estrutura do Projeto
+## 🚀 Começando
 
-```
-promptuario/
-│
-├── core/                  # App principal
-│   ├── models.py          # Modelos
-│   ├── views.py           # Lógica de negócio
-│   ├── urls.py            # Rotas
-│   ├── templates/core/    # Templates HTML
-│   └── static/css/        # CSS / assets
-│
-├── promptuario/           # Configurações Django
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-│
-├── infra/
-│   ├── docker/            # Dockerfiles e entrypoint
-│   └── docker-compose.*   # Compose dev/prod
-│
-├── scripts/               # Instalação, backup, migração
-├── tests/                 # Testes pytest
-└── README.md
-```
+Siga as instruções abaixo para configurar e executar o projeto em seu ambiente local.
 
----
+### Pré-requisitos
 
-# 🚀 Como Rodar o Projeto
+- Python 3.11+
+- Docker e Docker Compose (para execução com containers)
 
-## ▶️ Rodando com Docker (recomendado)
+### 1. Instalação (sem Docker)
 
-### **1. Clone o repositório**
+Clone o repositório e execute o script de setup, que irá configurar o ambiente virtual, instalar as dependências e preparar o banco de dados.
 
 ```bash
-git clone https://github.com/seuusuario/promptuario.git
+git clone https://github.com/seu-usuario/promptuario.git
 cd promptuario
+
+# Dê permissão de execução ao script
+chmod +x setup.sh
+
+# Execute o script de setup
+./setup.sh
 ```
 
-### **2. Suba os containers**
+Após a conclusão, inicie o servidor de desenvolvimento:
 
 ```bash
-docker-compose -f infra/docker-compose.dev.yml up --build
+source venv/bin/activate
+python manage.py runserver
 ```
 
-### **3. Acesse**
+### 2. Instalação (com Docker)
 
-👉 [http://localhost:8000](http://localhost:8000)
-
----
-
-## ▶️ Rodando sem Docker
-
-### **1. Crie o ambiente virtual**
+Para uma configuração mais rápida e isolada, utilize o Docker Compose. Este método irá construir as imagens, iniciar os contêineres e executar as migrações automaticamente.
 
 ```bash
-No LINUX
-python -m venv .venv
-source .venv/bin/activate
-
-No WINDOWS
-python -m venv .venv
-.venv/scripts/activate
+docker-compose up --build
 ```
 
-### **2. Instale as dependências**
+A aplicação estará disponível em [http://localhost:8000](http://localhost:8000) (via `runserver`) ou [http://localhost](http://localhost) (via Docker).
+
+## 🧪 Executando Testes
+
+Para executar a suíte de testes e verificar a cobertura de código, utilize o Pytest:
 
 ```bash
-pip install -r requirements.txt
-```
-
-### **3. Aplique as migrações**
-
-```bash
-python promptuario/manage.py migrate
-```
-
-### **4. Crie um superusuário**
-
-```bash
-python promptuario/manage.py createsuperuser
-```
-
-### **5. Execute o servidor**
-
-```bash
-python promptuario/manage.py runserver
-```
-
----
-
-# 🧪 Testes
-
-## Executar testes
-
-```bash
+source venv/bin/activate
 pytest
 ```
 
-## Com relatório de cobertura
+## 👤 Usuários de Teste
 
-```bash
-pytest --cov
-```
+O sistema é populado com os seguintes usuários para facilitar a demonstração:
 
-📌 Cobertura mínima configurada: **90%**
+| Usuário   | Senha        | Perfil        |
+|-----------|--------------|---------------|
+| `admin`     | `admin123`   | Administrador |
+| `medico`    | `medico123`  | Médico        |
+| `atendente` | `atendente123` | Atendente     |
+| `paciente`  | `paciente123`| Paciente      |
 
----
+## 🌐 Endpoints
 
-# 🔐 Segurança, LGPD e Boas Práticas
+- **/healthcheck**: Endpoint para verificação de status do sistema. Retorna `{"status": "ok"}` se a aplicação estiver no ar.
 
-O projeto segue boas práticas incluindo:
-
-✔ Validação por papéis (RBAC: admin, médico, atendente, paciente)
-✔ Proteção CSRF
-✔ Validação e sanitização de dados
-✔ Logs de auditoria
-✔ Senhas com hashing seguro
-✔ Separação entre dados sensíveis e não sensíveis
-✔ Variáveis de ambiente para `SECRET_KEY` e credenciais
-✔ Preparado para HTTPS em produção
-
----
-
-# 📊 CI/CD
-
-Pipeline GitHub Actions configurado para:
-
-* Rodar testes automaticamente
-* Validar cobertura
-* Validar build
-* Preparar imagem Docker
-* Permitir deploy automatizado
-
-Arquivo localizado em:
+## 📂 Estrutura do Projeto
 
 ```
-.github/workflows/ci.yml
+promptuario/
+├── accounts/         # App de usuários, perfis e autenticação
+├── appointments/     # App de agendamentos
+├── medical_records/  # App de prontuários, receitas e exames
+├── patients/         # App de pacientes, alergias e vacinas
+├── reports/          # App de relatórios
+├── config/           # Configurações centrais do Django
+├── static/           # Arquivos estáticos (CSS, JS)
+├── templates/        # Templates HTML
+├── .github/          # Workflows de CI/CD
+├── Dockerfile        # Configuração do container da aplicação
+├── docker-compose.yml# Orquestração dos serviços
+├── README.md         # Esta documentação
+└── requirements.txt  # Dependências Python
 ```
 
----
+## 🔄 CI/CD
 
-# 📸 Screenshots (Figma)
+O projeto utiliza GitHub Actions para integração e entrega contínua. O workflow (`.github/workflows/ci.yml`) automatiza:
 
-> Substituir pelo design final quando disponível.
+1.  **Testes:** Executa a suíte de testes com Pytest em cada push ou pull request.
+2.  **Linting:** Verifica a qualidade e o estilo do código com Black, Flake8 e iSort.
+3.  **Build:** Gera a imagem Docker da aplicação quando há um push para a branch `main`.
 
-Protótipo:
-🔗 [https://www.figma.com/design/RC0t8XgR1IyobtWTo0uBZg/Promptuario](https://www.figma.com/design/RC0t8XgR1IyobtWTo0uBZg/Promptuario)
+## 🤝 Contribuição
 
----
+Contribuições são bem-vindas! Para contribuir:
 
-# 🗺️ Roadmap
+1.  Faça um fork do projeto.
+2.  Crie uma nova branch (`git checkout -b feature/nova-funcionalidade`).
+3.  Faça suas alterações e commit (`git commit -m 'Adiciona nova funcionalidade'`).
+4.  Envie para a sua branch (`git push origin feature/nova-funcionalidade`).
+5.  Abra um Pull Request.
 
-### 🟢 Implementado
+## 📄 Licença
 
-* Autenticação e controle de acesso
-* CRUD de pacientes
-* Dashboard
-* Agendamento de consultas
-* Relatórios e anexos
-* Docker e Docker Compose
-* Testes com pytest
-* CI/CD
-
-### 🟡 Em andamento
-
-* Módulo de vacinas
-* Módulo de alergias
-* Módulo de medicamentos
-* Agenda avançada
-
-### 🔵 Futuro
-
-* Notificações push
-* Integração com WhatsApp/SMS
-* API RESTful
-* Multi–unidade de saúde
-
----
-
-# 🤝 Contribuição
-
-1. Faça um fork
-2. Crie uma branch:
-
-```bash
-git checkout -b feature/minha-feature
-```
-
-3. Commit:
-
-```bash
-git commit -m "feat: adiciona nova funcionalidade"
-```
-
-4. Push:
-
-```bash
-git push origin feature/minha-feature
-```
-
-5. Abra um Pull Request 🚀
-
----
-
-# 📜 Licença
-
-Licença **MIT** – livre para uso pessoal e comercial.
-
----
-
-Feito com ❤️ para ajudar na evolução tecnológica da área da saúde.
-
----
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para mais detalhes.

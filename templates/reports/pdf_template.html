@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #444;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .small {
+            color: #777;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Relatório Médico</h1>
+<h3>{{ doctor.user.get_full_name }} — {{ doctor.speciality }}</h3>
+<p style="text-align:center">Gerado em {{ generated_at|date:"d/m/Y H:i" }}</p>
+
+<div class="section">
+    <h3>Estatísticas Gerais</h3>
+    <ul>
+        <li>Total de agendamentos: <strong>{{ total_appointments }}</strong></li>
+        <li>Concluídos: <strong>{{ completed_appointments }}</strong></li>
+        <li>Cancelados: <strong>{{ cancelled_appointments }}</strong></li>
+    </ul>
+</div>
+
+<div class="section">
+    <h3>Prontuários</h3>
+    <ul>
+        <li>Total de prontuários: <strong>{{ total_medical_records }}</strong></li>
+        <li>Pacientes atendidos: <strong>{{ unique_patients_attended }}</strong></li>
+    </ul>
+</div>
+
+<div class="section">
+    <h3>Atividade dos últimos 30 dias</h3>
+    <p><strong>{{ recent_appointments_count }}</strong> agendamentos recentes.</p>
+</div>
+
+<div class="section">
+    <h3>Top Diagnósticos</h3>
+
+    {% if top_diagnoses %}
+    <table>
+        <thead>
+            <tr>
+                <th>Diagnóstico</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for diag in top_diagnoses %}
+            <tr>
+                <td>{{ diag.diagnosis }}</td>
+                <td>{{ diag.count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum diagnóstico encontrado.</p>
+    {% endif %}
+</div>
+
+<p class="small">Documento gerado automaticamente pelo sistema Prontuário Digital.</p>
+
+</body>
+</html>

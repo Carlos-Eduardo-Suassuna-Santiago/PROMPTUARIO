@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile_style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header-card">
+        <div class="profile-info-display">
+            <img src="{% if user_obj.profile_picture %}{{ user_obj.profile_picture.url }}{% else %}{% static 'img/default_avatar.png' %}{% endif %}" alt="{{ user_obj.get_full_name }}" class="profile-avatar">
+            <div>
+                <h3 class="profile-name">{{ user_obj.get_full_name|default:"Nome Não Informado" }}</h3>
+                <p class="profile-email">{{ user_obj.email }}</p>
+            </div>
+        </div>
+        
+        <a href="{% url 'accounts:profile_update' %}" class="btn-edit-profile">Editar</a>
+    </div>
+
+    <div class="profile-fields-grid">
+
+        <div class="field-group field-group-lg">
+            <label>Nome</label>
+            <div class="field-value-box field-lg">{{ user_obj.get_full_name }}</div>
+        </div>
+        <div class="field-group">
+            <label>Data Nascimento</label>
+            <div class="field-value-box">{{ user_obj.birth_date|date:"d/m/Y"|default:"Placeholder" }}</div>
+        </div>
+
+        <div class="field-group">
+            <label>CPF</label>
+            <div class="field-value-box">{{ user_obj.cpf|default:"Placeholder" }}</div>
+        </div>
+        <div class="field-group">
+            <label>Telefone</label>
+            <div class="field-value-box">{{ user_obj.phone|default:"Placeholder" }}</div>
+        </div>
+
+        <div class="field-group field-group-lg">
+            <label>Email</label>
+            <div class="field-value-box field-lg">{{ user_obj.email }}</div>
+        </div>
+       
+        
+        <div class="field-group field-group-lg">
+            <label>Tipo de conta</label>
+            <div class="field-value-box field-lg">{{ user_obj.get_user_type_display }}</div>
+        </div>
+        <div class="field-group"></div>
+
+
+        {% if user_obj.is_patient and patient_profile %}
+        <h4 class="grid-section-title">Informações Médicas</h4>
+        <div class="field-group">
+            <label>Tipo Sanguíneo</label>
+            <div class="field-value-box">{{ patient_profile.get_blood_type_display|default:"Placeholder" }}</div>
+        </div>
+        <div class="field-group">
+            <label>Altura (cm)</label>
+            <div class="field-value-box">{{ patient_profile.height|default:"Placeholder" }}</div>
+        </div>
+
+
+         <div class="field-group">
+            <h4 class="grid-section-title">Alterar Senha</h4>
+            <a href="{% url 'accounts:password_change' %}" class="field-value-box password-link">Mudar Senha</a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

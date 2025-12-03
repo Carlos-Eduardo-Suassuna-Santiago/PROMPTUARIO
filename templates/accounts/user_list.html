@@ -1,35 +1,165 @@
-{% extends 'base.html' %}
-{% block title %}Lista de Usuários{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gerenciamento de Usuários{% endblock %}
+
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>Usuários</h2>
-        <a href="{% url 'accounts:user_create' %}" class="btn btn-success">Novo Usuário</a>
+
+<div class="container mt-4">
+
+    <!-- ========================= TÍTULO ========================= -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Gerenciamento de Usuários</h1>
+        <a href="{% url 'accounts:register_choice' %}" class="btn-novo-usuario">
+            <i class="fas fa-user-plus"></i> Novo Usuário
+        </a>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Tipo</th>
-                <th>Email</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user_obj in users %}
-            <tr>
-                <td>{{ user_obj.get_full_name }}</td>
-                <td>{{ user_obj.cpf }}</td>
-                <td>{{ user_obj.get_user_type_display }}</td>
-                <td>{{ user_obj.email }}</td>
-                <td>
-                    <a href="{% url 'accounts:user_detail' user_obj.pk %}" class="btn btn-primary">Ver</a>
-                    <a href="{% url 'accounts:user_update' user_obj.pk %}" class="btn btn-secondary">Editar</a>
-                </td>
-            </tr>
+    <br>
+
+    <!-- ========================= FILTROS ========================= -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Filtros</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="get" class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label">Tipo de Usuário</label>
+                    <select name="type" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="admin" {% if request.GET.type == 'admin' %}selected{% endif %}>Administrador</option>
+                        <option value="doctor" {% if request.GET.type == 'doctor' %}selected{% endif %}>Médico</option>
+                        <option value="attendant" {% if request.GET.type == 'attendant' %}selected{% endif %}>Atendente</option>
+                        <option value="patient" {% if request.GET.type == 'patient' %}selected{% endif %}>Paciente</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="filter-btns">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                        <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">Limpar Filtros</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- ========================= TABELA ========================= -->
+    {% if users %}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table custom-table mb-0">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nome Completo</th>
+                            <th>E-mail</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user_obj in users %}
+                        <tr>
+
+                            <td>{{ user_obj.get_full_name }}</td>
+                            <td>{{ user_obj.email }}</td>
+
+                            <td>
+                                <span class="badge bg-{{ user_obj.get_user_type_color }}">
+                                    {{ user_obj.get_user_type_display }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if user_obj.is_active %}
+                                    <span class="badge-login">Ativo</span>
+                                {% else %}
+                                    <span class="badge-logout">Inativo</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- AÇÕES -->
+                            <td style="display:flex; gap:6px; justify-content:center;">
+
+                                <a href="{% url 'accounts:user_detail' pk=user_obj.pk %}" class="action-btn btn-details">
+                                    Detalhes
+                                </a>
+
+                                <a href="{% url 'accounts:user_update' pk=user_obj.pk %}" class="action-btn btn-edit">
+                                    Editar
+                                </a>
+
+                                <a href="{% url 'accounts:user_delete' pk=user_obj.pk %}" class="action-btn btn-delete">
+                                    Excluir
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ========================= PAGINAÇÃO ========================= -->
+    {% if is_paginated %}
+
+<nav aria-label="Page navigation">
+    <div class="pagination-wrapper">
+
+        <!-- PREV (esquerda) -->
+        <div class="pag-nav pag-prev">
+            {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a>
+            {% else %}
+                <span class="page-link disabled">Anterior</span>
+            {% endif %}
+        </div>
+
+        <!-- NÚMEROS (centro) -->
+        <ul class="pagination-centered">
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a></li>
+                {% endif %}
             {% endfor %}
-        </tbody>
-    </table>
+        </ul>
+
+        <!-- NEXT (direita) -->
+        <div class="pag-nav pag-next">
+            {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a>
+            {% else %}
+                <span class="page-link disabled">Próxima</span>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+{% endif %}
+
+    {% else %}
+    <p class="alert alert-warning">Nenhum usuário encontrado.</p>
+    {% endif %}
+
 </div>
+
 {% endblock %}
