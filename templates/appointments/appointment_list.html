@@ -4,9 +4,9 @@
 <div class="card">
     <div class="card-header">
         <h2>Consultas</h2>
-        <a href="{% url 'appointments:appointment_create' %}" class="btn btn-success">Nova Consulta</a>
+        <a href="{% url 'appointments:appointment_create' %}" class="btn-novo-usuario">Nova Consulta</a>
     </div>
-    <table class="table">
+    <table class="custom-table">
         <thead>
             <tr>
                 <th>Data</th>
@@ -37,7 +37,7 @@
                             <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}" class="btn btn-sm btn-primary">Criar Prontuário</a>
                         {% endif %}
                     {% endif %}
-                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-sm btn-info">Detalhes</a>
+                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="action-btn btn-details">Detalhes</a>
                 </td>
             </tr>
             {% endfor %}

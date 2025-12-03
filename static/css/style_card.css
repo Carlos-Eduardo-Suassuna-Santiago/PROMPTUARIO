@@ -79,3 +79,111 @@ AÇÕES RÁPIDAS
     color: white;
     transform: translateY(-4px);
 }
+
+/* =============================
+   CARD USER DETAIL 
+============================= */
+
+/* =============================
+   CARD PRINCIPAL
+============================= */
+.user-form-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #f1f1f1;
+}
+
+/* =============================
+   TÍTULO DA PÁGINA
+============================= */
+.user-form-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    border-left: 5px solid var(--color-primary);
+    padding-left: 10px;
+    margin-bottom: 25px;
+}
+
+/* =============================
+   FIELDSETS
+============================= */
+.user-form-fieldset {
+    border: 1.5px solid #e3e3e3 !important;
+    padding: 20px !important;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.user-form-fieldset legend {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-primary);
+    padding: 0 8px;
+}
+
+/* =============================
+   INPUTS
+============================= */
+.user-form-card input,
+.user-form-card select {
+    border-radius: 8px !important;
+    border: 1px solid #ccc !important;
+    padding: 10px !important;
+}
+
+.user-form-card input:focus,
+.user-form-card select:focus {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(0,169,157,0.15) !important;
+}
+
+/* =============================
+   BOTÕES
+============================= */
+.user-btn-cancel {
+    background: #6c757d;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: none;
+    transition: .2s;
+}
+
+.user-btn-cancel:hover {
+    background: #565e64;
+}
+
+.user-btn-save {
+    background: var(--color-primary);
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    transition: .2s;
+}
+
+.user-btn-save:hover {
+    background: var(--color-secondary);
+}
+
+/* =============================
+   RESPONSIVIDADE
+============================= */
+@media (max-width: 768px) {
+    .user-form-card {
+        padding: 18px;
+    }
+
+    .user-form-title {
+        font-size: 20px;
+    }
+
+    fieldset .row > div {
+        margin-bottom: 12px;
+    }
+}
