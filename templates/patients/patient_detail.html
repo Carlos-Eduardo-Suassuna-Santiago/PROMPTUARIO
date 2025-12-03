@@ -22,6 +22,7 @@
                 </div>
             </div>
             <hr>
+            <br>
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>Contato de Emergência:</strong> {{ patient.emergency_contact_name|default:"Não informado" }}</p>
@@ -34,22 +35,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Abas de Navegação -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="records-tab" data-toggle="tab" href="#records" role="tab">Consultas</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="allergies-tab" data-toggle="tab" href="#allergies" role="tab">Alergias</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="vaccines-tab" data-toggle="tab" href="#vaccines" role="tab">Vacinas</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="medications-tab" data-toggle="tab" href="#medications" role="tab">Medicamentos</a>
-        </li>
-    </ul>
 
     <!-- Conteúdo das Abas -->
     <div class="tab-content" id="myTabContent">

@@ -96,9 +96,13 @@
         </div>
     </div>
       <br>
-     <a href="{% url 'accounts:doctor_schedule' pk=user_obj.doctor_profile.pk %}" class="btn btn-sm btn-primary">
+
+     {% if user_obj.is_doctor and user_obj.doctor_profile %}
+     <a href="{% url 'accounts:doctor_schedule' pk=user_obj.doctor_profile.pk %}" 
+        class="btn btn-sm btn-primary">
         <i class="fas fa-calendar-alt"></i> Gerenciar Agenda
-    </a>
+     </a>
+     {% endif %}
 
 </div>
 {% endblock %}
