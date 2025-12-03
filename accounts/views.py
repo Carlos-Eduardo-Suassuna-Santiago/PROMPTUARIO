@@ -104,7 +104,7 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = User
     template_name = 'accounts/user_list.html'
     context_object_name = 'users'
-    paginate_by = 20
+    paginate_by = 10
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -163,7 +163,7 @@ class AccessLogListView(AdminRequiredMixin, ListView):
     model = AccessLog
     template_name = 'accounts/access_log_list.html'
     context_object_name = 'logs'
-    paginate_by = 50
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset().select_related('user')

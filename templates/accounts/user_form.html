@@ -4,14 +4,7 @@
 {% block title %}{% if form.instance.pk %}Editar Usuário{% else %}Criar Usuário{% endif %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'accounts:user_list' %}">Gerenciamento de Usuários</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% if form.instance.pk %}Editar{% else %}Criar{% endif %} Usuário</li>
-        </ol>
-    </nav>
+<div class="user-form-card">
 
     <h1 class="h3 mb-4">{% if form.instance.pk %}Editar Usuário: {{ form.instance.get_full_name }}{% else %}Criar Novo Usuário{% endif %}</h1>
 

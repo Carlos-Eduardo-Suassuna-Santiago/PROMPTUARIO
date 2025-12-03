@@ -6,45 +6,13 @@
 {% block content %}
 
 <style>
-    /* Tabela com espaçamento e quebra de texto */
-    .logs-table {
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    .logs-table th, .logs-table td {
-        padding: 12px !important;
-        vertical-align: middle !important;
-        text-align: center !important; /* CENTRALIZA TUDO */
-        word-wrap: break-word;
-        white-space: normal;
-    }
-
-    /* Largura por coluna */
-    .col-id       { width: 6%;  }
-    .col-user     { width: 18%; }
-    .col-action   { width: 15%; }
-    .col-datetime { width: 18%; }
-    .col-ip       { width: 12%; }
-    .col-details  { width: 30%; }
-
-    /* Cores personalizadas por ação */
-    .action-login {
-        background-color: #28a745 !important; /* verde */
-    }
-
-    .action-logout {
-        background-color: #dc3545 !important; /* vermelho */
-    }
-
-    .action-view {
-        background-color: #0d6efd !important; /* azul */
-    }
+    
 </style>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">Logs de Acesso (LGPD)</h1>
+        <br>
     </div>
 
     <div class="card shadow-sm mb-4">
@@ -69,7 +37,7 @@
             </form>
         </div>
     </div>
-
+<br>
     <div class="table-responsive">
         <table class="table table-hover table-striped logs-table">
             <thead class="table-dark text-center">
@@ -122,14 +90,21 @@
     </div>
 
     {% if is_paginated %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a></li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-            {% endif %}
 
+<nav aria-label="Page navigation">
+    <div class="pagination-wrapper">
+
+        <!-- PREV (esquerda) -->
+        <div class="pag-nav pag-prev">
+            {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a>
+            {% else %}
+                <span class="page-link disabled">Anterior</span>
+            {% endif %}
+        </div>
+
+        <!-- NÚMEROS (centro) -->
+        <ul class="pagination-centered">
             {% for i in page_obj.paginator.page_range %}
                 {% if page_obj.number == i %}
                     <li class="page-item active"><span class="page-link">{{ i }}</span></li>
@@ -137,15 +112,20 @@
                     <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a></li>
                 {% endif %}
             {% endfor %}
-
-            {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a></li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
-            {% endif %}
         </ul>
-    </nav>
-    {% endif %}
+
+        <!-- NEXT (direita) -->
+        <div class="pag-nav pag-next">
+            {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a>
+            {% else %}
+                <span class="page-link disabled">Próxima</span>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+{% endif %}
 </div>
 
 {% endblock %}

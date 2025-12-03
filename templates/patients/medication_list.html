@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Medicamentos{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header-section">
+        <h1>Medicações Registradas</h1>
+   
+    </div>
+
+    
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Medicação</th>
+                    <th>Tipo de Uso</th>
+                    <th>Dose</th>
+                    <th>Período</th>
+                </tr>
+            </thead>
+            
+        </table>
+    </div>
+    {% if patients %} <!--precisa ajustar-->
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Anterior</a>
+        {% endif %}
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Próxima</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p class="alert alert-warning">Nenhuma medicação registrada.</p>
+    {% endif %}
+</div>
+{% endblock %}
