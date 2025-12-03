@@ -17,10 +17,21 @@
                 <tr>
                     <th>Medicação</th>
                     <th>Tipo de Uso</th>
-                    <th>Dose</th>
+                    <th>Dose</th>  
                     <th>Período</th>
+                        
                 </tr>
             </thead>
+            <tbody>
+               
+                <tr>
+                    <td>Cefalexina</td>
+                    <td>Oral</td>
+                    <td>500mg</td>
+                    <td>7 dias</td>
+                </tr>
+                
+            </tbody>
             
         </table>
     </div>
@@ -40,7 +51,7 @@
     {% endif %}
 
     {% else %}
-    <p class="alert alert-warning">Nenhuma medicação registrada.</p>
+    <!-- <p class="alert alert-warning">Nenhuma medicação registrada.</p> -->
     {% endif %}
 </div>
 {% endblock %}
