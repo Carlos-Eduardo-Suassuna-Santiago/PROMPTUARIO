@@ -1,0 +1,217 @@
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.data-table th {
+    background-color: var(--light-gray);
+    color: var(--dark-text);
+    font-weight: 600;
+}
+.data-table tr:hover {
+    background-color: #f5f5f5;
+}
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-primary { background-color: var(--primary-color); }
+.btn-info { background-color: var(--primary-color); }
+.btn-danger { background-color: #DC3545; }
+.btn-warning { background-color: #f0ad4e; }
+.btn-success { background-color: #28a745; }
+.action-buttons a {
+    margin-right: 6px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 1rem;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.search-form input[type="text"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+}
+
+.btn-search {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ===== Layout Geral ===== */
+.agenda-container {
+    margin-top: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* ===== CARD DO DIA ===== */
+.agenda-day {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.agenda-day-title {
+    font-size: 22px;
+    color: var(--color-primary);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* ===== CONSULTA ===== */
+.agenda-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+    gap: 20px;
+}
+
+.agenda-item:last-child {
+    border-bottom: none;
+}
+
+/* Horário */
+.agenda-time {
+    font-size: 22px;
+    font-weight: bold;
+    width: 100px;
+}
+
+/* Informações principais */
+.agenda-info {
+    flex: 1;
+}
+
+.agenda-status {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Botões */
+.agenda-actions .btn {
+    margin-left: 4px;
+}
+
+
+/* Remove aparência de card dos blocos */
+.detail-box {
+    padding: 4px 0;
+    border: none;
+    background: transparent;
+}
+
+/* Rótulo */
+.detail-box .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+/* Valor */
+.detail-box .value {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Links de valor */
+.detail-box .link {
+    text-decoration: none;
+    color: #0d6efd;
+}
+
+.detail-box .link:hover {
+    text-decoration: underline;
+}
+
+/* Status */
+.status-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #e9ecef;
+    color: #555;
+}
+
+/* Exemplo de cores por status (opcional) */
+.status-pill.confirmado {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-pill.pendente {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.status-pill.cancelado {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* Títulos */
+h2 {
+    font-weight: 700;
+}
+
+/* Botões */
+.card .btn {
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 10px !important;
+}
+
+/* Ajuste dos cards principais */
+.card {
+    border-radius: 16px !important;
+}
+
+.card-body {
+    border-radius: 16px;
+}

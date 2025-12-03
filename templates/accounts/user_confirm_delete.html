@@ -4,14 +4,6 @@
 
 {% block content %}
 <div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'accounts:user_list' %}">Gerenciamento de Usuários</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Excluir Usuário</li>
-        </ol>
-    </nav>
-
     <div class="card shadow-sm border-danger">
         <div class="card-header bg-danger text-white">
             <h1 class="h3 mb-0">Confirmação de Exclusão</h1>

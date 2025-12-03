@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
     <link rel="stylesheet" href="{% static 'css/tabela.css' %}">
+    <link rel="stylesheet" href="{% static 'css/attendant.css' %}">
     <link rel="stylesheet" href="{% static 'css/paginated.css' %}">
     <link rel="stylesheet" href="{% static 'css/password.css' %}">
 
@@ -29,8 +30,7 @@
                 <a class="user-avatar" 
                     href="{% url 'accounts:profile' %}"
                     style="background-image: url(
-                            '{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static "images/default-avatar.png" %}{% endif %}'
-                    );">
+                            '{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static "images/default-avatar.png" %}{% endif %}');">
                 </a>
 
                 <form method="post" action="{% url 'accounts:logout' %}">
@@ -90,7 +90,7 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="#">
+                        <a href="{% url 'appointments:appointment_list' %}">
                             <i class="fas fa-calendar-alt"></i> 
                             <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
                         </a>
@@ -120,10 +120,10 @@
                     {% endif %}
                     
                     {% if user.is_doctor or user.is_attendant %}
-                    <li>
+                    <li class="active">
                         <a href="{% url 'patients:patient_list' %}">
-                        <i class="fas fa-user-friends"></i> 
-                        <img src="{% static 'images/Home.png' %}" alt="Ilustração Pacientes"> Pacientes
+                        <i class="fas fa-home"></i> 
+                        <img class="icon" src="{% static 'images/paciente (3) 1.png' %}" alt="Ilustração Pacientes"> Pacientes
                         </a>
                     </li>
                     <li><a href="{% url 'appointments:appointment_list' %}"><i class="fas fa-user-md"></i> Acompanhamento</a></li>
@@ -137,7 +137,7 @@
                     <li><a href="#"><i class="fas fa-pills"></i> Medicamentos</a></li>
                     <li><a href="#"><i class="fas fa-allergies"></i> Alergias</a></li>
                     <li class="active">
-                        <a href="#">
+                        <a href="{% url 'appointments:appointment_list' %}">
                             <i class="fas fa-calendar-alt"></i> 
                             <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
                         </a>
