@@ -102,19 +102,16 @@
                     {% if user.is_admin %}
                     <li class="active">
                         <a href="{% url 'accounts:user_list' %}">
-                           <i class="fas fa-home"></i>
                            <img class="icon"  src="{% static 'images/conta (1) 1.png' %}" alt="Ilustração Usuarios">Usuários
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{% url 'accounts:doctor_list' %}"
-                           <i class="fas fa-home"></i>
+                        <a href="{% url 'accounts:doctor_list' %}">
                            <img class="icon"  src="{% static 'images/medico (2) 1.png' %}" alt="Ilustração Medicos">Médicos
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'accounts:access_log_list' %}">
-                           <i class="fas fa-home"></i>
                            <img class="icon"  src="{% static 'images/escudo-de-seguranca (1) 1.png' %}" alt="Ilustração Logs">Logs (LGPD)
                         </a>
                     </li>
@@ -144,9 +141,8 @@
                         </a>
                     </li>    
                     {% endif %}                
-=========
                     
-                    {% if not user.is_doctor %}
+                    {% if user.is_patient %}
                         <li class="active">
                             <a href="#">
                                 <img class="icon"  src="{% static 'images/verifica (1) 1.png' %}" alt="Ilustração Exames">Exames
@@ -201,30 +197,6 @@
                         </a>
                     </li>
                     
-                    {% if user.is_admin %}
-                        <li>
-                            <a href="{% url 'accounts:user_list' %}">
-                                <img class="icon" src="{% static 'images/user_admin.png' %}" alt="Ilustração Usuários"> Usuários
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'accounts:doctor_list' %}">
-                                <img class="icon" src="{% static 'images/doctor_admin.png' %}" alt="Ilustração Médicos"> Médicos
-                            </a>
-                        </li>
-                        <li>
-                             <a href="{% url 'reports:doctor_report' %}">
-                                <img class="icon" src="{% static 'images/relatorios.png' %}" alt="Ilustração Relatórios">Relatórios
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'accounts:access_log_list' %}">
-                                <img class="icon" src="{% static 'images/logs.png' %}" alt="Ilustração Logs">Logs (LGPD)
-                            </a>
-                        </li>
-                    {% endif %}
-                    
->>>>>>>>> Temporary merge branch 2
                 </ul>
             </nav>
 
