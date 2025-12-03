@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Promptuario{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{% static 'images/Logo.png' %}">
-    
+    <link rel="icon" type="image/png" href="{% static 'images/hospital 1.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
@@ -14,8 +13,6 @@
     <link rel="stylesheet" href="{% static 'css/attendant.css' %}">
     <link rel="stylesheet" href="{% static 'css/paginated.css' %}">
     <link rel="stylesheet" href="{% static 'css/password.css' %}">
-    <link rel="stylesheet" href="{% static 'css/medical_record.css' %}"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -51,7 +48,7 @@
         <aside class="aside-menu">
             <div class="menu-header">
                 <a class="logo" href="{% url 'accounts:dashboard' %}">
-                    <i class="fas fa-notes-medical" style="display:none;"></i>
+                    <i class="fas fa-notes-medical"></i>
                     <img class="icon" src="{% static 'images/Logo.png' %}" alt="Logo Promptuario">Promptuario</a>
             </div>
             
@@ -59,26 +56,28 @@
                 <ul>
                     <li class="active">
                         <a href="{% url 'accounts:dashboard' %}">
+                            <i class="fas fa-home"></i> 
                             <img class="icon"  src="{% static 'images/Home.png' %}" alt="Ilustração Dashboard">Dashboard
                         </a>
                     </li>
-                    <!-- =============================== -->
-                    <!-- REMOVENDO EXAMES ETC. PARA ADM -->
-                    <!-- =============================== -->
+
                     {% if user.user_type != "admin" %}
                     <li class="active">
                         <a href="#">
-                            <img class="icon"  src="{% static 'images/verifica (1) 1.png' %}" alt="Ilustração Exames">Exames
+                            <img class="icon" src="{% static 'images/verifica (1) 1.png' %}" alt="Exames">Exames
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'patients:vaccine_list' %}">
-                            <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacinas
+               <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacina
+
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'patients:medication_list' %}">
+
                             <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
+
                         </a>
                     </li>
                     <li class="active">
@@ -93,8 +92,8 @@
                             </a>
                         </li>    
                         {% endif %}
+
                     {% endif %}
-                    <!-- =============================== -->
 
                     {% if user.is_admin %}
                         <li class="active">
@@ -136,39 +135,26 @@
                             </a>
                         </li>
                     {% endif %}
-                    
-                    {% if user.is_doctor or user.is_attendant %}
-                        <li class="active">
-                            <a href="{% url 'patients:patient_list' %}">
-                            <img class="icon" src="{% static 'images/paciente (5) 1.png' %}" alt="Ilustração Pacientes"> Pacientes
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="{% url 'appointments:appointment_list' %}">
-                                <img class="icon" src="{% static 'images/equipe-medica (3) 1.png' %}" alt="Ilustração Acompanhamento"> Acompanhamento
-                            </a>
-                        </li>
-                    {% endif %}
-                    
+
                     {% if user.is_doctor %}
-                        <li class="active">
-                            <a href="{% url 'medical_records:medical_record_list' %}">
-                                <img class="icon" src="{% static 'images/medical_documentation.png' %}" alt="Ilustração Prescrição"> Prescrição Eletrônica
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="{% url 'reports:report_list' %}">
-                                <img class="icon" src="{% static 'images/plano.png' %}" alt="Ilustração Relatórios">Relatórios
-                            </a>
-                        </li>
+                    <li class="active">
+                        <a href="{% url 'medical_records:medical_record_list' %}">
+                            <img class="icon" src="{% static 'images/medical_documentation.png' %}" alt="Prescrição"> Prescrição Eletrônica
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'reports:report_list' %}">
+                            <img class="icon" src="{% static 'images/plano.png' %}" alt="Relatórios">Relatórios
+                        </a>
+                    </li>
                     {% endif %}
 
                     <li class="active">
                         <a href="{% url 'appointments:appointment_list' %}">
-                            <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
+                            <img class="icon" src="{% static 'images/livro (1) 1.png' %}" alt="Agenda">Agenda
                         </a>
                     </li>
-                    
+
                 </ul>
             </nav>
 
@@ -187,8 +173,8 @@
             </div>
 
             <div class="menu-ajuda">
-                <a href="#">
-                    <img class="icon"  src="{% static 'images/ideia (1) 1.png' %}" alt="Ilustração Lampada"> Ajuda
+                <a href="#"><i class="fas fa-question-circle"></i>
+                    <img class="icon" src="{% static 'images/ideia (1) 1.png' %}" alt="Ajuda"> Ajuda
                 </a>
             </div>
 
@@ -222,7 +208,6 @@
     </div>
 
     </footer>
-
 
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
