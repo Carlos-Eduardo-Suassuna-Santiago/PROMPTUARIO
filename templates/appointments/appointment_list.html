@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
-<<<<<<< HEAD
 {% block title %}Agenda de Consultas{% endblock %}
-=======
 {% load static %}  
 {% block title %}Lista de Consultas{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/apointments.css' %}">
 {% endblock %}
->>>>>>> reafctor/doctor-pages
+{% block title %}Agenda de Consultas{% endblock %}
 
 {% block content %}
 <div class="container agenda-container">
@@ -20,7 +18,6 @@
             Nova Consulta
         </a>
     </div>
-<<<<<<< HEAD
 
     {% if appointments %}
 
@@ -50,7 +47,6 @@
 
                 <!-- Ações -->
                 <div class="agenda-actions">
-=======
     <table class="table">
         <thead>
             <tr>
@@ -86,7 +82,35 @@
                 <td>{{ appointment.get_status_display }}</td>
                 
                 <td>
->>>>>>> reafctor/doctor-pages
+
+    {% if appointments %}
+
+        {% regroup appointments by scheduled_date as appointments_by_day %}
+
+        {% for day in appointments_by_day %}
+
+        <div class="agenda-day">
+            <h3 class="agenda-day-title">
+                📅 {{ day.grouper|date:"l" }} – {{ day.grouper|date:"d/m/Y" }}
+            </h3>
+
+            {% for appointment in day.list %}
+            <div class="agenda-item">
+
+                <!-- Horário -->
+                <div class="agenda-time">
+                    {{ appointment.scheduled_time|time:"H:i" }}
+                </div>
+
+                <!-- Informações -->
+                <div class="agenda-info">
+                    <strong>{{ appointment.patient.user.get_full_name }}</strong><br>
+                    Dr(a). {{ appointment.doctor.user.get_full_name }}<br>
+                    <span class="agenda-status">{{ appointment.get_status_display }}</span>
+                </div>
+
+                <!-- Ações -->
+                <div class="agenda-actions">
                     {% if user.is_doctor %}
                         {% if appointment.medical_record %}
                             <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
