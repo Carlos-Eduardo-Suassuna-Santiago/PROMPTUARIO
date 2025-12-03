@@ -68,79 +68,51 @@
                     {% if user.user_type != "admin" %}
                     <li class="active">
                         <a href="#">
-                            <i class="fas fa-home"></i> 
                             <img class="icon"  src="{% static 'images/verifica (1) 1.png' %}" alt="Ilustração Exames">Exames
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'patients:vaccine_list' %}">
-                            <i class="fas fa-syringe"></i> 
                             <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacinas
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'patients:medication_list' %}">
-                            <i class="fas fa-pills"></i> 
                             <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
                         </a>
                     </li>
                     <li class="active">
                         <a href="{% url 'patients:allergy_list' %}">
-                            <i class="fas fa-allergies"></i> 
                             <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="{% url 'appointments:appointment_list' %}">
-                            <i class="fas fa-calendar-alt"></i> 
-                            <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
-                        </a>
-                    </li>    
+                        {% if not user.is_doctor %}
+                        <li class="active">
+                            <a href="{% url 'appointments:appointment_list' %}">
+                                <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
+                            </a>
+                        </li>    
+                        {% endif %}
                     {% endif %}
                     <!-- =============================== -->
 
                     {% if user.is_admin %}
-                    <li class="active">
-                        <a href="{% url 'accounts:user_list' %}">
-                           <img class="icon"  src="{% static 'images/conta (1) 1.png' %}" alt="Ilustração Usuarios">Usuários
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'accounts:doctor_list' %}">
-                           <img class="icon"  src="{% static 'images/medico (2) 1.png' %}" alt="Ilustração Medicos">Médicos
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'accounts:access_log_list' %}">
-                           <img class="icon"  src="{% static 'images/escudo-de-seguranca (1) 1.png' %}" alt="Ilustração Logs">Logs (LGPD)
-                        </a>
-                    </li>
-                    {% endif %}
-                    
-                    {% if user.is_doctor or user.is_attendant %}
-                    <li class="active">
-                        <a href="{% url 'patients:patient_list' %}">
-                        <i class="fas fa-home"></i> 
-                        <img class="icon" src="{% static 'images/paciente (3) 1.png' %}" alt="Ilustração Pacientes"> Pacientes
-                        </a>
-                    </li>
-                    <li><a href="{% url 'appointments:appointment_list' %}"><i class="fas fa-user-md"></i> Acompanhamento</a></li>
-                    {% endif %}
-                    
-                    {% if user.is_doctor %}
-                    <li><a href="{% url 'medical_records:medical_record_list' %}"><i class="fas fa-file-signature"></i> Prescrição Eletrônica</a></li>
-                    <li><a href="{% url 'reports:report_list' %}">Relatórios</a></li>
-                    <li><a href="#"><i class="fas fa-heartbeat"></i> Exames</a></li>
-                    <li><a href="#"><i class="fas fa-syringe"></i> Vacinas</a></li>
-                    <li><a href="#"><i class="fas fa-pills"></i> Medicamentos</a></li>
-                    <li><a href="#"><i class="fas fa-allergies"></i> Alergias</a></li>
-                    <li class="active">
-                        <a href="{% url 'appointments:appointment_list' %}">
-                            <i class="fas fa-calendar-alt"></i> 
-                            <img class="icon"  src="{% static 'images/livro (1) 1.png' %}" alt="Ilustração Agenda">Agenda
-                        </a>
-                    </li>    
-                    {% endif %}                
+                        <li class="active">
+                            <a href="{% url 'accounts:user_list' %}">
+                            <img class="icon"  src="{% static 'images/conta (1) 1.png' %}" alt="Ilustração Usuarios">Usuários
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{% url 'accounts:doctor_list' %}">
+                            <img class="icon"  src="{% static 'images/medico (2) 1.png' %}" alt="Ilustração Medicos">Médicos
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{% url 'accounts:access_log_list' %}">
+                            <img class="icon"  src="{% static 'images/escudo-de-seguranca (1) 1.png' %}" alt="Ilustração Logs">Logs (LGPD)
+                            </a>
+                        </li>
+                    {% endif %}               
                     
                     {% if user.is_patient %}
                         <li class="active">
