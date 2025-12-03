@@ -3,6 +3,10 @@
 
 {% block title %}Dashboard do Paciente{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_paciente.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
 
@@ -10,35 +14,35 @@
         
         <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'appointments:appointment_list' %}" class="icon-link-card">
-                <i class="fas fa-heartbeat icon-lg"></i>
+                <img class="icon-lg" src="{% static 'images/verifica 1.png' %}" alt="Minhas Consultas">
                 <span class="card-text">Minhas Consultas</span>
             </a>
         </div>
 
         <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:vaccine_list' %}" class="icon-link-card">
-                <i class="fas fa-syringe icon-lg"></i>
+                <img class="icon-lg" src="{% static 'images/seringa 1.png' %}" alt="Vacinas">
                 <span class="card-text">Vacinas</span>
             </a>
         </div>
 
         <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:medication_list' %}" class="icon-link-card">
-                <i class="fas fa-pills icon-lg"></i>
+                <img class="icon-lg" src="{% static 'images/medicina (1) 1.png' %}" alt="Medicamentos">
                 <span class="card-text">Medicamentos</span>
             </a>
         </div>
         
         <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'appointments:appointment_create' %}" class="icon-link-card">
-                <i class="fas fa-calendar-plus icon-lg"></i>
+                <img class="icon-lg" src="{% static 'images/calendario 1.png' %}" alt="Agendar Consulta">
                 <span class="card-text">Agendar Consulta</span>
             </a>
         </div>
 
         <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:my_medical_record' %}" class="icon-link-card">
-                <i class="fas fa-book-medical icon-lg"></i>
+                <img class="icon-lg" src="{% static 'images/patient 1.png' %}" alt="Meu Prontuário">
                 <span class="card-text">Meu Prontuário</span>
             </a>
         </div>
