@@ -1,0 +1,249 @@
+/* ======================================================= */
+/* ESQUEMA DE CORES GERAL E VARIÁVEIS - BASEADO APENAS EM TURQUESA */
+/* ======================================================= */
+:root {
+    --main-turq: #16a085; /* Turquesa Escuro/Principal */
+    --light-turq: #1abc9c; /* Turquesa Claro/Ação */
+    --very-light-turq-bg: #e0f2f1; /* Fundo de cabeçalho leve/Fundo da página */
+    --text-color-dark: #333; /* Cor padrão do texto */
+    --text-color-muted: #6c757d; /* Cor para texto "muted" */
+    
+    /* Cores de Status RE-MAPEADAS para Turquesa */
+    --color-primary: var(--main-turq);       /* Turquesa Principal */
+    --color-success: var(--light-turq);      /* Turquesa Claro (Substitui Verde) */
+    --color-info: var(--main-turq);          /* Turquesa Principal (Substitui Azul) */
+    --color-secondary: var(--light-turq);             /* Cinza-Turquesa Neutro (Substitui Cinza Escuro) */
+    --color-danger: var(--light-turq);                /* Cinza Médio Neutro (Substitui Vermelho, para 'Cancelado') */
+    --color-dark-variant: var(--light-turq);          /* Turquesa Muito Escuro (Substitui Preto/Dark) */
+
+    --body-bg: #f4f7f6; /* Fundo da página */
+    --card-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Sombra suave */
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color-dark);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+/* Container principal (Simula .container e .mt-4) */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto; 
+    padding: 0 15px; 
+}
+
+/* ======================================================= */
+/* TÍTULO E BOTÃO DE IMPRIMIR */
+/* ======================================================= */
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.h3, h1 {
+    color: var(--main-turq);
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+/* Botão Primário (Imprimir) */
+.btn-primary {
+    background-color: var(--light-turq); /* Turquesa Claro */
+    border: 1px solid var(--light-turq);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--main-turq);
+    border-color: var(--main-turq);
+}
+
+.fas {
+    margin-right: 0.5rem;
+}
+
+/* ======================================================= */
+/* GRID SYSTEM (Simulação .row e .col) */
+/* ======================================================= */
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px; 
+    margin-left: -15px;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Colunas - mobile first */
+[class^="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* Telas médias (Simula .col-md-4) */
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+/* Telas grandes (Simula .col-lg-6) */
+@media (min-width: 992px) {
+    .col-lg-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+
+/* ======================================================= */
+/* CARDS DE METRICAS (Card 1, 2, 3) */
+/* ======================================================= */
+
+.card {
+    border: none;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: var(--card-shadow); 
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Estilos de cor para o título do Card de Métricas - Mapeados para Turquesa */
+.text-primary { color: var(--color-primary) !important; } /* Turquesa Principal */
+.text-success { color: var(--color-success) !important; } /* Turquesa Claro */
+.text-info { color: var(--color-info) !important; } /* Turquesa Principal */
+.text-muted { color: var(--text-color-muted) !important; font-size: 0.9rem; }
+
+/* Display 4 (Simula texto grande) */
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+/* ======================================================= */
+/* CARDS DE LISTA (Agendamentos e Diagnósticos) */
+/* ======================================================= */
+
+/* Cabeçalho de Lista (Simula .bg-secondary .text-white) */
+.card-header.bg-secondary {
+    background-color: var(--color-secondary); /* Cinza Turquesa Neutro */
+    color: white;
+    padding: 1rem 1.25rem;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* Cabeçalho de Próximos Passos (Simula .bg-dark) */
+.card-header.bg-dark {
+    background-color: var(--color-dark-variant); /* Turquesa Muito Escuro */
+    color: white;
+    padding: 1rem 1.25rem;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-header h5 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Lista de Grupos (Simula .list-group) */
+.list-group {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+/* Item da Lista (Simula .list-group-item) */
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    background-color: white;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    color: var(--text-color-dark);
+    font-size: 0.95rem;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Flexbox para items (Simula .d-flex justify-content-between) */
+.list-group-item.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Badge/Pill (Simula .badge .rounded-pill) */
+.badge {
+    padding: 0.35em 0.65em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 1rem; /* Mais arredondado que o padrão */
+    color: white;
+}
+
+/* Cores dos Badges Mapeadas para Turquesa e Neutros */
+.bg-success { background-color: var(--color-success) !important; } /* Turquesa Claro (Concluídas) */
+.bg-danger { background-color: var(--color-danger) !important; } /* Cinza Neutro (Canceladas) */
+.bg-info { background-color: var(--color-info) !important; } /* Turquesa Principal (Recentes) */
+.bg-primary { background-color: var(--color-primary) !important; } /* Turquesa Principal (Diagnósticos) */
+
+/* ======================================================= */
+/* ESTILOS DE IMPRESSÃO (OPCIONAL) */
+/* ======================================================= */
+
+@media print {
+    .btn, .d-flex button {
+        display: none; /* Esconde o botão de impressão */
+    }
+    .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}

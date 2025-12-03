@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Agenda de Consultas{% endblock %}
+{% load static %}  
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/apointments.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container agenda-container">
 
     <div class="header-section">
         <h1>Agenda de Consultas</h1>
-
         <a href="{% url 'appointments:appointment_create' %}" class="btn btn-primary">
             Nova Consulta
         </a>
@@ -26,33 +30,35 @@
             {% for appointment in day.list %}
             <div class="agenda-item">
 
-                <!-- Horário -->
                 <div class="agenda-time">
                     {{ appointment.scheduled_time|time:"H:i" }}
                 </div>
 
-                <!-- Informações -->
                 <div class="agenda-info">
-                    <strong>{{ appointment.patient.user.get_full_name }}</strong><br>
+                    <strong>
+                        <a href="{% url 'patients:patient_detail' pk=appointment.patient.pk %}">
+                            {{ appointment.patient.user.get_full_name }}
+                        </a>
+                    </strong><br>
                     Dr(a). {{ appointment.doctor.user.get_full_name }}<br>
                     <span class="agenda-status">{{ appointment.get_status_display }}</span>
                 </div>
 
-                <!-- Ações -->
                 <div class="agenda-actions">
                     {% if user.is_doctor %}
                         {% if appointment.medical_record %}
                             <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
-                               class="btn btn-sm btn-success">Ver Prontuário</a>
+                               class="btn btn-sm btn-info">Ver Prontuário</a>
                             <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
-                               class="btn btn-sm btn-warning">Editar</a>
+                               class="btn btn-sm btn-warning">Editar Prontuário</a>
                         {% else %}
                             <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
                                class="btn btn-sm btn-primary">Criar Prontuário</a>
                         {% endif %}
                     {% endif %}
 
-                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-info">Detalhes</a>
+                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" 
+                       class="btn btn-sm btn-secondary">Detalhes</a>
                 </div>
             </div>
             {% endfor %}
@@ -61,7 +67,8 @@
         {% endfor %}
 
     {% else %}
-    <p class="alert alert-warning">Nenhuma consulta encontrada.</p>
+        <p class="alert alert-warning">Nenhuma consulta encontrada.</p>
     {% endif %}
+
 </div>
 {% endblock %}

@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}  {% block title %}Prontuário de {{ patient.user.get_full_name }}{% endblock %}
 
-{% block title %}Prontuário de {{ patient.user.get_full_name }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/patient.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Cabeçalho do Paciente -->
     <div class="card mb-4">
         <div class="card-header">
             <h2 class="mb-0">Prontuário Eletrônico</h2>
@@ -36,9 +38,21 @@
         </div>
     </div>
 
-    <!-- Conteúdo das Abas -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="records-tab" data-toggle="tab" href="#records" role="tab">Consultas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="allergies-tab" data-toggle="tab" href="#allergies" role="tab">Alergias</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="vaccines-tab" data-toggle="tab" href="#vaccines" role="tab">Vacinas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="medications-tab" data-toggle="tab" href="#medications" role="tab">Medicamentos</a>
+        </li>
+    </ul>
     <div class="tab-content" id="myTabContent">
-        <!-- Consultas -->
         <div class="tab-pane fade show active" id="records" role="tabpanel">
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -64,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Alergias -->
         <div class="tab-pane fade" id="allergies" role="tabpanel">
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -88,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Vacinas -->
         <div class="tab-pane fade" id="vaccines" role="tabpanel">
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -111,7 +123,6 @@
             </div>
         </div>
 
-        <!-- Medicamentos -->
         <div class="tab-pane fade" id="medications" role="tabpanel">
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
