@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Promptuario{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{% static 'images/hospital 1.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
@@ -64,29 +64,28 @@
                     </li>
 
                     {% if user.user_type != "admin" %}
-                    <li class="active">
-                        <a href="#">
-                            <img class="icon" src="{% static 'images/verifica (1) 1.png' %}" alt="Exames">Exames
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'patients:vaccine_list' %}">
-               <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacina
+                            <li class="active">
+                                <a href="#">
+                                    <img class="icon" src="{% static 'images/verifica (1) 1.png' %}" alt="Exames">Exames
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{% url 'patients:vaccine_list' %}">
+                                <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacina
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{% url 'patients:medication_list' %}">
 
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'patients:medication_list' %}">
+                                    <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
 
-                            <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
-
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'patients:allergy_list' %}">
-                            <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
-                        </a>
-                    </li>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{% url 'patients:allergy_list' %}">
+                                    <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
+                                </a>
+                            </li>
                         {% if not user.is_doctor %}
                         <li class="active">
                             <a href="{% url 'appointments:appointment_list' %}">
@@ -114,29 +113,6 @@
                             </a>
                         </li>
                     {% endif %}               
-                    
-                    {% if user.is_patient %}
-                        <li class="active">
-                            <a href="#">
-                                <img class="icon"  src="{% static 'images/verifica (1) 1.png' %}" alt="Ilustração Exames">Exames
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="#">
-                                <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacinas
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="#">
-                                <img class="icon"  src="{% static 'images/medicina (2) 1.png' %}" alt="Ilustração Medicamentos">Medicamentos
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="#">
-                                <img class="icon"  src="{% static 'images/dieta(1) 1.png' %}" alt="Ilustração Alergias">Alergias
-                            </a>
-                        </li>
-                    {% endif %}
 
                     {% if user.is_doctor %}
                     <li class="active">

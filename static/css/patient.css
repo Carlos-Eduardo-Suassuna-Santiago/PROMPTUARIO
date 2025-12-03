@@ -75,8 +75,6 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* ... (Regras de busca, tabela, paginação da lista de pacientes omitidas para foco, mas manter no seu arquivo) ... */
-
 /* --- ESTILOS ESPECÍFICOS DO PRONTUÁRIO --- */
 
 /* Título e detalhes do paciente */
@@ -268,4 +266,3 @@ hr {
 .btn-info:hover {
     background-color: var(--main-turq);
 }
-
