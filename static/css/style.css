@@ -329,7 +329,7 @@ ul {
     text-align: center;
     /* Fundo verde-água da imagem */
     background-color: var(--color-primary); 
-    color: var(--color-background); /* Texto e Ícone brancos */
+    color: #FFFFFF; /* Texto e Ícone brancos */
     border-radius: 8px; /* Borda levemente arredondada */
     padding: 15px 10px; /* Preenchimento interno */
     min-height: 150px; /* Altura mínima para padronização */

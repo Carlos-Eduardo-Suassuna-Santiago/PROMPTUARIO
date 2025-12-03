@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
+{% load static %} <!-- CORREÇÃO: Necessário para carregar o CSS -->
+
+{% block title %}Lista de Prontuários{% endblock %}
+
+{% block extra_css %}
+    <!-- Link para o novo arquivo CSS -->
+    <link rel="stylesheet" href="{% static 'css/medical_record.css' %}">
+{% endblock %}
 
 {% block content %}
-<h2>Lista de Prontuários</h2>
+<div class="container"> <!-- Div container para centralizar o layout -->
+    <h2>Lista de Prontuários</h2>
 
-<ul>
-    {% for record in records %}
-        <li>
-            {{ record.patient }} - {{ record.created_at }}
-        </li>
-    {% empty %}
-        <li>Nenhum prontuário encontrado.</li>
-    {% endfor %}
-</ul>
-
+    <ul>
+        {% for record in records %}
+            <li>
+                <!-- Exemplo de formatação para destacar o paciente -->
+                <strong>{{ record.patient }}</strong> - {{ record.created_at|date:"d/m/Y H:i" }}
+            </li>
+        {% empty %}
+            <!-- Classe para estilizar a mensagem de lista vazia -->
+            <li class="empty-list-message">Nenhum prontuário encontrado.</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
