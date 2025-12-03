@@ -3,6 +3,10 @@
 
 {% block title %}Detalhes da Consulta #{{ appointment.pk }}{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/apointments.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
 
@@ -28,6 +32,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
 
     <div class="container py-4">
 
@@ -37,6 +42,11 @@
             <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary rounded-3">
                 ← Voltar
             </a>
+=======
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-4">Informações Principais</h5>
+>>>>>>> reafctor/doctor-pages
         </div>
 
         <!-- CARD PRINCIPAL -->

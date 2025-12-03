@@ -1,0 +1,158 @@
+/*
+    Esquema de Cores Turquesa da Imagem de Referência
+*/
+:root {
+    --main-turq: #16a085; /* Turquesa Escuro/Principal */
+    --light-turq: #1abc9c; /* Turquesa Claro */
+    --very-light-turq-bg: #e0f2f1; /* Fundo de caixas claras */
+    --text-color-dark: #333; /* Cor padrão do texto (escuro) */
+}
+
+body {
+    background-color: #f4f7f6;
+    color: var(--text-color-dark); /* Texto base escuro */
+}
+
+/* Título Principal */
+h1 {
+    color: var(--main-turq); 
+    font-weight: 600;
+}
+
+/* 🚨 CORREÇÃO DE LAYOUT: USANDO FLEXBOX PURO (Mantido para layout lado a lado) */
+.row {
+    display: flex; 
+    flex-wrap: wrap; 
+    margin-bottom: 30px; 
+    margin-left: -15px; 
+    margin-right: -15px;
+}
+
+.col-md-4, .col-md-5, .col-md-7 {
+    padding-left: 15px; 
+    padding-right: 15px;
+    box-sizing: border-box; 
+    margin-bottom: 1.5rem; 
+}
+
+.col-md-4 { width: 33.333333%; }
+.col-md-5 { width: 41.666667%; }
+.col-md-7 { width: 58.333333%; }
+
+@media (max-width: 768px) {
+    .col-md-4, .col-md-5, .col-md-7 {
+        width: 100%;
+    }
+}
+/* FIM DA CORREÇÃO DE LAYOUT */
+
+
+/* 1. Cards de Resumo (FUNDO BRANCO e TEXTO TURQUESA) */
+.custom-card {
+    background-color: white; /* 🚨 FUNDO BRANCO */
+    color: var(--text-color-dark); /* Texto base escuro para o card */
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    min-height: 180px; 
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; 
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+}
+
+.custom-card .card-title {
+    font-weight: 600;
+    color: var(--main-turq) !important; /* 🚨 TÍTULO TURQUESA ESCURO */
+    margin-bottom: 15px;
+}
+
+.custom-card .card-text.display-4 {
+    font-size: 3rem; 
+    color: var(--light-turq); /* 🚨 NÚMERO/ÍCONE TURQUESA CLARO */
+    margin-bottom: 20px;
+    text-align: center; 
+}
+
+/* Botões nos cards */
+.custom-card .custom-btn {
+    background-color: var(--light-turq) !important;
+    border-color: var(--light-turq) !important;
+    border-radius: 8px;
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.2s;
+    color: white !important; /* Texto do botão BRANCO (para contraste no fundo turquesa do botão) */
+}
+
+.custom-card .custom-btn:hover {
+    background-color: var(--main-turq) !important;
+    border-color: var(--main-turq) !important;
+}
+
+/* 2. Tabela de Consultas */
+.custom-table-card {
+    border-radius: 12px;
+    overflow: hidden; 
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.main-color-bg {
+    background-color: var(--main-turq) !important;
+    border-color: var(--main-turq) !important;
+    color: white !important; /* Texto do header é branco */
+    border-bottom: none;
+    padding: 15px;
+}
+
+/* Cabeçalho da Tabela */
+.custom-table th {
+    background-color: var(--very-light-turq-bg);
+    color: var(--text-color-dark); 
+    font-weight: 600;
+}
+
+/* Corpo da Tabela */
+.custom-table td {
+    color: var(--text-color-dark); 
+}
+
+/* Links (Nomes de Pacientes e Ações) */
+.custom-table a {
+    color: var(--light-turq); 
+}
+
+/* 3. Layout Inferior */
+.lower-left-box, .lower-right-box {
+    background-color: var(--very-light-turq-bg);
+    border-radius: 12px;
+    min-height: 250px; 
+    padding: 20px;
+    color: var(--text-color-dark); 
+}
+
+.lower-right-box {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+/* 4. Remoção de Ícones do Menu Lateral */
+nav.sidebar i, 
+aside i,      
+.nav-sidebar .nav-icon { 
+    display: none !important; 
+}
+
+/* Ajuste de Badges */
+.badge {
+    border-radius: 4px;
+    font-weight: 600;
+}

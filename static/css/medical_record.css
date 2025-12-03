@@ -1,0 +1,335 @@
+/* ======================================================= */
+/* ESQUEMA DE CORES GERAL */
+/* ======================================================= */
+:root {
+    --main-turq: #16a085; /* Turquesa Escuro/Principal */
+    --light-turq: #1abc9c; /* Turquesa Claro/Ação */
+    --very-light-turq-bg: #e0f2f1; /* Fundo de caixas claras */
+    --text-color-dark: #333; /* Cor padrão do texto */
+    --text-color-muted: #6c757d; /* Cor para texto "muted" */
+    --error-red: #dc3545; /* Cor para erros/danger */
+    --info-blue: #17a2b8; /* Cor para alertas de informação */
+    --body-bg: #f4f7f6; /* Fundo da página */
+    --card-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra para cards */
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color-dark);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+/* ======================================================= */
+/* LAYOUT E CONTAINERS (SIMULAÇÃO GRID) */
+/* ======================================================= */
+
+/* Container principal (Simula .container e .mt-4) */
+.container {
+    max-width: 1000px;
+    margin: 2rem auto; 
+    padding: 0 15px; 
+}
+
+/* Grid System (Simula .row) */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px; 
+    margin-left: -15px;
+}
+
+/* Margem inferior (Simula .mb-3) */
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+/* Colunas (Simula .col-md-6 e .col-md-12) */
+.col-md-12, .col-md-6 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+/* Responsividade básica para telas menores (empilha colunas) */
+@media (max-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Estilo do cabeçalho H1 (Simula .d-flex e .h3) */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.h3, h1 {
+    color: var(--main-turq);
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+/* ======================================================= */
+/* BREADCRUMB */
+/* ======================================================= */
+.breadcrumb {
+    display: flex;
+    padding: 0.75rem 1rem;
+    list-style: none;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item {
+    font-size: 0.9rem;
+    color: var(--text-color-muted);
+}
+
+.breadcrumb-item a {
+    color: var(--light-turq);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--main-turq);
+    text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: var(--text-color-muted);
+}
+
+
+/* ======================================================= */
+/* CARDS E ALERTAS */
+/* ======================================================= */
+
+/* Card Geral */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    margin-bottom: 1.5rem; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+}
+
+/* Cabeçalho do Card de Informação da Consulta (Simula .bg-primary .text-white) */
+.card-header {
+    background-color: var(--light-turq); /* Turquesa Claro */
+    color: white;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Alerta de Atenção (Simula .alert-info) */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-color: #bee5eb;
+}
+
+/* ======================================================= */
+/* FORMULÁRIO E CAMPOS */
+/* ======================================================= */
+
+.form-label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    font-size: 0.95rem;
+}
+
+/* Estilo para todos os campos de formulário (Textareas e Inputs) */
+form textarea,
+form input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color-dark);
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box; 
+    min-height: 100px; /* Altura mínima para textareas */
+}
+
+form textarea:focus,
+form input[type="text"]:focus {
+    color: var(--text-color-dark);
+    background-color: #fff;
+    border-color: var(--light-turq);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(22, 160, 133, 0.25); /* Sombra turquesa suave */
+}
+
+/* Mensagens de Erro (Simula .text-danger) */
+.text-danger {
+    color: var(--error-red) !important;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+
+/* ======================================================= */
+/* BOTÕES DE AÇÃO */
+/* ======================================================= */
+
+/* Botões Geral (Regras base para todos os botões) */
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 0.5rem; 
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+/* 1. Botão Principal (Salvar/Criar - Simula .btn-success) */
+.btn-success {
+    color: white; 
+    background-color: var(--light-turq);
+    border-color: var(--light-turq);
+}
+
+.btn-success:hover {
+    background-color: var(--main-turq); 
+    border-color: var(--main-turq);
+}
+
+/* 2. Botão Secundário (Cancelar - Simula .btn-secondary) */
+.btn-secondary {
+    color: var(--text-color-dark); 
+    background-color: #e9ecef; 
+    border-color: #e9ecef;
+}
+
+.btn-secondary:hover {
+    color: var(--text-color-dark);
+    background-color: #dae0e5; 
+    border-color: #dae0e5;
+}
+
+/* 3. Estilo para Ícones (Font Awesome) */
+.fas {
+    margin-right: 0.5rem;
+}
+
+.container h2 {
+    color: var(--main-turq); /* Turquesa Escuro */
+    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--very-light-turq-bg); /* Linha divisória suave */
+}
+
+/* Estilo da lista não ordenada */
+.container ul {
+    list-style: none; /* Remove os marcadores padrão */
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilo para cada item da lista (cada prontuário) */
+.container ul li {
+    background-color: white;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem; /* Espaçamento entre os itens */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: var(--card-shadow); /* Sombra suave definida no :root */
+    display: flex;
+    justify-content: space-between; /* Alinha o paciente à esquerda e a data à direita */
+    align-items: center;
+    border-left: 5px solid var(--light-turq); /* Borda lateral para destaque */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer; /* Indica que o item pode ser clicável */
+    line-height: 1.4; /* Melhora a leitura do texto */
+}
+
+/* Efeito hover para os itens da lista */
+.container ul li:hover:not(.empty-list-message) {
+    transform: translateY(-2px); /* Efeito de elevação sutil */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Estilo do nome do paciente (strong) */
+.container ul li strong {
+    color: var(--text-color-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+    /* Para telas menores, permite que o nome quebre a linha */
+    word-break: break-word; 
+    padding-right: 1rem; /* Espaçamento entre o nome e a data */
+}
+
+/* Estilo da data e hora de criação (alinhado à direita) */
+.container ul li:not(.empty-list-message) span {
+    color: var(--text-color-muted); /* Cor mais discreta */
+    font-size: 0.9rem;
+    flex-shrink: 0; /* Impede que a data diminua em telas pequenas */
+    text-align: right;
+}
+
+/* Estilo para a mensagem de lista vazia */
+.empty-list-message {
+    background-color: var(--very-light-turq-bg) !important; /* Fundo claro da paleta */
+    color: var(--main-turq) !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 2rem !important;
+    border-left: 5px solid var(--main-turq) !important;
+    box-shadow: none !important;
+    cursor: default !important; /* Remove o cursor de clique */
+    transform: none !important; /* Remove o hover de elevação */
+}

@@ -1,0 +1,271 @@
+/* Esquema de Cores Turquesa */
+:root {
+    --main-turq: #16a085; /* Turquesa Escuro/Principal */
+    --light-turq: #1abc9c; /* Turquesa Claro/Ação */
+    --very-light-turq-bg: #e0f2f1; /* Fundo de cabeçalho leve */
+    --text-color-dark: #333; /* Cor padrão do texto */
+    --link-color-dark: #2c3e50; /* Cor escura para alguns textos */
+    --body-bg: #f4f7f6; /* Fundo da página */
+    --card-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra para cards */
+    --btn-info-bg: #17a2b8; /* Cor info para botões secundários (Original) */
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color-dark);
+    font-family: 'Arial', sans-serif;
+}
+
+/* 1. CONTAINER E LAYOUT GERAL */
+
+/* Container para a página de lista de pacientes */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto; 
+    padding: 1rem;
+}
+
+/* Container para a página de prontuário */
+.container-fluid {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+/* Layout de Cards (Usado tanto na Lista quanto no Prontuário) */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background-color: white;
+}
+
+/* Card Header geral */
+.card-header {
+    background-color: var(--very-light-turq-bg);
+    color: var(--link-color-dark);
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 18px 25px;
+}
+
+.card-header h2, .header-section h1 {
+    font-size: 1.8rem;
+    color: var(--main-turq);
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* --- ESTILOS ESPECÍFICOS DA LISTA DE PACIENTES --- */
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px; 
+    padding: 15px 20px;
+    background-color: white; 
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* ... (Regras de busca, tabela, paginação da lista de pacientes omitidas para foco, mas manter no seu arquivo) ... */
+
+/* --- ESTILOS ESPECÍFICOS DO PRONTUÁRIO --- */
+
+/* Título e detalhes do paciente */
+.card-body h3 {
+    color: var(--main-turq);
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.card-body p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+.card-body strong {
+    color: var(--link-color-dark);
+}
+
+hr {
+    border-top: 1px solid #eee;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 3. ABAS DE NAVEGAÇÃO (TABS) - CORREÇÃO PARA LADO A LADO */
+
+.nav-tabs {
+    /* CORREÇÃO APLICADA AQUI para forçar lado a lado */
+    display: flex; /* Transforma o UL em um container flexível */
+    padding: 0;
+    list-style: none; /* Remove pontos da lista */
+    border-bottom: 1px solid var(--light-turq); 
+    margin-top: 2rem;
+    margin-bottom: 0; 
+}
+
+.nav-item {
+    margin-right: 2px; /* Reduz espaço entre abas */
+    flex-shrink: 0; /* Impede que os itens encolham */
+}
+
+.nav-link {
+    display: block; /* Garante que o link preencha o item */
+    color: var(--link-color-dark);
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 20px;
+    font-weight: 600;
+    text-decoration: none; /* Remove sublinhado padrão */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Aba Inativa Hover */
+.nav-link:hover:not(.active) {
+    border-color: #eee #eee var(--light-turq) #eee;
+    background-color: #f8f8f8;
+    color: var(--main-turq);
+}
+
+/* Aba Ativa */
+.nav-link.active {
+    color: white;
+    background-color: var(--light-turq); 
+    border-color: var(--light-turq);
+    border-bottom-color: white; 
+    position: relative;
+    z-index: 2; 
+}
+
+/* 4. CONTEÚDO DAS ABAS */
+
+.tab-content {
+    background-color: white;
+    padding: 0;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.tab-pane .card {
+    box-shadow: none; 
+    margin-top: 0 !important;
+    border-radius: 0;
+}
+
+.tab-pane .card-header {
+    background-color: var(--body-bg); 
+    border-bottom: 1px solid #ddd;
+    padding: 15px 25px;
+    border-radius: 0;
+}
+
+.tab-pane .card-header h4 {
+    color: var(--main-turq);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.tab-pane .card-body {
+    padding: 25px;
+}
+
+/* Estilizando a lista de itens (Alergias, Vacinas, etc.) */
+.list-group-item {
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.list-group-item:hover {
+    background-color: var(--very-light-turq-bg);
+}
+
+.list-group-item strong {
+    color: var(--main-turq);
+    font-size: 1.1rem;
+}
+
+.list-group-item p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+/* Estilização específica para os cards de consultas */
+.tab-pane .card-body > .card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.tab-pane .card-body .card-title {
+    color: var(--link-color-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px dotted #ddd;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+/* 5. BOTÕES DE AÇÃO */
+
+/* Estilo geral do .btn do prontuário */
+.btn {
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botões Turquesa Principal (Agendar, Adicionar) */
+.btn-primary {
+    background-color: var(--light-turq);
+    border-color: var(--light-turq);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--main-turq);
+    border-color: var(--main-turq);
+}
+
+/* Botões Outline Turquesa (Ver Detalhes) */
+.btn-outline-primary {
+    color: var(--light-turq);
+    border: 1px solid var(--light-turq);
+    background-color: white;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--light-turq);
+    color: white;
+}
+
+/* Botão de Ver Prontuário (Lista) */
+.btn-info {
+    background-color: var(--light-turq);
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: var(--main-turq);
+}
+

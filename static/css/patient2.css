@@ -1,0 +1,218 @@
+/*
+    Esquema de Cores Turquesa (Consistente com o Dashboard e Consultas)
+*/
+:root {
+    --main-turq: #16a085; /* Turquesa Escuro/Principal */
+    --light-turq: #1abc9c; /* Turquesa Claro */
+    --very-light-turq-bg: #e0f2f1; /* Fundo de cabeçalho/caixas leves */
+    --text-color-dark: #333; /* Cor padrão do texto */
+    --body-bg: #f4f7f6; /* Fundo da página */
+    --card-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra mais destacada para tabela */
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color-dark);
+    font-family: 'Arial', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* Container principal (global) */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto; /* Espaçamento vertical e centralização */
+    padding: 1rem;
+}
+
+/* 1. SEÇÃO DE CABEÇALHO E BUSCA */
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px; 
+    padding: 15px 20px;
+    background-color: white; /* Fundo leve para a seção */
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.header-section h1 {
+    font-size: 1.8rem;
+    color: var(--main-turq); /* Título turquesa */
+    margin: 0;
+    font-weight: 700;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px; 
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; 
+    width: 280px;
+    transition: border-color 0.2s;
+}
+
+.search-form input[type="text"]:focus {
+    border-color: var(--light-turq);
+    outline: none;
+}
+
+.btn-search {
+    /* Turquesa Principal (Escuro) para o botão de busca */
+    background-color: var(--main-turq); 
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-search:hover {
+    background-color: #14806a; /* Tom de hover */
+}
+
+/* 2. TABELA DE DADOS */
+
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden; 
+    box-shadow: var(--card-shadow); 
+    background-color: white;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    table-layout: fixed; 
+}
+
+/* Cabeçalho da Tabela */
+.data-table thead th {
+    padding: 15px 20px;
+    text-align: left;
+    background-color: var(--very-light-turq-bg); /* Fundo turquesa claro */
+    color: var(--text-color-dark);
+    font-weight: 700;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Ajuste de largura para colunas (para melhor organização) */
+.data-table thead th:nth-child(1) { width: 25%; } /* Nome */
+.data-table thead th:nth-child(2) { width: 15%; } /* CPF */
+.data-table thead th:nth-child(3) { width: 18%; } /* Data Nasc. */
+.data-table thead th:nth-child(4) { width: 15%; } /* Telefone */
+.data-table thead th:nth-child(5) { width: 20%; text-align: center;} /* Ações */
+
+/* Corpo da Tabela */
+.data-table tbody td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    color: var(--text-color-dark);
+    word-wrap: break-word;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f0f7f7; /* Fundo suave no hover */
+}
+
+/* Estilo geral de links dentro da tabela */
+.data-table a {
+    color: var(--light-turq); 
+    text-decoration: none;
+}
+.data-table a:hover {
+    color: var(--main-turq);
+    text-decoration: underline;
+}
+
+/* 3. BOTÃO DE AÇÃO (Ver Prontuário) */
+
+.btn {
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.btn-info {
+    /* Turquesa Claro para o botão de prontuário e texto BRANCO */
+    background-color: var(--very-light-turq-bg);
+    color: white;
+    white-space: nowrap; /* Evita quebras de linha no botão */
+}
+
+.btn-info:hover {
+    background-color: var(--main-turq);
+    color: white; 
+}
+
+/* Célula de Ações: Centraliza o botão */
+.data-table tbody td:last-child {
+    text-align: center;
+}
+
+
+/* 4. PAGINAÇÃO */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 15px;
+}
+
+.pagination a, .pagination span.current {
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.pagination a {
+    /* Fundo Turquesa Claro para links de paginação */
+    background-color: var(--light-turq);
+    color: white;
+}
+
+.pagination a:hover {
+    background-color: var(--main-turq);
+}
+
+.pagination span.current {
+    background-color: #ddd;
+    color: var(--text-color-dark);
+    cursor: default; 
+}
+
+/* 5. MENSAGEM DE ALERTA */
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 1rem;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 500;
+}
