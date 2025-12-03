@@ -4,143 +4,138 @@
 {% block title %}Detalhes da Consulta #{{ appointment.pk }}{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/apointments.css' %}">
+<link rel="stylesheet" href="{% static 'css/apointments.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
 
+    <!-- AÇÕES INICIAIS -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             {% if user.is_doctor and appointment.status == 'scheduled' %}
                 {% if appointment.medical_record %}
-                    <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}" class="btn btn-success">Ver Prontuário</a>
-                    <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}" class="btn btn-warning">Editar Prontuário</a>
+                    <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
+                       class="btn btn-success">Ver Prontuário</a>
+                    <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
+                       class="btn btn-warning">Editar Prontuário</a>
                 {% else %}
-                    <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}" class="btn btn-primary">Criar Prontuário</a>
+                    <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
+                       class="btn btn-primary">Criar Prontuário</a>
                 {% endif %}
             {% endif %}
-            
+
             {% if user.is_patient and appointment.can_be_cancelled %}
             <form method="post" action="{% url 'appointments:appointment_cancel' pk=appointment.pk %}" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
-                    <i class="fas fa-times"></i> Cancelar Consulta
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
+                    Cancelar Consulta
                 </button>
             </form>
             {% endif %}
         </div>
     </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-4">Informações Principais</h5>
-
-    <div class="container py-4">
-
-        <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">Detalhes da Consulta</h2>
-            <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary rounded-3">
-                ← Voltar
-            </a>
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-4">Informações Principais</h5>
-        </div>
-
-        <!-- CARD PRINCIPAL -->
-        <div class="card border-0 shadow-sm rounded-4 mb-4">
-            <div class="card-body p-4">
-
-                <div class="row g-4">
-
-                    <!-- Data -->
-                    <div class="col-md-4">
-                        <div class="detail-box">
-                            <div class="label">Data</div>
-                            <div class="value">{{ appointment.scheduled_date|date:"d/m/Y" }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Hora -->
-                    <div class="col-md-4">
-                        <div class="detail-box">
-                            <div class="label">Horário</div>
-                            <div class="value">{{ appointment.scheduled_time|time:"H:i" }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="col-md-4">
-                        <div class="detail-box">
-                            <div class="label">Status</div>
-                            <span class="status-pill">{{ appointment.get_status_display }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Paciente -->
-                    <div class="col-md-6">
-                        <div class="detail-box">
-                            <div class="label">Paciente</div>
-                            <a class="value link" href="{% url 'patients:patient_detail' pk=appointment.patient.pk %}">
-                                {{ appointment.patient.user.get_full_name }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Médico -->
-                    <div class="col-md-6">
-                        <div class="detail-box">
-                            <div class="label">Médico</div>
-                            <div class="value">{{ appointment.doctor.user.get_full_name }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Motivo -->
-                    <div class="col-12">
-                        <div class="detail-box">
-                            <div class="label">Motivo</div>
-                            <p class="text-muted">{{ appointment.reason }}</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-        <!-- CARD AÇÕES -->
-        <div class="card border-0 shadow-sm rounded-4 mb-5">
-            <div class="card-body p-4">
-
-                {% if user.is_doctor %}
-                    {% if appointment.medical_record %}
-                        <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
-                        class="btn btn-success rounded-3 me-2">
-                            Ver Prontuário
-                        </a>
-
-                        <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
-                        class="btn btn-warning rounded-3 me-2">
-                            Editar Prontuário
-                        </a>
-                    {% else %}
-                        <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
-                        class="btn btn-primary rounded-3 me-2">
-                            Criar Prontuário
-                        </a>
-                    {% endif %}
-                {% endif %}
-
-                <a href="#" class="btn btn-primary">Remarcar</a>
-                <a href="#" class="btn btn-danger">Cancelar Consulta</a>
-            </div>
-        </div>
-
+    <!-- CABEÇALHO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Detalhes da Consulta</h2>
+        <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary rounded-3">← Voltar</a>
     </div>
-  
 
+    <!-- CARD PRINCIPAL -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Informações Principais</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row g-4">
+
+                <!-- Data -->
+                <div class="col-md-4">
+                    <div class="detail-box">
+                        <div class="label">Data</div>
+                        <div class="value">{{ appointment.scheduled_date|date:"d/m/Y" }}</div>
+                    </div>
+                </div>
+
+                <!-- Hora -->
+                <div class="col-md-4">
+                    <div class="detail-box">
+                        <div class="label">Horário</div>
+                        <div class="value">{{ appointment.scheduled_time|time:"H:i" }}</div>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-4">
+                    <div class="detail-box">
+                        <div class="label">Status</div>
+                        <span class="status-pill">{{ appointment.get_status_display }}</span>
+                    </div>
+                </div>
+
+                <!-- Paciente -->
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Paciente</div>
+                        <a class="value link"
+                           href="{% url 'patients:patient_detail' pk=appointment.patient.pk %}">
+                           {{ appointment.patient.user.get_full_name }}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Médico -->
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Médico</div>
+                        <div class="value">{{ appointment.doctor.user.get_full_name }}</div>
+                    </div>
+                </div>
+
+                <!-- Motivo -->
+                <div class="col-12">
+                    <div class="detail-box">
+                        <div class="label">Motivo</div>
+                        <p class="text-muted">{{ appointment.reason }}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD AÇÕES -->
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+        <div class="card-body p-4">
+
+            {% if user.is_doctor %}
+                {% if appointment.medical_record %}
+                    <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
+                       class="btn btn-success rounded-3 me-2">
+                        Ver Prontuário
+                    </a>
+
+                    <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
+                       class="btn btn-warning rounded-3 me-2">
+                        Editar Prontuário
+                    </a>
+                {% else %}
+                    <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
+                       class="btn btn-primary rounded-3 me-2">
+                        Criar Prontuário
+                    </a>
+                {% endif %}
+            {% endif %}
+
+            <a href="#" class="btn btn-primary">Remarcar</a>
+            <a href="#" class="btn btn-danger">Cancelar Consulta</a>
+        </div>
+    </div>
+
+    <!-- PRONTUÁRIO -->
     {% if appointment.medical_record %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-success text-white">
@@ -148,11 +143,13 @@
         </div>
         <div class="card-body">
             <p>Um prontuário foi criado para esta consulta.</p>
-            <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}" class="btn btn-success">Ver Detalhes do Prontuário</a>
+            <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
+               class="btn btn-success">Ver Detalhes</a>
         </div>
     </div>
     {% endif %}
 
+    <!-- CANCELAMENTO -->
     {% if appointment.cancellation_reason %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-danger text-white">
@@ -165,5 +162,6 @@
         </div>
     </div>
     {% endif %}
+
 </div>
 {% endblock %}
