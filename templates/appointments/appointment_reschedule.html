@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Remarcar Consulta{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/apointments.css' %}">
+<link rel="stylesheet" href="{% static 'css/form-enhancements.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- CABEÇALHO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">{{ form_title }}</h2>
+        <a href="{% url 'appointments:appointment_detail' pk=original_appointment.pk %}" class="btn btn-outline-secondary rounded-3">← Voltar</a>
+    </div>
+
+    <!-- INFORMAÇÕES DA CONSULTA ORIGINAL -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">ℹ️ Consulta Original</h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Paciente</div>
+                        <div class="value">{{ original_appointment.patient.user.get_full_name }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Médico</div>
+                        <div class="value">{{ original_appointment.doctor.user.get_full_name }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Data Atual</div>
+                        <div class="value text-danger"><strong>{{ original_appointment.scheduled_date|date:"d/m/Y" }}</strong></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="label">Horário Atual</div>
+                        <div class="value text-danger"><strong>{{ original_appointment.scheduled_time|time:"H:i" }}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORMULÁRIO DE REMARCAÇÃO -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">📅 Nova Data e Horário</h5>
+        </div>
+        <div class="card-body p-4">
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row">
+                    <!-- DATA -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.scheduled_date.id_for_label }}" class="form-label">
+                                📅 Data da Consulta
+                            </label>
+                            {{ form.scheduled_date }}
+                            {% for error in form.scheduled_date.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- HORÁRIO -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.scheduled_time.id_for_label }}" class="form-label">
+                                🕐 Horário da Consulta
+                            </label>
+                            {{ form.scheduled_time }}
+                            {% for error in form.scheduled_time.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DURAÇÃO (se aplicável) -->
+                {% if form.duration_minutes %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.duration_minutes.id_for_label }}" class="form-label">
+                                ⏱️ Duração (minutos)
+                            </label>
+                            {{ form.duration_minutes }}
+                            {% for error in form.duration_minutes.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- TIPO DE CONSULTA -->
+                {% if form.appointment_type %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.appointment_type.id_for_label }}" class="form-label">
+                                📋 Tipo de Consulta
+                            </label>
+                            {{ form.appointment_type }}
+                            {% for error in form.appointment_type.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- MOTIVO -->
+                {% if form.reason %}
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.reason.id_for_label }}" class="form-label">
+                                💬 Motivo da Consulta (Opcional)
+                            </label>
+                            {{ form.reason }}
+                            {% for error in form.reason.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- OBSERVAÇÕES -->
+                {% if form.notes %}
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label">
+                                📝 Observações (Opcional)
+                            </label>
+                            {{ form.notes }}
+                            {% for error in form.notes.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- MÉDICO (se atendente/admin) -->
+                {% if not user.is_patient and form.doctor %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="{{ form.doctor.id_for_label }}" class="form-label">
+                                👨‍⚕️ Médico
+                            </label>
+                            {{ form.doctor }}
+                            {% for error in form.doctor.errors %}
+                                <div class="alert alert-danger alert-sm mt-2">
+                                    <strong>Erro:</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- ALERTA DE REMARCAÇÃO -->
+                <div class="alert alert-warning mt-4">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Atenção:</strong> A consulta anterior será cancelada automaticamente.
+                    Se houver prontuário, ele será mantido para referência.
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="d-flex gap-2 justify-content-end mt-4">
+                    <a href="{% url 'appointments:appointment_detail' pk=original_appointment.pk %}" class="btn btn-secondary rounded-3">
+                        ❌ Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary rounded-3">
+                        ✅ Confirmar Remarcação
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- INFORMAÇÕES ÚTEIS -->
+    <div class="alert alert-info mt-4">
+        <h6 class="alert-heading">
+            <i class="fas fa-info-circle"></i> Informações Importantes
+        </h6>
+        <ul class="mb-0">
+            <li>A nova data deve ser diferente da data original</li>
+            <li>Verifique a disponibilidade do médico antes de confirmar</li>
+            <li>Você pode remarcar até 24h antes da consulta</li>
+            <li>O paciente será notificado sobre a remarcação</li>
+            <li>Relatórios e auditoria serão mantidos automaticamente</li>
+        </ul>
+    </div>
+
+</div>
+
+<style>
+    .detail-box {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #0ea5e9;
+    }
+
+    .detail-box .label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-box .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        outline: none;
+    }
+
+    .alert-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        margin: 0;
+    }
+</style>
+
+{% endblock %}
