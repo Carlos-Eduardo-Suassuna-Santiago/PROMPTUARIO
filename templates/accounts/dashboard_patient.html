@@ -3,87 +3,225 @@
 
 {% block title %}Dashboard do Paciente{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard_paciente.css' %}">
-{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
+<style>
+    /* ===== VARIÁVEIS E ESTILOS GERAIS ===== */
+    :root {
+        --primary: #0f172a;
+        --accent: #0ea5e9;
+        --accent-hover: #0284c7;
+        --success: #10b981;
+        --info: #06b6d4;
+        --surface:#00A99D;
+        --border: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #000000;
+        --radius-lg: 16px;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
 
-    <div class="row icon-links-row mb-4">
-        
-        <div class="col-md-2 col-sm-4 col-6 mb-3">
+    .dashboard-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 2rem 1rem;
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .dashboard-header { margin-bottom: 2.5rem; }
+    .header-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    
+    .header-badge {
+        display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0.875rem;
+        background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+        color: white; font-size: 0.75rem; font-weight: 600; border-radius: 50px; text-transform: uppercase;
+    }
+
+    .dashboard-title { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+
+    .header-date {
+        display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 12px; font-size: 0.875rem; color: var(--text-secondary);
+    }
+
+    /* ===== QUICK NAVIGATION (ICON CARDS) ===== */
+    .quick-nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 3rem;
+    }
+
+    .icon-link-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: var(--shadow);
+    }
+
+    .icon-link-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+
+    .icon-lg {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
+
+    .card-text {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+
+    /* ===== APPOINTMENTS CARD & TABLE ===== */
+    .table-card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .table-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent);
+    }
+
+    .table-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: #f8fafc;
+    }
+
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { padding: 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+    .data-table td { padding: 1.25rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    
+    .status-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .header-content { flex-direction: column; align-items: flex-start; }
+        .quick-nav-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
+
+<div class="dashboard-wrapper">
+    <div class="dashboard-container">
+
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="header-badge">Portal do Paciente</span>
+                    <h1 class="dashboard-title">Olá, {{ user.first_name|default:user.get_full_name }}</h1>
+                    <p class="text-secondary mt-1">Bem-vindo à sua central de saúde personalizada.</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-date">
+                        <i class="fas fa-calendar-check text-accent"></i>
+                        <span>{% now "j \d\e F \d\e Y" %}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="quick-nav-grid">
             <a href="{% url 'appointments:appointment_list' %}" class="icon-link-card">
-                <img class="icon-lg" src="{% static 'images/verifica 1.png' %}" alt="Minhas Consultas">
+                <img class="icon-lg" src="{% static 'images/verifica 1.png  ' %}" alt="Minhas Consultas">
                 <span class="card-text">Minhas Consultas</span>
             </a>
-        </div>
 
-        <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:vaccine_list' %}" class="icon-link-card">
                 <img class="icon-lg" src="{% static 'images/seringa 1.png' %}" alt="Vacinas">
-                <span class="card-text">Vacinas</span>
+                <span class="card-text">Minhas Vacinas</span>
             </a>
-        </div>
 
-        <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:medication_list' %}" class="icon-link-card">
                 <img class="icon-lg" src="{% static 'images/medicina (1) 1.png' %}" alt="Medicamentos">
                 <span class="card-text">Medicamentos</span>
             </a>
-        </div>
-        
-        <div class="col-md-2 col-sm-4 col-6 mb-3">
-            <a href="{% url 'appointments:appointment_create' %}" class="icon-link-card">
+
+            <a href="{% url 'appointments:patient_booking_doctors' %}" class="icon-link-card">
                 <img class="icon-lg" src="{% static 'images/calendario 1.png' %}" alt="Agendar Consulta">
                 <span class="card-text">Agendar Consulta</span>
             </a>
-        </div>
 
-        <div class="col-md-2 col-sm-4 col-6 mb-3">
             <a href="{% url 'patients:my_medical_record' %}" class="icon-link-card">
                 <img class="icon-lg" src="{% static 'images/patient 1.png' %}" alt="Meu Prontuário">
                 <span class="card-text">Meu Prontuário</span>
             </a>
-        </div>
+        </nav>
 
-        </div>
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Próximas Consultas</h5>
-        </div>
-        <div class="card-body">
-            {% if upcoming_appointments %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Médico</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for appointment in upcoming_appointments %}
-                    <tr>
-                        <td>{{ appointment.scheduled_date|date:"d/m/Y" }}</td>
-                        <td>{{ appointment.scheduled_time|time:"H:i" }}</td>
-                        <td>Dr(a). {{ appointment.doctor.user.get_full_name }}</td>
-                        <td><span class="badge bg-{{ appointment.get_status_color }}">{{ appointment.get_status_display }}</span></td>
-                        <td>
-                            <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-sm btn-info" title="Detalhes">
-                                Detalhes
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p class="alert alert-info">Nenhuma consulta futura agendada.</p>
-            {% endif %}
-        </div>
+        <section class="table-card">
+            <div class="table-header">
+                <h5 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-clock me-2"></i>Próximas Consultas
+                </h5>
+            </div>
+            
+            <div>
+                {% if upcoming_appointments %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Médico</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in upcoming_appointments %}
+                        <tr>
+                            <td class="fw-bold">{{ appointment.scheduled_date|date:"d/m/Y" }}</td>
+                            <td>{{ appointment.scheduled_time|time:"H:i" }}</td>
+                            <td>
+                                <span class="text-secondary">Dr(a).</span> {{ appointment.doctor.user.get_full_name }}
+                            </td>
+                            <td>
+                                <span class="status-badge bg-{{ appointment.get_status_color }}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-sm btn-outline-info fw-bold" style="border-radius: 8px;">
+                                    Ver Detalhes
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="p-5 text-center">
+                    <p class="alert alert-info d-inline-block px-5">Nenhuma consulta futura agendada.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
     </div>
 </div>
 {% endblock %}
