@@ -333,6 +333,21 @@ class PatientRegistrationView(CreateView):
             'Cadastro realizado com sucesso! Faça login para acessar o sistema.'
         )
         return response
+    
+class PatientRegistrationAttendantView(CreateView):
+    """View de registro público para pacientes."""
+    model = User
+    form_class = PatientRegistrationForm
+    template_name = 'accounts/register_patient_attendant.html'
+    success_url = reverse_lazy('accounts:login')
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request,
+            'Cadastro realizado com sucesso! Faça login para acessar o sistema.'
+        )
+        return response
 
 
 class DoctorRegistrationView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
