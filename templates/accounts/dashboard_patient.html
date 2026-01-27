@@ -45,7 +45,7 @@
 
     .header-date {
         display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: var(--surface);
-        border: 1px solid var(--border); border-radius: 12px; font-size: 0.875rem; color: var(--border);
+        border: 1px solid var(--border); border-radius: 12px; font-size: 0.875rem; color: var(--text-secondary);
     }
 
     /* ===== QUICK NAVIGATION (ICON CARDS) ===== */
@@ -85,7 +85,7 @@
 
     .card-text {
         font-weight: 700;
-        color: var(--border);
+        color: var(--text-primary);
         font-size: 0.95rem;
     }
 
@@ -99,7 +99,7 @@
         position: relative;
     }
 
-    .table-card: {
+    .table-card::before {
         content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent);
     }
 
@@ -175,9 +175,9 @@
 
         <section class="table-card">
             <div class="table-header">
-                <h3 class="mb-0 fw-bold text-primary">
-                    <i class="fas fa-clock me-2"></i>Consultas
-                </h3>
+                <h5 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-clock me-2"></i>Próximas Consultas
+                </h5>
             </div>
             
             <div>
