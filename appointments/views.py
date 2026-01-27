@@ -1,9 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, View
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.http import JsonResponse
+from django.utils import timezone
 from .models import Appointment
 
 class AppointmentListView(LoginRequiredMixin, ListView):
@@ -88,6 +89,72 @@ class AppointmentCancelView(LoginRequiredMixin, View):
         return redirect('appointments:appointment_detail', pk=pk)
 
 
+class AppointmentRescheduleView(LoginRequiredMixin, CreateView):
+    """View para remarcar uma consulta."""
+    model = Appointment
+    template_name = 'appointments/appointment_reschedule.html'
+    
+    def get_form_class(self):
+        user = self.request.user
+        if user.is_patient():
+            return PatientAppointmentForm
+        elif user.is_attendant() or user.is_admin():
+            return AttendantAppointmentForm
+        elif user.is_doctor():
+            return AttendantAppointmentForm
+        return super().get_form_class()
+    
+    def get_object(self):
+        """Retorna o agendamento original a ser remarcado."""
+        return get_object_or_404(Appointment, pk=self.kwargs['pk'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        original_appointment = self.get_object()
+        context['original_appointment'] = original_appointment
+        context['form_title'] = 'Remarcar Consulta'
+        
+        user = self.request.user
+        if user.is_patient():
+            context['form_title'] = 'Remarcar Minha Consulta'
+        else:
+            context['form_title'] = f'Remarcar Consulta de {original_appointment.patient.user.get_full_name()}'
+        
+        return context
+    
+    def form_valid(self, form):
+        """Cria novo agendamento e cancela o antigo."""
+        original_appointment = self.get_object()
+        user = self.request.user
+        
+        # Validar permissões
+        if user.is_patient() and original_appointment.patient.user != user:
+            messages.error(self.request, 'Você não tem permissão para remarcar esta consulta.')
+            return self.form_invalid(form)
+        
+        # Salvar novo agendamento
+        if user.is_patient():
+            patient = get_object_or_404(Patient, user=user)
+            new_appointment = form.save(commit=False)
+            new_appointment.patient = patient
+            new_appointment.doctor = original_appointment.doctor  # Manter mesmo médico
+            new_appointment.save()
+        else:
+            new_appointment = form.save(commit=False)
+            new_appointment.patient = original_appointment.patient  # Manter mesmo paciente
+            # Médico será escolhido no formulário
+            new_appointment.save()
+        
+        # Cancelar agendamento original
+        original_appointment.cancel(reason='Consulta remarcada para: ' + 
+                                   f"{new_appointment.scheduled_date.strftime('%d/%m/%Y')} às "
+                                   f"{new_appointment.scheduled_time.strftime('%H:%M')}", 
+                                   user=user)
+        
+        messages.success(self.request, f'Consulta remarcada com sucesso para {new_appointment.scheduled_date.strftime("%d/%m/%Y")} às {new_appointment.scheduled_time.strftime("%H:%M")}!')
+        return redirect('appointments:appointment_detail', pk=new_appointment.pk)
+
+
 class AppointmentCheckInView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         return self.request.user.is_attendant() or self.request.user.is_admin()
@@ -134,5 +201,56 @@ class AppointmentCheckOutView(LoginRequiredMixin, UserPassesTestMixin, View):
             
         return redirect('accounts:dashboard')
 
-class AppointmentCalendarView(LoginRequiredMixin, TemplateView):
+class AppointmentCalendarView(LoginRequiredMixin, ListView):
+    model = Appointment
     template_name = 'appointments/appointment_calendar.html'
+    context_object_name = 'appointments'
+    paginate_by = 20 # Para o caso de não usar o calendário FullCalendar
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('patient__user', 'doctor__user')
+        user = self.request.user
+        
+        # Filtra agendamentos futuros
+        queryset = queryset.filter(scheduled_date__gte=timezone.now().date()).order_by('scheduled_date', 'scheduled_time')
+        
+        if user.is_doctor():
+            queryset = queryset.filter(doctor=user.doctor_profile)
+        elif user.is_patient():
+            queryset = queryset.filter(patient=user.patient_profile)
+            
+        return queryset
+
+
+class AppointmentListJsonView(LoginRequiredMixin, View):
+    """API JSON para listar agendamentos (para o calendário FullCalendar)."""
+    def get(self, request):
+        user = request.user
+        queryset = Appointment.objects.select_related('patient__user', 'doctor__user')
+        
+        # Filtrar por permissões
+        if user.is_doctor():
+            queryset = queryset.filter(doctor=user.doctor_profile)
+        elif user.is_patient():
+            queryset = queryset.filter(patient=user.patient_profile)
+        elif not (user.is_attendant() or user.is_admin()):
+            # Usuários sem permissão não veem nada
+            return JsonResponse([])
+        
+        # Ordenar por data e hora
+        queryset = queryset.order_by('scheduled_date', 'scheduled_time')
+        
+        # Construir lista de eventos
+        events = []
+        for appointment in queryset:
+            events.append({
+                'id': appointment.id,
+                'patient_name': appointment.patient.user.get_full_name(),
+                'doctor_name': appointment.doctor.user.get_full_name(),
+                'scheduled_date': appointment.scheduled_date.isoformat(),
+                'scheduled_time': appointment.scheduled_time.strftime('%H:%M'),
+                'status': appointment.status,
+                'reason': appointment.reason or '',
+            })
+        
+        return JsonResponse(events, safe=False)
