@@ -3,87 +3,257 @@
 
 {% block title %}Dashboard do Médico{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/dashboard_doctor.css' %}">
-{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
-    <h1 class="h3 mb-4">Dashboard do Dr(a). {{ user.get_full_name }}</h1>
+<style>
+    /* ===== VARIÁVEIS E ESTILOS GERAIS ===== */
+    :root {
+        --primary: #0f172a;
+        --accent: #0ea5e9;
+        --accent-hover: #0284c7;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --info: #06b6d4;
+        --surface: #ffffff;
+        --border: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --radius-lg: 16px;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
 
-    <div class="row">
-        
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center custom-card">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Consultas Hoje</h5>
-                    <p class="card-text display-4">{{ today_appointments.count }}</p>
-                    <a href="{% url 'appointments:appointment_list' %}" class="btn btn-primary custom-btn">Ver Agenda</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center custom-card">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Pacientes</h5>
-                    <p class="card-text display-4"><i class="fas fa-users"></i></p>
-                    <a href="{% url 'patients:patient_list' %}" class="btn btn-success custom-btn">Ver Lista</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center custom-card">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Relatórios</h5>
-                    <p class="card-text display-4"><i class="fas fa-chart-bar"></i></p>
-                    <a href="{% url 'reports:doctor_report' %}" class="btn btn-info custom-btn">Gerar Relatório</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    .dashboard-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 2rem 1rem;
+    }
 
-    <div class="card shadow-sm mb-4 custom-table-card">
-        <div class="card-header bg-primary text-white main-color-bg">
-            <h5 class="mb-0">Consultas Agendadas para Hoje</h5>
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .dashboard-header { margin-bottom: 2.5rem; }
+    .header-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    
+    .header-badge {
+        display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0.875rem;
+        background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+        color: white; font-size: 0.75rem; font-weight: 600; border-radius: 50px; text-transform: uppercase;
+    }
+
+    .dashboard-title { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+
+    .header-date {
+        display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 12px; font-size: 0.875rem; color: var(--text-secondary);
+    }
+
+    /* ===== STATS GRID ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+
+    .stat-card {
+        position: relative; background: var(--surface); border-radius: var(--radius-lg); padding: 1.75rem;
+        box-shadow: var(--shadow); border: 1px solid var(--border); transition: all 0.3s ease;
+        display: flex; flex-direction: column; min-height: 200px;
+    }
+
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+
+    .stat-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 16px 16px 0 0;
+    }
+
+    .stat-card.agenda::before { background: var(--accent); }
+    .stat-card.pacientes::before { background: var(--success); }
+    .stat-card.relatorios::before { background: var(--info); }
+
+    .stat-icon-wrapper {
+        display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 12px; margin-bottom: 1.25rem;
+    }
+
+    .agenda .stat-icon-wrapper { background: rgba(14, 165, 233, 0.1); color: var(--accent); }
+    .pacientes .stat-icon-wrapper { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+    .relatorios .stat-icon-wrapper { background: rgba(6, 182, 212, 0.1); color: var(--info); }
+
+    .stat-value { font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin: 0.5rem 0; }
+    .stat-label { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+
+    /* ===== TABELA ===== */
+    .table-card {
+        background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border);
+        box-shadow: var(--shadow); overflow: hidden;
+    }
+
+    .table-header {
+        padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem;
+    }
+
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { background: #f8fafc; padding: 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+    .data-table td { padding: 1.25rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .btn-action { padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.875rem; text-decoration: none; transition: 0.2s; }
+</style>
+
+<div class="dashboard-wrapper">
+    <div class="dashboard-container">
+
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="header-badge">Painel Clínico</span>
+                    <h1 class="dashboard-title">Olá, Dr(a). {{ user.get_full_name }}</h1>
+                    <p class="text-secondary mt-1">Aqui está o resumo dos seus atendimentos de hoje.</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-date">
+                        <i class="fas fa-calendar-alt text-info"></i>
+                        <span>{% now "j \d\e F \d\e Y" %}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card agenda">
+                <div class="stat-icon-wrapper"><i class="fas fa-calendar-check fa-2x"></i></div>
+                <p class="stat-label">Consultas Hoje</p>
+                <p class="stat-value">{{ today_appointments.count }}</p>
+                <a href="{% url 'appointments:appointment_list' %}" class="mt-auto text-decoration-none fw-bold" style="color: var(--accent);">Ver Agenda Completa →</a>
+            </div>
+
+            <div class="stat-card pacientes">
+                <div class="stat-icon-wrapper"><i class="fas fa-users fa-2x"></i></div>
+                <p class="stat-label">Total de Pacientes</p>
+                <p class="stat-value">{{ total_patients }}</p>
+                <a href="{% url 'patients:patient_list' %}" class="mt-auto text-decoration-none fw-bold" style="color: var(--success);">Gerenciar Pacientes →</a>
+            </div>
+
+            <div class="stat-card relatorios">
+                <div class="stat-icon-wrapper"><i class="fas fa-chart-line fa-2x"></i></div>
+                <p class="stat-label">Prontuários</p>
+                <p class="stat-value">{{ total_records }}</p>
+                <a href="{% url 'medical_records:medical_record_list' %}" class="mt-auto text-decoration-none fw-bold" style="color: var(--info);">Ver Prontuários →</a>
+            </div>
+        </section>
+
+        <!-- Gráficos de Análise -->
+        <div class="charts-grid two-columns" style="margin-bottom: 3rem;">
+            
+            <!-- Gráfico: Atendimentos por Mês -->
+            <div class="chart-container">
+                <h5 class="chart-title">
+                    <i class="fas fa-chart-line"></i> Atendimentos por Mês
+                </h5>
+                <div class="chart-wrapper">
+                    <canvas id="appointmentsChart" 
+                            data-chart="line"
+                            data-chart-data='{{ appointments_chart_data|safe }}'></canvas>
+                </div>
+                <div class="chart-footer">
+                    <div class="chart-footer-stats">
+                        <div class="chart-stat">
+                            <span class="chart-stat-label">Total</span>
+                            <span class="chart-stat-value">{{ total_appointments }}</span>
+                        </div>
+                        <div class="chart-stat">
+                            <span class="chart-stat-label">Média/Mês</span>
+                            <span class="chart-stat-value">{{ avg_appointments }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico: Status dos Atendimentos -->
+            <div class="chart-container">
+                <h5 class="chart-title">
+                    <i class="fas fa-pie-chart"></i> Status dos Atendimentos
+                </h5>
+                <div class="chart-wrapper">
+                    <canvas id="statusChart" 
+                            data-chart="doughnut"
+                            data-chart-data='{{ status_chart_data|safe }}'></canvas>
+                </div>
+            </div>
+
         </div>
-        <div class="card-body">
-            {% if today_appointments %}
-            <table class="table table-striped custom-table">
-                <thead>
-                    <tr>
-                        <th>Horário</th>
-                        <th>Paciente</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for appointment in today_appointments %}
-                    <tr>
-                        <td>{{ appointment.scheduled_time|time:"H:i" }}</td>
-                        <td><a href="{% url 'patients:patient_detail' pk=appointment.patient.pk %}">{{ appointment.patient.user.get_full_name }}</a></td>
-                        <td><span class="badge bg-{{ appointment.get_status_color }}">{{ appointment.get_status_display }}</span></td>
-                        <td>
-                            {% if appointment.medical_record %}
-                                <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}" class="btn btn-sm btn-success">Ver Prontuário</a>
-                            {% elif appointment.status == 'checked_in' %}
-                                <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}" class="btn btn-sm btn-primary">Criar Prontuário</a>
-                            {% endif %}
-                            <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn btn-sm btn-info" title="Detalhes">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p class="alert alert-info custom-alert">Nenhuma consulta agendada para hoje.</p>
-            {% endif %}
+
+        <!-- Gráfico: Diagnósticos Mais Comuns -->
+        {% if diagnosis_chart_data %}
+        <div class="chart-container" style="margin-bottom: 3rem;">
+            <h5 class="chart-title">
+                <i class="fas fa-stethoscope"></i> Diagnósticos Mais Comuns
+            </h5>
+            <div class="chart-wrapper large">
+                <canvas id="diagnosisChart" 
+                        data-chart="bar"
+                        data-chart-data='{{ diagnosis_chart_data|safe }}'></canvas>
+            </div>
         </div>
+        {% endif %}
+
+        <!-- Próximos Atendimentos -->
+        <section class="table-card">
+            <div class="table-header">
+                <div style="width: 8px; height: 24px; background: var(--accent); border-radius: 4px;"></div>
+                <h2 class="h5 mb-0 fw-bold">Próximos Atendimentos</h2>
+            </div>
+            
+            <div class="table-responsive">
+                {% if today_appointments %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Paciente</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in today_appointments %}
+                        <tr>
+                            <td class="fw-bold" style="color: var(--accent);">{{ appointment.scheduled_time|time:"H:i" }}</td>
+                            <td>
+                                <a href="{% url 'patients:patient_detail' pk=appointment.patient.pk %}" class="text-decoration-none fw-bold text-dark">
+                                    {{ appointment.patient.user.get_full_name }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill bg-{{ appointment.get_status_color }}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    {% if appointment.medical_record %}
+                                        <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}" class="btn-action bg-success text-white">
+                                            <i class="fas fa-eye"></i> Ver Prontuário
+                                        </a>
+                                    {% elif appointment.status == 'checked_in' %}
+                                        <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}" class="btn-action bg-primary text-white">
+                                            <i class="fas fa-plus"></i> Criar Prontuário
+                                        </a>
+                                    {% endif %}
+                                    <a href="{% url 'appointments:appointment_detail' appointment.pk %}" class="btn-action border text-secondary" title="Detalhes"> Detalhes
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="p-5 text-center">
+                    <p class="text-muted mb-0">Nenhuma consulta agendada para o dia de hoje.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
     </div>
 </div>
 {% endblock %}
