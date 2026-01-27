@@ -41,7 +41,7 @@ urlpatterns = [
     path('profile/edit/', views.ProfileUpdateView.as_view(), name='profile_update'),
     # Registration
     path('register/', views.PatientRegistrationView.as_view(), name='register'),
-    path('register/patient/', views.PatientRegistrationView.as_view(), name='register_patient'),
+    path('register/patient/', views.PatientRegistrationAttendantView.as_view(), name='register_patient'),
     path('register/doctor/', views.DoctorRegistrationView.as_view(), name='register_doctor'),
     path('register/attendant/', views.AttendantRegistrationView.as_view(), name='register_attendant'),
     path('register/choice/', views.RegistrationChoiceView.as_view(), name='register_choice'),
