@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">{{ title }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <a href="{% url 'appointments:patient_booking_doctors' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Escolher Outro Médico
+                        </a>
+                    </div>
+
+                    {% if available_slots %}
+                        <p class="text-muted">Selecione um horário disponível:</p>
+
+                        <div class="row">
+                            {% for slot in available_slots %}
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">{{ slot.formatted_date }}</h6>
+                                            <p class="card-text">{{ slot.formatted_time }}</p>
+                                            <a href="{% url 'appointments:patient_booking_confirm' doctor_id=doctor.pk %}?date={{ slot.date|date:'Y-m-d' }}&time={{ slot.time|date:'H:i' }}"
+                                               class="btn btn-success btn-sm">
+                                                Agendar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Nenhum horário disponível para este médico nos próximos 30 dias.
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'appointments:appointment_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Voltar para Agendamentos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}</content>
+<parameter name="filePath">c:\Users\Kadu\Documents\PROMPTUARIO\templates\appointments\patient_booking_availability.html

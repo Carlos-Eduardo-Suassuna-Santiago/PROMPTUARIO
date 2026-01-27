@@ -1,230 +1,600 @@
-/* =================================
- * ESTILIZAÇÃO EDIÇÃO DE PERFIL (Baseado no Frame)
- * ================================= */
+/* ============================================================================
+   PROFILE FORM STYLES - Formulário de Atualização de Perfil
+   ============================================================================ */
 
-/* Variáveis de cor (se não estiverem no seu :root) */
 :root {
-    /* Assumindo que --color-primary é #00A99D (teal) */
-    --color-primary: #00A99D; 
-    --color-secondary: #007B70;
-    --color-border-teal: #00A99D; /* Cor da borda teal para inputs */
-    --color-border-light: #C5E6E5; /* Cor da borda mais clara para divisores */
-    --color-text-dark: #4A4A4A;
-    --color-text-label: #888888;
-    --color-background-soft: #F8F9FA; /* Fundo suave para a área de conteúdo */
-    --color-danger: #DC3545; /* Vermelho para botões de exclusão */}
-
-.profile-update-container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 30px;
-    background-color: var(--color-background); /* Fundo branco */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --primary-color: #0ea5e9;
+    --primary-dark: #0284c7;
+    --primary-light: #e0f2fe;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-light: #9ca3af;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --border-color: #e5e7eb;
+    --border-light: #f3f4f6;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- Cabeçalho de Perfil --- */
+/* ============================================================================
+   CONTAINER PRINCIPAL
+   ============================================================================ */
+
+.profile-update-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================================
+   HEADER DO PERFIL
+   ============================================================================ */
+
 .profile-header-edit {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-light) 0%, rgba(14, 165, 233, 0.05) 100%);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(14, 165, 233, 0.2);
 }
 
 .profile-info-display {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
+    flex: 1;
 }
+
+/* ============================================================================
+   AVATAR
+   ============================================================================ */
 
 .profile-avatar {
-    width: 60px; /* Um pouco menor que no view-mode */
-    height: 60px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 20px;
-    /* Removemos a borda para seguir o frame de edição (se houver) */
+    border: 4px solid var(--primary-color);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
 }
 
-.profile-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--color-welcome-text);
-    margin-bottom: 2px;
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3);
 }
 
-.profile-email {
-    font-size: 14px;
-    color: var(--color-text-label);
+/* ============================================================================
+   UPLOAD DE FOTO
+   ============================================================================ */
+
+.profile-photo-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* Botão "Edit" / "Salvar" no topo */
-.btn-edit-profile {
-    background-color: var(--color-primary);
-    color: var(--color-background);
-    padding: 8px 20px;
-    border: none;
+.upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: var(--primary-color);
+    color: white;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    font-size: 0.875rem;
+    transition: var(--transition);
+    border: 2px solid var(--primary-color);
+}
+
+.upload-label:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.upload-label input[type="file"] {
+    display: none;
+}
+
+/* ============================================================================
+   INFORMAÇÕES DO PERFIL (NOME, EMAIL)
+   ============================================================================ */
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.profile-email {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0.25rem 0 0 0;
+}
+
+/* ============================================================================
+   BOTÕES
+   ============================================================================ */
+
+.btn-edit-profile {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
 }
 
 .btn-edit-profile:hover {
-    background-color: var(--color-secondary);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-/* --- Grid de Campos de Dados (Corpo do Formulário) --- */
+.btn-edit-profile:active {
+    transform: translateY(0);
+}
+
+.btn-save {
+    padding: 0.75rem 1.75rem;
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-save:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+.btn-save:active {
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    padding: 0.75rem 1.75rem;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cancel:hover {
+    background: var(--border-light);
+    border-color: var(--text-secondary);
+    transform: translateY(-2px);
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* ============================================================================
+   GRID DE FORMULÁRIO
+   ============================================================================ */
+
 .form-grid-fields {
     display: grid;
-    /* Duas colunas com a mesma largura para campos pequenos */
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px 30px; /* Espaçamento vertical e horizontal */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
+
+/* ============================================================================
+   GRUPOS DE FORMULÁRIO
+   ============================================================================ */
 
 .form-group {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* Campo que ocupa duas colunas (Nome, Email, Tipo de Conta) */
-.field-group-lg {
+.form-group.field-group-lg {
     grid-column: span 2;
 }
 
-/* Campos de Seção (Endereço, Médico, Paciente) - Ocupam a linha inteira */
-.form-section-full {
-    grid-column: span 2;
-    margin-top: 10px;
-    margin-bottom: 10px;
+@media (max-width: 768px) {
+    .form-group.field-group-lg {
+        grid-column: span 1;
+    }
 }
 
-.form-section-full h3 {
-    font-size: 1.1rem;
-    color: var(--color-primary);
-    margin-bottom: 15px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--color-border-light);
-}
+/* ============================================================================
+   LABELS
+   ============================================================================ */
 
 .form-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-text-label); /* Cor cinza da label */
-    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
-/* --- Estilo dos Inputs (Replicando o Frame) --- */
-/* Aplica-se a input, select e textarea diretamente no Django forms */
-.form-group input, 
-.form-group select, 
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    /* Borda verde-água fina e arredondada */
-    border: 1px solid var(--color-border-teal); 
-    border-radius: 10px; 
-    font-size: 16px;
-    color: var(--color-text-dark); 
-    height: 48px; /* Altura padrão para consistência */
-    box-shadow: none; /* Remove sombras padrão do Bootstrap se existirem */
-    transition: border-color 0.2s, box-shadow 0.2s;
+.form-group label::after {
+    content: '';
 }
 
-.form-group input:focus, 
-.form-group select:focus, 
-.form-group textarea:focus {
-    border-color: var(--color-secondary); /* Borda mais escura ao focar */
-    box-shadow: 0 0 0 2px rgba(0, 169, 157, 0.2); /* Sombra suave teal */
+.form-group label.required::after {
+    content: '*';
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* ============================================================================
+   INPUTS E TEXTAREAS
+   ============================================================================ */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transition: var(--transition);
     outline: none;
 }
 
-.form-group textarea {
-    height: 100px;
-    resize: vertical;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-light);
 }
 
-/* Placeholder para o campo Senha (Link de Alteração) */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    background: var(--primary-light);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+    background: var(--bg-tertiary);
+    cursor: not-allowed;
+    color: var(--text-light);
+}
+
+/* ============================================================================
+   TEXTAREA
+   ============================================================================ */
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-size: 0.9rem;
+}
+
+.form-group textarea:focus {
+    min-height: 150px;
+}
+
+/* ============================================================================
+   LINK PARA ALTERAR SENHA
+   ============================================================================ */
+
 .input-placeholder-link {
-    background-color: var(--color-background); 
-    border: 1px solid var(--color-border-teal);
-    border-radius: 10px; 
-    padding: 12px 15px;
-    font-size: 16px;
-    color: var(--color-text-dark); 
-    height: 48px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    color: var(--primary-color);
     text-decoration: none;
-    font-weight: 500;
-    /* O texto "Placeholder" no frame é mais claro. */
-    color: var(--color-text-label); 
-    transition: background-color 0.2s;
+    font-weight: 600;
+    text-align: center;
+    transition: var(--transition);
+    display: block;
 }
 
 .input-placeholder-link:hover {
-    background-color: #F0F9F9;
+    background: var(--primary-light);
+    border-style: solid;
+    transform: translateY(-2px);
 }
 
-/* Estilo para botões Salvar/Cancelar no rodapé */
-.btn-save {
-    background-color: var(--color-primary);
-    color: var(--color-background);
-    padding: 10px 25px;
-    border: none;
+/* ============================================================================
+   SEÇÕES
+   ============================================================================ */
+
+.form-section,
+.form-section-full {
+    grid-column: 1 / -1;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
     border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    border-left: 4px solid var(--primary-color);
+    margin-top: 1rem;
 }
 
-.btn-save:hover {
-    background-color: var(--color-secondary);
+.form-section h3,
+.form-section-full h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.btn-cancel {
-    background-color: #F0F0F0;
-    color: var(--color-text-dark);
-    padding: 10px 25px;
-    border: 1px solid #D0D0D0;
-    border-radius: 8px;
-    text-decoration: none;
+.form-section h3::before,
+.form-section-full h3::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+/* ============================================================================
+   FORM ROW (para campos lado a lado)
+   ============================================================================ */
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+/* ============================================================================
+   VALIDAÇÃO E ERROS
+   ============================================================================ */
+
+.text-danger {
+    color: var(--danger-color);
+    font-size: 0.8rem;
     font-weight: 500;
-    transition: background-color 0.2s;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
-.btn-cancel:hover {
-    background-color: #E0E0E0;
+.text-danger::before {
+    content: '✕';
+    font-weight: bold;
 }
 
+.form-group.has-error input,
+.form-group.has-error textarea {
+    border-color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.05);
+}
 
-/* Media Query para responsividade */
-@media (max-width: 600px) {
-    .form-grid-fields {
-        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
-    }
-    .field-group-lg {
-        grid-column: span 1;
-    }
+.form-group.has-error input:focus,
+.form-group.has-error textarea:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================================================
+   RODAPÉ DO FORMULÁRIO
+   ============================================================================ */
+
+.form-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
     .profile-update-container {
-        padding: 20px;
-        margin: 10px;
+        padding: 1rem;
+        margin: 1rem;
     }
+
     .profile-header-edit {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
     }
-    .btn-edit-profile {
+
+    .profile-info-display {
+        flex-direction: column;
         width: 100%;
     }
-    .form-section-full {
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .form-grid-fields {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-group.field-group-lg {
         grid-column: span 1;
     }
+
+    .form-footer {
+        flex-direction: column;
+    }
+
+    .btn-edit-profile,
+    .btn-save,
+    .btn-cancel {
+        width: 100%;
+    }
+
     .form-row {
-        /* Garante que form-row dentro de form-section-full também se adapte */
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-update-container {
+        padding: 0.75rem;
+        margin: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        border-width: 3px;
+    }
+
+    .profile-name {
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.625rem 0.75rem;
+        font-size: 16px; /* Previne zoom em iOS */
+    }
+
+    .btn-edit-profile,
+    .btn-save,
+    .btn-cancel {
+        font-size: 0.875rem;
+        padding: 0.625rem 1rem;
+    }
+
+    .text-danger {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================================================
+   ANIMAÇÕES
+   ============================================================================ */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-section,
+.form-section-full {
+    animation: slideUp 0.3s ease-out;
+}
+
+.form-group {
+    animation: slideUp 0.4s ease-out;
+}
+
+/* ============================================================================
+   ESTADOS DE LOADING
+   ============================================================================ */
+
+.btn-save:disabled,
+.btn-edit-profile:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-save.loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================================
+   IMPRESSÃO
+   ============================================================================ */
+
+@media print {
+    .profile-update-container {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-edit-profile,
+    .btn-save,
+    .btn-cancel,
+    .upload-label {
+        display: none;
     }
 }

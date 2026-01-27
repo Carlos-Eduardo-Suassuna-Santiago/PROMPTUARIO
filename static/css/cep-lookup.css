@@ -1,0 +1,138 @@
+/**
+ * CEP Lookup Styles
+ * Estilos para a busca automática de CEP
+ */
+
+/* Input de CEP */
+input[data-lookup="cep"] {
+    transition: all 0.3s ease;
+}
+
+input[data-lookup="cep"]:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+input[data-lookup="cep"].is-loading {
+    background-color: #f0f9ff;
+    border-color: #0ea5e9;
+}
+
+input[data-lookup="cep"].is-valid {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+}
+
+input[data-lookup="cep"].is-invalid {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Feedback Container */
+.cep-feedback {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading State */
+.cep-feedback.loading {
+    background-color: #eff6ff;
+    color: #0284c7;
+    border: 1px solid #bfdbfe;
+}
+
+.cep-feedback.loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Success State */
+.cep-feedback.success {
+    background-color: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.cep-feedback.success i {
+    color: #10b981;
+}
+
+/* Error State */
+.cep-feedback.error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.cep-feedback.error i {
+    color: #ef4444;
+}
+
+/* Address Fields Container */
+.address-fields-group {
+    background-color: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.address-fields-group .form-label {
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
+
+.address-fields-group .form-control {
+    background-color: white;
+    border-color: #e2e8f0;
+}
+
+.address-fields-group .form-control:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cep-feedback {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .address-fields-group {
+        padding: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .cep-feedback {
+        display: none;
+    }
+}

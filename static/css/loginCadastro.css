@@ -75,6 +75,58 @@
         background-color: var(--primary-color);
         background-image: none;
     }
+
+    .login-card,
+    .register-card {
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 1.5rem;
+    }
+
+    .login-header h1,
+    .register-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr; /* Uma coluna em mobile */
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .login-card,
+    .register-card {
+        width: 95%;
+        padding: 1rem;
+        margin: 10px auto;
+    }
+
+    .login-header,
+    .register-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .login-header h1,
+    .register-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .form-control {
+        padding: 0.6rem;
+        font-size: 0.95rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
 }
 
 

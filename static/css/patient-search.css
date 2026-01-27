@@ -1,0 +1,167 @@
+/**
+ * Patient Search Styles
+ * Estilos para a busca dinâmica de pacientes
+ */
+
+.patient-search-container {
+    position: relative;
+    width: 100%;
+}
+
+.patient-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.patient-search-input:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    outline: none;
+}
+
+/* Search Results Container */
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    margin-top: -1px;
+}
+
+.search-results.active {
+    display: block;
+}
+
+/* Search Items */
+.search-items {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.search-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-item:last-child {
+    border-bottom: none;
+}
+
+.search-item:hover {
+    background-color: #f8fafc;
+}
+
+.search-item:active {
+    background-color: #eef2f7;
+}
+
+.search-item-main {
+    flex: 1;
+}
+
+.search-item-main strong {
+    display: block;
+    color: #0f172a;
+    margin-bottom: 0.25rem;
+}
+
+.search-item-main small {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.search-item-meta {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.search-item-meta small {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* Loading State */
+.search-loading {
+    padding: 1rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.search-loading i {
+    margin-right: 0.5rem;
+}
+
+/* Empty State */
+.search-empty {
+    padding: 1rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* Error State */
+.search-error {
+    padding: 1rem;
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-radius: 4px;
+    margin: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-results {
+        max-height: 300px;
+    }
+
+    .search-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-item-meta {
+        text-align: left;
+        width: 100%;
+    }
+}
+
+/* Scrollbar Styling */
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

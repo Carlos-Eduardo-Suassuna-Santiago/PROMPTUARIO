@@ -1,0 +1,873 @@
+/*
+ * ====================================================================
+ * ESTILOS DE COMPONENTES PADRONIZADOS (Cards, Formulários, Tabelas, Botões)
+ * ====================================================================
+ */
+
+/* =============================
+   CARDS PADRONIZADOS
+============================= */
+
+/* Card Base (Usado para formulários, detalhes, listas) */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 7px 12px rgba(0,0,0,0.08);
+    border: 5px solid #f1f1f1;
+    overflow: hidden; /* Para garantir que o header/body não vaze */
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.card-header {
+    background-color: var(--color-avisos-bg); /* Fundo claro para headers de lista/detalhe */
+    color: var(--color-sidebar-text);
+    padding: 18px 25px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header-primary { /* Para headers que precisam da cor primária (ex: formulários) */
+    background-color: var(--color-primary);
+    color: white;
+    border-bottom: none;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* Cards de Estatísticas (Dashboard) */
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    flex: 1 1 calc(25% - 20px);
+    background: var(--color-primary);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.2s ease-in-out;
+    min-width: 220px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h5 {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-background);
+    margin-bottom: 8px;
+}
+
+.stat-card .stat-value {
+    font-size: 40px;
+    font-weight: bold;
+    color: #000000;
+}
+
+/* Cards de Ações Rápidas */
+.quick-actions-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.quick-card {
+    flex: 1 1 calc(25% - 20px);
+    min-width: 200px;
+    text-decoration: none;
+}
+
+.quick-card-inner {
+    padding: 15px 10px;
+    background-color: #fff;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.quick-card-inner:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-4px);
+}
+
+/* =============================
+   TABELAS PADRONIZADAS
+============================= */
+
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden; 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    background-color: white;
+    margin-bottom: 1.5rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate; /* Para bordas arredondadas */
+    border-spacing: 0 8px; /* Espaçamento entre linhas */
+    margin: 0;
+    table-layout: auto; /* Deixa o navegador decidir a largura */
+}
+
+.data-table thead th {
+    padding: 15px 20px;
+    text-align: left;
+    background-color: var(--color-avisos-bg);
+    color: var(--color-sidebar-text);
+    font-weight: 700;
+    border-bottom: 2px solid #ddd;
+    /* Remove bordas arredondadas do thead para não conflitar com o overflow: hidden do table-responsive */
+    border-radius: 0; 
+}
+
+.data-table tbody tr {
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-radius: 6px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--color-avisos-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.data-table tbody td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: none; /* Removido para usar o espaçamento */
+    color: var(--color-sidebar-text);
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+/* Ajuste para logs */
+.logs-table {
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+}
+
+.logs-table th, .logs-table td {
+    padding: 12px !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    word-wrap: break-word;
+    white-space: normal;
+    background: #ffffff !important;
+    box-shadow: none;
+    border-radius: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.logs-table thead th {
+    background-color: var(--color-avisos-bg) !important;
+    color: var(--color-sidebar-text) !important;
+    font-weight: 700;
+}
+
+/* =============================
+   FORMULÁRIOS PADRONIZADOS
+============================= */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-sidebar-text);
+    font-size: 0.95rem;
+}
+
+/* Estilo para todos os campos de formulário (Inputs, Selects, Textareas) */
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-sidebar-text);
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 8px; /* Padronizado para 8px */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box; 
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 169, 157, 0.25);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Fieldset */
+.form-fieldset {
+    border: 1.5px solid #e3e3e3;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fafafa;
+    margin-bottom: 1.5rem;
+}
+
+.form-fieldset legend {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-primary);
+    padding: 0 8px;
+    width: auto; /* Para que o legend não ocupe a largura total */
+    margin-left: 10px;
+}
+
+/* =============================
+   BOTÕES PADRONIZADOS
+============================= */
+
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.75rem 1.5rem; /* Tamanho padrão maior */
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 8px; /* Padronizado para 8px */
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+
+.btn-primary {
+    color: white; 
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-secondary); 
+    border-color: var(--color-secondary);
+}
+
+.btn-secondary {
+    color: var(--color-sidebar-text); 
+    background-color: #e9ecef; 
+    border-color: #e9ecef;
+}
+
+.btn-secondary:hover {
+    color: var(--color-sidebar-text);
+    background-color: #dae0e5; 
+    border-color: #dae0e5;
+}
+
+.btn-danger {
+    color: white;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-info {
+    color: white;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+/* Botões Outline */
+.btn-outline-primary {
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    background-color: white;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* =============================
+   TÍTULOS E SEÇÕES
+============================= */
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-sidebar-text);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+/* =============================
+   ESTILOS ESPECÍFICOS (Migrados e Padronizados)
+============================= */
+
+/* Grid System (Simulação .row e .col) */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px; 
+    margin-left: -15px;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Colunas - mobile first */
+[class^="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* Telas médias (Simula .col-md-4) */
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+/* Telas grandes (Simula .col-lg-6) */
+@media (min-width: 992px) {
+    .col-lg-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* ESTILOS DE IMPRESSÃO */
+@media print {
+    .btn, .d-flex button {
+        display: none; /* Esconde o botão de impressão */
+    }
+    .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
+/* Badges de Status (Padronizado) */
+.badge {
+    padding: 0.35em 0.65em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 1rem;
+    color: white;
+}
+
+.bg-success { background-color: #28a745 !important; }
+.bg-warning { background-color: #ffc107 !important; color: #333 !important; }
+.bg-info { background-color: #17a2b8 !important; }
+.bg-danger { background-color: #dc3545 !important; }
+.bg-secondary { background-color: #6c757d !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+
+/* Mensagens e Alertas (Padronizado) */
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #065f46;
+}
+
+.alert-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-color: #991b1b;
+}
+
+.alert-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #92400e;
+}
+
+.alert-info {
+    background-color: var(--color-avisos-bg);
+    color: var(--color-primary);
+    border-color: var(--color-avisos-border);
+}
+
+/* Estilos de Lista de Prontuários (medical_record.css) */
+.record-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.record-list-item {
+    background-color: white;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid var(--color-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.record-list-item:hover:not(.empty-list-message) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.record-list-item strong {
+    color: var(--color-sidebar-text);
+    font-size: 1.1rem;
+    font-weight: 700;
+    word-break: break-word; 
+    padding-right: 1rem;
+}
+
+.record-list-item span {
+    color: var(--color-sidebar-text);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.empty-list-message {
+    background-color: var(--color-avisos-bg) !important;
+    color: var(--color-primary) !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 2rem !important;
+    border-left: 5px solid var(--color-primary) !important;
+    box-shadow: none !important;
+    cursor: default !important;
+    transform: none !important;
+}
+
+/* Estilos de Perfil (profile_style.css e profile_form_style.css) */
+.profile-container, .profile-update-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: var(--color-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.profile-fields-grid, .form-grid-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px 30px;
+}
+
+.field-group-lg {
+    grid-column: span 2;
+}
+
+.field-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+}
+
+.field-value-box {
+    background-color: var(--color-background); 
+    border: 1px solid var(--color-topbar-border);
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: var(--color-sidebar-text); 
+    height: 48px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.field-value-box.password-link {
+    color: var(--color-primary);
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.grid-section-title, .form-section-full h3 {
+    grid-column: span 2;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed var(--color-topbar-border);
+}
+
+/* Estilos de Paginação (Padronizado) */
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+}
+
+.pagination-centered {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1 1 auto;
+    justify-content: center;
+}
+
+.pagination-wrapper .page-item.active .page-link,
+.pagination-wrapper .page-item.active span {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
+
+/* Estilos de Agenda (attendant.css) */
+.agenda-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+    gap: 20px;
+}
+
+.agenda-time {
+    font-size: 22px;
+    font-weight: bold;
+    width: 100px;
+}
+
+.agenda-info {
+    flex: 1;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #e9ecef;
+    color: #555;
+}
+
+.status-pill.confirmado { background: #d1e7dd; color: #0f5132; }
+.status-pill.pendente { background: #fff3cd; color: #664d03; }
+.status-pill.cancelado { background: #f8d7da; color: #842029; }
+
+/* =================================
+ * RESPONSIVIDADE
+ * ================================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .stats-container {
+        gap: 15px;
+    }
+
+    .stat-card {
+        flex: 1 1 calc(33.333% - 15px); /* 3 cards por linha */
+        min-width: 180px;
+    }
+
+    .quick-actions-container {
+        gap: 15px;
+    }
+
+    .quick-card {
+        flex: 1 1 calc(33.333% - 15px);
+        min-width: 180px;
+    }
+
+    .card {
+        margin: 0 10px;
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table-responsive {
+        margin: 0 10px;
+    }
+
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 12px 15px;
+    }
+
+    .form-fieldset {
+        padding: 15px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        flex: 1 1 100%;
+        max-width: 300px;
+        height: 140px;
+    }
+
+    .quick-actions-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .quick-card {
+        flex: 1 1 100%;
+        max-width: 300px;
+    }
+
+    .card {
+        margin: 0 5px;
+        border-radius: 8px;
+    }
+
+    .card-header {
+        padding: 12px 15px;
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .table-responsive {
+        margin: 0 5px;
+        overflow-x: auto; /* Scroll horizontal para tabelas */
+    }
+
+    .data-table {
+        min-width: 600px; /* Garante largura mínima para scroll */
+    }
+
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+    }
+
+    .form-control,
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.95rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .form-fieldset {
+        padding: 12px;
+    }
+
+    .form-fieldset legend {
+        font-size: 14px;
+    }
+
+    .agenda-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 0;
+    }
+
+    .agenda-time {
+        width: auto;
+        font-size: 18px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .stat-card {
+        height: 120px;
+        padding: 15px;
+    }
+
+    .stat-card h5 {
+        font-size: 14px;
+    }
+
+    .stat-card .stat-value {
+        font-size: 32px;
+    }
+
+    .quick-card-inner {
+        height: 100px;
+        padding: 12px 8px;
+    }
+
+    .card-header {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .form-control,
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .agenda-time {
+        font-size: 16px;
+    }
+
+    .status-pill {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+}

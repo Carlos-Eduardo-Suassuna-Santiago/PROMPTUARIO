@@ -1,0 +1,249 @@
+/**
+ * Rich Text Editor Styles
+ * Estilos customizados para Quill.js
+ */
+
+/* Container do Editor */
+.editor-container {
+    margin-bottom: 1.5rem;
+}
+
+.editor-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.editor-label.required::after {
+    content: ' *';
+    color: #ef4444;
+}
+
+/* Quill Editor */
+.ql-container {
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    background: white;
+}
+
+.ql-editor {
+    min-height: 300px;
+    padding: 1rem;
+    line-height: 1.6;
+    color: #0f172a;
+}
+
+.ql-editor.ql-blank::before {
+    color: #cbd5e1;
+    font-style: italic;
+}
+
+.ql-editor p {
+    margin-bottom: 0.5rem;
+}
+
+.ql-editor ul, .ql-editor ol {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.ql-editor li {
+    margin-bottom: 0.25rem;
+}
+
+.ql-editor blockquote {
+    border-left: 4px solid #0ea5e9;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+    color: #64748b;
+}
+
+.ql-editor code {
+    background-color: #f1f5f9;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    color: #dc2626;
+}
+
+.ql-editor pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.ql-editor pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+/* Toolbar */
+.ql-toolbar {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px 8px 0 0;
+    background-color: #f8fafc;
+    padding: 0.75rem;
+}
+
+.ql-toolbar.ql-snow {
+    padding: 0.5rem;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+    margin-right: 0.75rem;
+}
+
+.ql-toolbar.ql-snow .ql-stroke {
+    stroke: #64748b;
+}
+
+.ql-toolbar.ql-snow .ql-stroke.ql-active,
+.ql-toolbar.ql-snow .ql-stroke:hover {
+    stroke: #0ea5e9;
+}
+
+.ql-toolbar.ql-snow .ql-fill,
+.ql-toolbar.ql-snow .ql-stroke.ql-fill {
+    fill: #64748b;
+}
+
+.ql-toolbar.ql-snow .ql-fill.ql-active,
+.ql-toolbar.ql-snow .ql-stroke.ql-fill.ql-active,
+.ql-toolbar.ql-snow .ql-fill:hover,
+.ql-toolbar.ql-snow .ql-stroke.ql-fill:hover {
+    fill: #0ea5e9;
+}
+
+.ql-toolbar.ql-snow .ql-picker-label {
+    color: #64748b;
+}
+
+.ql-toolbar.ql-snow .ql-picker-item:hover,
+.ql-toolbar.ql-snow .ql-picker-item.ql-selected {
+    color: #0ea5e9;
+}
+
+.ql-toolbar.ql-snow .ql-picker-item {
+    color: #64748b;
+}
+
+.ql-toolbar.ql-snow button:hover,
+.ql-toolbar.ql-snow button.ql-active,
+.ql-toolbar.ql-snow button:focus,
+.ql-toolbar.ql-snow button:active {
+    color: #0ea5e9;
+}
+
+/* Buttons */
+.ql-toolbar button {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.ql-toolbar button:hover {
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+.ql-toolbar button.ql-active {
+    background-color: rgba(14, 165, 233, 0.2);
+}
+
+/* Picker (Dropdown) */
+.ql-picker {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.ql-picker-label {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.ql-picker-label:hover {
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+.ql-picker-options {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.ql-picker-item {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.ql-picker-item:hover {
+    background-color: #f1f5f9;
+}
+
+/* Disabled State */
+.ql-toolbar.ql-disabled .ql-stroke {
+    stroke: #cbd5e1;
+}
+
+.ql-toolbar.ql-disabled .ql-fill,
+.ql-toolbar.ql-disabled .ql-stroke.ql-fill {
+    fill: #cbd5e1;
+}
+
+.ql-container.ql-disabled .ql-editor {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ql-toolbar {
+        flex-wrap: wrap;
+        padding: 0.5rem;
+    }
+
+    .ql-toolbar.ql-snow .ql-formats {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .ql-toolbar button {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+
+    .ql-editor {
+        min-height: 250px;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .ql-toolbar {
+        display: none;
+    }
+
+    .ql-container {
+        border: none;
+    }
+
+    .ql-editor {
+        padding: 0;
+    }
+}
