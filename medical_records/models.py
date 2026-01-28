@@ -34,6 +34,7 @@ class MedicalRecord(models.Model):
     
     chief_complaint = models.TextField(
         'Queixa Principal',
+        blank=True,
         help_text='Motivo da consulta relatado pelo paciente'
     )
     
@@ -48,7 +49,8 @@ class MedicalRecord(models.Model):
     )
     
     diagnosis = models.TextField(
-        'Diagnóstico'
+        'Diagnóstico',
+        blank=True
     )
     
     treatment_plan = models.TextField(
