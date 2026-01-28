@@ -24,16 +24,6 @@
                        class="btn btn-primary">Criar Prontuário</a>
                 {% endif %}
             {% endif %}
-
-            {% if user.is_patient and appointment.can_be_cancelled %}
-            <form method="post" action="{% url 'appointments:appointment_cancel' pk=appointment.pk %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
-                    Cancelar Consulta
-                </button>
-            </form>
-            {% endif %}
         </div>
     </div>
 
@@ -46,7 +36,7 @@
     <!-- CARD PRINCIPAL -->
     <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Informações Principais</h5>
+            <h5 class="mb-0" style="color: white !important;">Informações Principais</h5>
         </div>
 
         <div class="card-body p-4">
@@ -75,9 +65,9 @@
                         <span class="status-pill">{{ appointment.get_status_display }}</span>
                     </div>
                 </div>
-
+                <br><br><br>
                 <!-- Paciente -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="detail-box">
                         <div class="label">Paciente</div>
                         <a class="value link"
@@ -88,7 +78,7 @@
                 </div>
 
                 <!-- Médico -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="detail-box">
                         <div class="label">Médico</div>
                         <div class="value">{{ appointment.doctor.user.get_full_name }}</div>
@@ -96,7 +86,7 @@
                 </div>
 
                 <!-- Motivo -->
-                <div class="col-12">
+                <div class="col-md-4">
                     <div class="detail-box">
                         <div class="label">Motivo</div>
                         <p class="text-muted">{{ appointment.reason }}</p>
@@ -108,8 +98,8 @@
     </div>
 
     <!-- CARD AÇÕES -->
-    <div class="card border-0 shadow-sm rounded-4 mb-5">
-        <div class="card-body p-4">
+    <div >
+        <div>
 
             {% if user.is_doctor %}
                 {% if appointment.medical_record %}
@@ -130,8 +120,18 @@
                 {% endif %}
             {% endif %}
 
-            <a href="#" class="btn btn-primary">Remarcar</a>
-            <a href="#" class="btn btn-danger">Cancelar Consulta</a>
+            <a href="{% url 'appointments:appointment_reschedule' pk=appointment.pk %}" class="btn btn-primary rounded-3 me-2">
+                Remarcar
+            </a>
+            {% if user.is_patient and appointment.can_be_cancelled %}
+            <form method="post" action="{% url 'appointments:appointment_cancel' pk=appointment.pk %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
+                    Cancelar Consulta
+                </button>
+            </form>
+            {% endif %}
         </div>
     </div>
 
