@@ -1,0 +1,552 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Relatório Administrativo - Sistema{% endblock %}
+
+{% block content %}
+<style>
+    /* ===== VARIÁVEIS E ESTILOS GERAIS ===== */
+    :root {
+        --primary: #0f172a;
+        --accent: #0284c7;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #06b6d4;
+        --purple: #8b5cf6;
+        --pink: #ec4899;
+        --surface: #ffffff;
+        --surface-hover: #f8fafc;
+        --border: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --radius-lg: 16px;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+
+    .dashboard-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 2rem 1rem;
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+        margin-bottom: 2.5rem;
+    }
+
+    /* ===== HEADER ===== */
+    .dashboard-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem 0.875rem;
+        background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        width: fit-content;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .header-info {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .btn-group-header {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #0369a1;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+    }
+
+    .btn-secondary {
+        background: var(--surface);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+        background: var(--surface-hover);
+    }
+
+    /* ===== STAT CARDS GRID ===== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        position: relative;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .card-blue::before { background: var(--accent); }
+    .card-green::before { background: var(--success); }
+    .card-warning::before { background: var(--warning); }
+    .card-danger::before { background: var(--danger); }
+    .card-purple::before { background: var(--purple); }
+    .card-pink::before { background: var(--pink); }
+    .card-info::before { background: var(--info); }
+
+    .stat-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .card-blue .stat-icon-wrapper { background: rgba(2, 132, 199, 0.1); color: var(--accent); }
+    .card-green .stat-icon-wrapper { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+    .card-warning .stat-icon-wrapper { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+    .card-danger .stat-icon-wrapper { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+    .card-purple .stat-icon-wrapper { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
+    .card-pink .stat-icon-wrapper { background: rgba(236, 72, 153, 0.1); color: var(--pink); }
+    .card-info .stat-icon-wrapper { background: rgba(6, 182, 212, 0.1); color: var(--info); }
+
+    .stat-value {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--accent);
+        border-radius: 2px;
+    }
+
+    /* ===== REPORT CARDS ===== */
+    .report-card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .report-card-header {
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .report-card-header::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--accent);
+        border-radius: 2px;
+    }
+
+    .list-item {
+        padding: 1rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
+    }
+
+    .list-item:last-child {
+        border-bottom: none;
+    }
+
+    .list-item:hover {
+        background: var(--surface-hover);
+    }
+
+    .list-item-name {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .list-item-count {
+        background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.875rem;
+    }
+
+    /* ===== METRICS ROW ===== */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+    }
+
+    .metric-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .metric-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        background: rgba(2, 132, 199, 0.1);
+        color: var(--accent);
+    }
+
+    .metric-content h4 {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    .metric-content p {
+        margin: 0.25rem 0 0 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    /* ===== FOOTER ===== */
+    .report-footer {
+        margin-top: 3rem;
+        padding: 1.5rem;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .report-timestamp {
+        display: block;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    /* ===== PRINT STYLES ===== */
+    @media print {
+        body { background: white; }
+        .dashboard-wrapper { padding: 0; background: white; }
+        .btn, .header-badge, .btn-group-header { display: none !important; }
+        .stat-card { box-shadow: none !important; border: 1px solid #ddd !important; break-inside: avoid; }
+        .report-card { box-shadow: none !important; border: 1px solid #ddd !important; break-inside: avoid; }
+        .dashboard-container { max-width: 100%; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .dashboard-title { font-size: 1.5rem; }
+        .header-content { flex-direction: column; align-items: flex-start; }
+        .btn-group-header { width: 100%; }
+    }
+</style>
+
+<div class="dashboard-wrapper">
+    <div class="dashboard-container">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="header-badge">Relatório Administrativo</span>
+                    <h1 class="dashboard-title">Visão Geral do Sistema</h1>
+                    <p class="header-info">Gerado em {{ generated_at|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div class="btn-group-header">
+                    <a href="{% url 'reports:admin_report_pdf' %}" class="btn btn-primary">
+                        Baixar PDF
+                    </a>
+                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary">
+                        ← Voltar ao Dashboard
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- SEÇÃO 1: ESTATÍSTICAS DE USUÁRIOS -->
+        <section class="section">
+            <h2 class="section-title">Usuários do Sistema</h2>
+            <div class="stats-grid">
+                <div class="stat-card card-blue">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_users }}</div>
+                    <div class="stat-label">Total de Usuários</div>
+                </div>
+
+                <div class="stat-card card-green">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_doctors }}</div>
+                    <div class="stat-label">Médicos Cadastrados</div>
+                </div>
+
+                <div class="stat-card card-info">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_patients }}</div>
+                    <div class="stat-label">Pacientes Cadastrados</div>
+                </div>
+
+                <div class="stat-card card-warning">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_attendants }}</div>
+                    <div class="stat-label">Atendentes</div>
+                </div>
+
+                <div class="stat-card card-danger">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_admins }}</div>
+                    <div class="stat-label">Administradores</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: ESTATÍSTICAS DE CONSULTAS E REGISTROS -->
+        <section class="section">
+            <h2 class="section-title">Consultas e Prontuários</h2>
+            <div class="stats-grid">
+                <div class="stat-card card-blue">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_appointments }}</div>
+                    <div class="stat-label">Total de Consultas</div>
+                </div>
+
+                <div class="stat-card card-green">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ completed_appointments }}</div>
+                    <div class="stat-label">Consultas Concluídas</div>
+                </div>
+
+                <div class="stat-card card-danger">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ cancelled_appointments }}</div>
+                    <div class="stat-label">Consultas Canceladas</div>
+                </div>
+
+                <div class="stat-card card-warning">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ pending_appointments }}</div>
+                    <div class="stat-label">Consultas Pendentes</div>
+                </div>
+
+                <div class="stat-card card-purple">
+                    <div class="stat-icon-wrapper"></div>
+                    <div class="stat-value">{{ total_medical_records }}</div>
+                    <div class="stat-label">Prontuários</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: ATIVIDADE RECENTE -->
+        <section class="section">
+            <h2 class="section-title">Atividade Recente (Últimos 30 dias)</h2>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-content">
+                        <h4>Consultas Recentes</h4>
+                        <p>{{ recent_appointments_count }}</p>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-content">
+                        <h4>Prontuários Criados</h4>
+                        <p>{{ recent_medical_records_count }}</p>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-content">
+                        <h4>Taxa de Conclusão</h4>
+                        <p>{{ completion_rate }}%</p>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-content">
+                        <h4>Média por Médico</h4>
+                        <p>{{ avg_appointments_per_doctor }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4: TOP DIAGNÓSTICOS -->
+        {% if top_diagnoses %}
+        <section class="section" style="margin-top: 2.5rem;">
+            <h2 class="section-title">Top 10 Diagnósticos</h2>
+            <div class="report-card">
+                <div class="report-card-header">
+                    Diagnósticos mais registrados
+                </div>
+                <div>
+                    {% for diagnosis in top_diagnoses %}
+                        <div class="list-item">
+                            <span class="list-item-name">
+                                {% if diagnosis.diagnosis %}
+                                    {{ diagnosis.diagnosis }}
+                                {% else %}
+                                    <em>Não informado</em>
+                                {% endif %}
+                            </span>
+                            <span class="list-item-count">{{ diagnosis.count }} registros</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- SEÇÃO 5: MÉDICOS MAIS ATIVOS -->
+        {% if top_doctors %}
+        <section class="section" style="margin-top: 2.5rem;">
+            <h2 class="section-title">Médicos mais Ativos</h2>
+            <div class="report-card">
+                <div class="report-card-header">
+                    Top 5 Médicos por Consultas
+                </div>
+                <div>
+                    {% for doctor in top_doctors %}
+                        <div class="list-item">
+                            <span class="list-item-name">
+                                {{ doctor.get_full_name }} ({{ doctor.doctor_profile.specialty }})
+                            </span>
+                            <span class="list-item-count">{{ doctor.appointments_count }} consultas</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- FOOTER -->
+        <footer class="report-footer">
+            <span class="report-timestamp">Relatório gerado em {{ generated_at|date:"d/m/Y H:i" }}</span>
+            <div>Sistema Prontuário - Gerenciamento de Pacientes</div>
+        </footer>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalhes do Relatório{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            Detalhes do Relatório: {{ report.title }}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><strong>Tipo:</strong> {{ report.get_report_type_display }}</p>
+                    <p><strong>Gerado por:</strong> {{ report.generated_by.get_full_name }}</p>
+                    <p><strong>Criado em:</strong> {{ report.created_at|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div class="col-lg-6">
+                    <p><strong>Período:</strong> 
+                        {% if report.start_date and report.end_date %}
+                            De {{ report.start_date|date:"d/m/Y" }} a {{ report.end_date|date:"d/m/Y" }}
+                        {% else %}
+                            Não especificado
+                        {% endif %}
+                    </p>
+                    <p><strong>Formato:</strong> {{ report.get_format_display }}</p>
+                </div>
+            </div>
+
+            <h4 class="section-title mt-4">Descrição</h4>
+            <p>{{ report.description|default:"Nenhuma descrição fornecida." }}</p>
+
+            <h4 class="section-title mt-4">Filtros Aplicados</h4>
+            {% if report.filters %}
+                <pre>{{ report.filters|json_script:"report-filters" }}</pre>
+                <script>
+                    // Exibir filtros de forma mais amigável (opcional)
+                    const filters = JSON.parse(document.getElementById('report-filters').textContent);
+                    let html = '<ul>';
+                    for (const key in filters) {
+                        html += `<li><strong>${key}:</strong> ${filters[key]}</li>`;
+                    }
+                    html += '</ul>';
+                    document.write(html);
+                </script>
+            {% else %}
+                <p>Nenhum filtro aplicado.</p>
+            {% endif %}
+
+            <h4 class="section-title mt-4">Arquivo</h4>
+            {% if report.file %}
+                <a href="{{ report.file.url }}" class="btn btn-primary" target="_blank">
+                    Baixar Arquivo ({{ report.get_format_display }})
+                </a>
+            {% else %}
+                <div class="alert alert-warning">
+                    O arquivo do relatório não foi encontrado ou não foi anexado.
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'reports:report_list' %}" class="btn btn-secondary">Voltar para a Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
