@@ -1,10 +1,5 @@
 from django.urls import path
 from . import views
-from .patient_booking_views import (
-    PatientBookingDoctorListView,
-    PatientBookingAvailabilityView,
-    PatientBookingConfirmView
-)
 
 app_name = 'appointments'
 
@@ -19,8 +14,8 @@ urlpatterns = [
     path('calendar/', views.AppointmentCalendarView.as_view(), name='appointment_calendar'),
     path('api/list/', views.AppointmentListJsonView.as_view(), name='appointment_list_json'),
     
-    # Patient Booking
-    path('book/', PatientBookingDoctorListView.as_view(), name='patient_booking_doctors'),
-    path('book/doctor/<int:doctor_id>/', PatientBookingAvailabilityView.as_view(), name='patient_booking_availability'),
-    path('book/doctor/<int:doctor_id>/confirm/', PatientBookingConfirmView.as_view(), name='patient_booking_confirm'),
+    # Booking
+    path('book/', views.PatientBookingDoctorListView.as_view(), name='patient_booking_doctors'),
+    path('book/doctor/<int:doctor_id>/', views.PatientBookingAvailabilityView.as_view(), name='patient_booking_availability'),
+    path('book/doctor/<int:doctor_id>/confirm/', views.PatientBookingConfirmView.as_view(), name='patient_booking_confirm'),
 ]

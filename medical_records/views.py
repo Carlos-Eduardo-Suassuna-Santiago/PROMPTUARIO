@@ -7,6 +7,7 @@ from django.db import transaction
 from accounts.utils import log_access
 from datetime import datetime
 import os
+import json
 from django.conf import settings
 from django.http import Http404
 from django.views import View
@@ -17,6 +18,28 @@ from .utils import generate_prescription_pdf
 from accounts.models import DoctorProfile
 from patients.models import Patient
 from appointments.models import Appointment
+
+
+def parse_quill_delta(delta_json):
+    """Converte Quill Delta JSON para texto legível."""
+    if not delta_json:
+        return "N/A"
+    
+    try:
+        if isinstance(delta_json, str):
+            data = json.loads(delta_json)
+        else:
+            data = delta_json
+        
+        text = ""
+        if isinstance(data, dict) and 'ops' in data:
+            for op in data.get('ops', []):
+                if 'insert' in op:
+                    text += op['insert']
+        
+        return text.strip() if text.strip() else "N/A"
+    except (json.JSONDecodeError, TypeError, KeyError):
+        return "N/A"
 
 
 class DoctorRequiredMixin(UserPassesTestMixin):
@@ -55,9 +78,19 @@ class MedicalRecordDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['prescriptions'] = context['record'].prescriptions.all()
-        context['exams'] = context['record'].exams.all()
-        context['comments'] = context['record'].comments.all()
+        record = context['record']
+        
+        # Processar campos Quill Delta para texto legível
+        context['chief_complaint_text'] = parse_quill_delta(record.chief_complaint)
+        context['symptoms_text'] = parse_quill_delta(record.symptoms)
+        context['physical_examination_text'] = parse_quill_delta(record.physical_examination)
+        context['diagnosis_text'] = parse_quill_delta(record.diagnosis)
+        context['treatment_plan_text'] = parse_quill_delta(record.treatment_plan)
+        context['observations_text'] = parse_quill_delta(record.observations)
+        
+        context['prescriptions'] = record.prescriptions.all()
+        context['exams'] = record.exams.all()
+        context['comments'] = record.comments.all()
         return context
 
 
@@ -69,6 +102,12 @@ class MedicalRecordCreateUpdateMixin(DoctorRequiredMixin, LoginRequiredMixin):
 
     def get_success_url(self):
         return reverse_lazy('medical_records:record_detail', kwargs={'pk': self.object.pk})
+
+    def form_invalid(self, form):
+        """Tratamento de formulário inválido com debug."""
+        print(f"Erros de validação: {form.errors}")
+        print(f"Non-field errors: {form.non_field_errors()}")
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         with transaction.atomic():
@@ -89,21 +128,25 @@ class MedicalRecordCreateUpdateMixin(DoctorRequiredMixin, LoginRequiredMixin):
             action_log = 'create_record' if is_new else 'update_record'
             log_access(self.request, action_log, f'Prontuário do paciente {patient.user.get_full_name()} (ID: {self.object.pk}) {action_log}d.')
             
-            # 3. Criar histórico (Audit Trail)
-            action = 'created' if is_new else 'updated'
-            self.object.history.create(
-                medical_record=self.object,
-                user=self.request.user,
-                action=action,
-                description=f"Prontuário {action} pelo Dr(a). {doctor.user.get_full_name()}"
-            )
+            # 3. Criar histórico (Audit Trail) - com tratamento de erro
+            try:
+                action = 'created' if is_new else 'updated'
+                self.object.history.create(
+                    medical_record=self.object,
+                    user=self.request.user,
+                    action=action,
+                    description=f"Prontuário {action} pelo Dr(a). {doctor.user.get_full_name()}"
+                )
+            except Exception as e:
+                # Se falhar na criação do histórico, loga mas não interrompe o fluxo
+                print(f"Erro ao criar histórico: {str(e)}")
             
             # 4. Marcar a consulta como concluída (ou em andamento, dependendo da regra)
             if is_new:
                 appointment.status = 'completed'
                 appointment.save()
             
-            messages.success(self.request, f'Prontuário {action} com sucesso!')
+            messages.success(self.request, f'Prontuário {"criado" if is_new else "atualizado"} com sucesso!')
             return response
 
     def get_context_data(self, **kwargs):
@@ -163,6 +206,42 @@ class MedicalRecordUpdateView(MedicalRecordCreateUpdateMixin, UpdateView):
             return MedicalRecord.objects.get(appointment=appointment)
         except MedicalRecord.DoesNotExist:
             raise Http404("Prontuário não encontrado para esta consulta.")
+
+
+class MedicalRecordCloseView(DoctorRequiredMixin, LoginRequiredMixin, View):
+    """View para fechar um prontuário (marcar como não editável)."""
+    
+    def post(self, request, pk):
+        """Fechar o prontuário."""
+        record = get_object_or_404(MedicalRecord, pk=pk)
+        
+        # Verificar se é o médico que criou o prontuário
+        if record.doctor.user != request.user:
+            messages.error(request, 'Você não tem permissão para fechar este prontuário.')
+            return redirect('medical_records:record_detail', pk=pk)
+        
+        # Marcar como fechado
+        from django.utils import timezone
+        record.is_closed = True
+        record.closed_at = timezone.now()
+        record.save()
+        
+        # Criar registro no histórico
+        try:
+            record.history.create(
+                medical_record=record,
+                user=request.user,
+                action='closed',
+                description=f"Prontuário fechado pelo Dr(a). {request.user.get_full_name()}"
+            )
+        except Exception as e:
+            print(f"Erro ao criar histórico de fechamento: {str(e)}")
+        
+        # Registrar log
+        log_access(request, 'close_record', f'Fechou o prontuário do paciente {record.patient.user.get_full_name()} (ID: {record.pk})')
+        
+        messages.success(request, 'Prontuário fechado com sucesso!')
+        return redirect('medical_records:record_detail', pk=pk)
         
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -172,6 +251,27 @@ class MedicalRecordListView(LoginRequiredMixin, ListView):
     model = MedicalRecord
     template_name = 'medical_records/medical_record_list.html'
     context_object_name = 'records'
+    paginate_by = 20
+    
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('patient__user', 'doctor__user')
+        user = self.request.user
+        
+        # Se é médico, mostra apenas seus prontuários
+        if user.is_doctor():
+            doctor_profile = user.doctor_profile
+            queryset = queryset.filter(doctor=doctor_profile).order_by('-created_at')
+        # Se é paciente, mostra apenas seus prontuários
+        elif user.is_patient():
+            patient_profile = user.patient_profile
+            queryset = queryset.filter(patient=patient_profile).order_by('-created_at')
+        # Se é admin ou atendente, mostra todos
+        elif user.is_admin() or user.is_attendant():
+            queryset = queryset.order_by('-created_at')
+        else:
+            queryset = queryset.none()
+        
+        return queryset
 
 
 
