@@ -20,6 +20,9 @@ O diagrama abaixo ilustra a arquitetura geral do sistema, desde a interação do
 
 ![Diagrama de Arquitetura](architecture.png)
 
+### 📄 Documentação do Projeto
+- [Clique aqui para abrir a documentação](./docs/Promptuário.pdf)
+
 ## ✨ Funcionalidades Principais
 
 O sistema é dividido nos seguintes módulos:
