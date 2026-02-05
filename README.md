@@ -20,7 +20,7 @@ O diagrama abaixo ilustra a arquitetura geral do sistema, desde a interação do
 
 ![Diagrama de Arquitetura](architecture.png)
 
-### 📄 Documentação do Projeto
+## 📄 Documentação do Projeto
 - [Clique aqui para abrir a documentação](Promptuário.pdf)
 
 ## ✨ Funcionalidades Principais
