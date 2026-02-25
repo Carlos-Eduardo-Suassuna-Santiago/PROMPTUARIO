@@ -12,23 +12,6 @@
 
     <!-- AÇÕES INICIAIS -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            {% if user.is_doctor and appointment.status == 'scheduled' %}
-                {% if appointment.medical_record %}
-                    <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
-                       class="btn btn-success">Ver Prontuário</a>
-                    <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
-                       class="btn btn-warning">Editar Prontuário</a>
-                {% else %}
-                    <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
-                       class="btn btn-primary">Criar Prontuário</a>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- CABEÇALHO -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Detalhes da Consulta</h2>
         <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary rounded-3">← Voltar</a>
     </div>
@@ -98,40 +81,48 @@
     </div>
 
     <!-- CARD AÇÕES -->
-    <div >
-        <div>
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0" style="color: white !important;">Ações</h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="d-flex gap-2 flex-wrap">
+                <!-- Botão Remarcar -->
+                <a href="{% url 'appointments:appointment_reschedule' pk=appointment.pk %}" class="btn btn-primary rounded-3">
+                    Remarcar
+                </a>
 
-            {% if user.is_doctor %}
-                {% if appointment.medical_record %}
-                    <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
-                       class="btn btn-success rounded-3 me-2">
-                        Ver Prontuário
-                    </a>
+                <!-- Botões Prontuário -->
+                {% if user.is_doctor %}
+                    {% if appointment.medical_record %}
+                        <a href="{% url 'medical_records:record_detail' pk=appointment.medical_record.pk %}"
+                           class="btn btn-success rounded-3">
+                            Ver Prontuário
+                        </a>
 
-                    <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
-                       class="btn btn-warning rounded-3 me-2">
-                        Editar Prontuário
-                    </a>
-                {% else %}
-                    <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
-                       class="btn btn-primary rounded-3 me-2">
-                        Criar Prontuário
-                    </a>
+                        <a href="{% url 'medical_records:record_update' appointment_pk=appointment.pk %}"
+                           class="btn rounded-3" style="background-color: #ffc107; color: #000; border: none; font-weight: 600;">
+                            Editar Prontuário
+                        </a>
+                    {% else %}
+                        <a href="{% url 'medical_records:record_create' appointment_pk=appointment.pk %}"
+                           class="btn btn-info rounded-3">
+                            Criar Prontuário
+                        </a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
 
-            <a href="{% url 'appointments:appointment_reschedule' pk=appointment.pk %}" class="btn btn-primary rounded-3 me-2">
-                Remarcar
-            </a>
-            {% if user.is_patient and appointment.can_be_cancelled %}
-            <form method="post" action="{% url 'appointments:appointment_cancel' pk=appointment.pk %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
-                    Cancelar Consulta
-                </button>
-            </form>
-            {% endif %}
+                <!-- Botão Cancelar Consulta -->
+                {% if user.is_patient and appointment.can_be_cancelled %}
+                <form method="post" action="{% url 'appointments:appointment_cancel' pk=appointment.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger rounded-3"
+                            onclick="return confirm('Tem certeza que deseja cancelar esta consulta? O cancelamento deve ser feito com 24h de antecedência.')">
+                        Cancelar Consulta
+                    </button>
+                </form>
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -139,7 +130,7 @@
     {% if appointment.medical_record %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Prontuário Associado</h5>
+            <h5 class="mb-0" style="color: white !important;">Prontuário Associado</h5>
         </div>
         <div class="card-body">
             <p>Um prontuário foi criado para esta consulta.</p>

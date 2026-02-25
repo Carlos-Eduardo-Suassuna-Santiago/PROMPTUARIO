@@ -12,17 +12,61 @@ urlpatterns = [
     # Authentication
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('password-change/', auth_views.PasswordChangeView.as_view(
-        template_name='accounts/password_change.html',
-        success_url='/accounts/password-change/done/'
-    ), name='password_change'),
-    path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(
-        template_name='accounts/password_change_done.html'
-    ), name='password_change_done'),
-    
+
+    # Password Change
+    path(
+        'password-change/',
+        auth_views.PasswordChangeView.as_view(
+            template_name='accounts/password_change.html',
+            success_url='/accounts/password-change/done/'
+        ),
+        name='password_change'
+    ),
+    path(
+        'password-change/done/',
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name='accounts/password_change_done.html'
+        ),
+        name='password_change_done'
+    ),
+
+    # Password Reset
+    path(
+        'password-reset/',
+        auth_views.PasswordResetView.as_view(
+            template_name='accounts/password_reset.html',
+            email_template_name='accounts/password_reset_email.html',
+            subject_template_name='accounts/password_reset_subject.txt',
+            success_url='/accounts/password-reset/done/'
+        ),
+        name='password_reset'
+    ),
+    path(
+        'password-reset/done/',
+        auth_views.PasswordResetDoneView.as_view(
+            template_name='accounts/password_reset_done.html'
+        ),
+        name='password_reset_done'
+    ),
+    path(
+        'password-reset-confirm/<uidb64>/<token>/',
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name='accounts/password_reset_confirm.html',
+            success_url='/accounts/password-reset-complete/'
+        ),
+        name='password_reset_confirm'
+    ),
+    path(
+        'password-reset-complete/',
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name='accounts/password_reset_complete.html'
+        ),
+        name='password_reset_complete'
+    ),
+
     # Dashboard
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    
+
     # User Management (Admin only)
     path('users/', views.UserListView.as_view(), name='user_list'),
     path('users/create/', views.UserCreateView.as_view(), name='user_create'),
@@ -30,15 +74,16 @@ urlpatterns = [
     path('users/<int:pk>/edit/', views.UserUpdateView.as_view(), name='user_update'),
     path('users/<int:pk>/delete/', views.UserDeleteView.as_view(), name='user_delete'),
     path('logs/', views.AccessLogListView.as_view(), name='access_log_list'),
-    
+
     # Doctor Management
     path('doctors/', views.DoctorListView.as_view(), name='doctor_list'),
     path('doctors/<int:pk>/schedule/', views.DoctorScheduleView.as_view(), name='doctor_schedule'),
     path('doctors/<int:pk>/absence/', views.DoctorAbsenceCreateView.as_view(), name='doctor_absence_create'),
-    
+
     # Profile
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('profile/edit/', views.ProfileUpdateView.as_view(), name='profile_update'),
+
     # Registration
     path('register/', views.PatientRegistrationView.as_view(), name='register'),
     path('register/patient/', views.PatientRegistrationAttendantView.as_view(), name='register_patient'),

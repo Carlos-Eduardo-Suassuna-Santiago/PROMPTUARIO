@@ -28,7 +28,7 @@
                         <h3>Dados de Acesso</h3>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}*</label>
                                 {{ form.username }}
                                 {% if form.username.errors %}
                                     <ul class="errorlist">
@@ -42,7 +42,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}*</label>
                                 {{ form.email }}
                                 {% if form.email.errors %}
                                     <ul class="errorlist">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}*</label>
                                 {{ form.password1 }}
                                 {% if form.password1.errors %}
                                     <ul class="errorlist">
@@ -65,11 +65,11 @@
                                     </ul>
                                 {% endif %}
                                 {% if form.password1.help_text %}
-                                    <small class="helptext">{{ form.password1.help_text }}</small>
+                                    <small class="helptext">{{ form.password1.help_text }}*</small>
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}*</label>
                                 {{ form.password2 }}
                                 {% if form.password2.errors %}
                                     <ul class="errorlist">
@@ -87,7 +87,7 @@
                         <h3>Dados Pessoais</h3>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}*</label>
                                 {{ form.first_name }}
                                 {% if form.first_name.errors %}
                                     <ul class="errorlist">
@@ -98,7 +98,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}*</label>
                                 {{ form.last_name }}
                                 {% if form.last_name.errors %}
                                     <ul class="errorlist">
@@ -111,7 +111,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }}</label>
+                                <label for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }}*</label>
                                 {{ form.cpf }}
                                 {% if form.cpf.errors %}
                                     <ul class="errorlist">
@@ -122,7 +122,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}</label>
+                                <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}*</label>
                                 {{ form.birth_date }}
                                 {% if form.birth_date.errors %}
                                     <ul class="errorlist">
@@ -135,7 +135,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                                <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}*</label>
                                 {{ form.phone }}
                                 {% if form.phone.errors %}
                                     <ul class="errorlist">
@@ -152,7 +152,7 @@
                     <div class="form-section">
                         <h3>Endereço</h3>
                         <div class="form-group">
-                            <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+                            <label for="{{ form.address.id_for_label }}">{{ form.address.label }}*</label>
                             {{ form.address }}
                             {% if form.address.errors %}
                                 <ul class="errorlist">
@@ -164,7 +164,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                                <label for="{{ form.city.id_for_label }}">{{ form.city.label }}*</label>
                                 {{ form.city }}
                                 {% if form.city.errors %}
                                     <ul class="errorlist">
@@ -175,7 +175,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.state.id_for_label }}">{{ form.state.label }}</label>
+                                <label for="{{ form.state.id_for_label }}">{{ form.state.label }}*</label>
                                 {{ form.state }}
                                 {% if form.state.errors %}
                                     <ul class="errorlist">
@@ -186,7 +186,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.zip_code.id_for_label }}">{{ form.zip_code.label }}</label>
+                                <label for="{{ form.zip_code.id_for_label }}">{{ form.zip_code.label }}*</label>
                                 {{ form.zip_code }}
                                 {% if form.zip_code.errors %}
                                     <ul class="errorlist">
@@ -275,10 +275,6 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Cadastrar</button>
-
-                    <div class="login-link">
-                        <p>Já possui uma conta? <a href="{% url 'accounts:login' %}">Faça login</a></p>
-                    </div>
                 </form>
             </div>
         <div>

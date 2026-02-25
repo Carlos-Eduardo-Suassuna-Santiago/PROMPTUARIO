@@ -22,42 +22,55 @@
             <h5 class="mb-0">Informações do Prontuário</h5>
         </div>
         <div class="card-body">
-            <p><strong>Paciente:</strong> {{ medical_record.patient.user.get_full_name }}</p>
-            <p><strong>Médico:</strong> {{ medical_record.doctor.user.get_full_name }}</p>
-            <p><strong>Diagnóstico:</strong> {{ medical_record.diagnosis|truncatechars:100 }}</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Paciente:</strong> {{ medical_record.patient.user.get_full_name }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Médico:</strong> {{ medical_record.doctor.user.get_full_name }}</p>
+                </div>
+            </div>
+            <p><strong>Diagnóstico:</strong> {{ medical_record.diagnosis|truncatechars:150 }}</p>
         </div>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form method="post">
+            <form method="post" novalidate class="needs-validation">
                 {% csrf_token %}
                 
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="{{ form.medications.id_for_label }}" class="form-label">Medicamentos e Posologia (Um por linha)</label>
+                        <label for="{{ form.medications.id_for_label }}" class="form-label required">Medicamentos e Posologia</label>
+                        <small class="form-text text-muted d-block mb-2">Digite um medicamento por linha, incluindo dosagem e frequência</small>
                         {{ form.medications }}
-                        {% if form.medications.errors %}<div class="text-danger">{{ form.medications.errors }}</div>{% endif %}
+                        {% if form.medications.errors %}<div class="invalid-feedback d-block">{{ form.medications.errors }}</div>{% endif %}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <label for="{{ form.instructions.id_for_label }}" class="form-label">Instruções Adicionais</label>
+                        <small class="form-text text-muted d-block mb-2">Informações importantes para o paciente seguir</small>
                         {{ form.instructions }}
-                        {% if form.instructions.errors %}<div class="text-danger">{{ form.instructions.errors }}</div>{% endif %}
+                        {% if form.instructions.errors %}<div class="invalid-feedback d-block">{{ form.instructions.errors }}</div>{% endif %}
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="{{ form.valid_until.id_for_label }}" class="form-label">Válida Até</label>
+                        <small class="form-text text-muted d-block mb-2">Data de validade da receita</small>
                         {{ form.valid_until }}
-                        {% if form.valid_until.errors %}<div class="text-danger">{{ form.valid_until.errors }}</div>{% endif %}
+                        {% if form.valid_until.errors %}<div class="invalid-feedback d-block">{{ form.valid_until.errors }}</div>{% endif %}
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-file-medical"></i> Emitir Receita
-                </button>
-                <a href="{% url 'medical_records:record_detail' pk=medical_record.pk %}" class="btn btn-secondary">Cancelar</a>
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-file-medical"></i> Emitir Receita
+                    </button>
+                    <a href="{% url 'medical_records:record_detail' pk=medical_record.pk %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
             </form>
         </div>
     </div>

@@ -81,20 +81,75 @@
 
     /* ===== TABELA ===== */
     .table-card {
-        background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border);
-        box-shadow: var(--shadow); overflow: hidden;
+        background: var(--surface); border-radius: var(--radius-lg); border: 2px solid var(--border);
+        box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
     }
 
     .table-header {
-        padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem;
+        padding: 2rem 1.5rem;
+        border-bottom: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     }
 
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th { background: #f8fafc; padding: 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
-    .data-table td { padding: 1.25rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .data-table tr:last-child td { border-bottom: none; }
+    .table-header h2 {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+    }
 
-    .btn-action { padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.875rem; text-decoration: none; transition: 0.2s; }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .data-table th {
+        background: #f8fafc;
+        padding: 1.25rem 1rem;
+        text-align: left;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .data-table td {
+        padding: 1.5rem 1rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+    }
+
+    .data-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .data-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <div class="dashboard-wrapper">
@@ -139,66 +194,11 @@
             </div>
         </section>
 
-        <!-- Gráficos de Análise -->
-        <div class="charts-grid two-columns" style="margin-bottom: 3rem;">
-            
-            <!-- Gráfico: Atendimentos por Mês -->
-            <div class="chart-container">
-                <h5 class="chart-title">
-                    <i class="fas fa-chart-line"></i> Atendimentos por Mês
-                </h5>
-                <div class="chart-wrapper">
-                    <canvas id="appointmentsChart" 
-                            data-chart="line"
-                            data-chart-data='{{ appointments_chart_data|safe }}'></canvas>
-                </div>
-                <div class="chart-footer">
-                    <div class="chart-footer-stats">
-                        <div class="chart-stat">
-                            <span class="chart-stat-label">Total</span>
-                            <span class="chart-stat-value">{{ total_appointments }}</span>
-                        </div>
-                        <div class="chart-stat">
-                            <span class="chart-stat-label">Média/Mês</span>
-                            <span class="chart-stat-value">{{ avg_appointments }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gráfico: Status dos Atendimentos -->
-            <div class="chart-container">
-                <h5 class="chart-title">
-                    <i class="fas fa-pie-chart"></i> Status dos Atendimentos
-                </h5>
-                <div class="chart-wrapper">
-                    <canvas id="statusChart" 
-                            data-chart="doughnut"
-                            data-chart-data='{{ status_chart_data|safe }}'></canvas>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Gráfico: Diagnósticos Mais Comuns -->
-        {% if diagnosis_chart_data %}
-        <div class="chart-container" style="margin-bottom: 3rem;">
-            <h5 class="chart-title">
-                <i class="fas fa-stethoscope"></i> Diagnósticos Mais Comuns
-            </h5>
-            <div class="chart-wrapper large">
-                <canvas id="diagnosisChart" 
-                        data-chart="bar"
-                        data-chart-data='{{ diagnosis_chart_data|safe }}'></canvas>
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Próximos Atendimentos -->
+        <!-- Atendimentos -->
         <section class="table-card">
             <div class="table-header">
                 <div style="width: 8px; height: 24px; background: var(--accent); border-radius: 4px;"></div>
-                <h2 class="h5 mb-0 fw-bold">Próximos Atendimentos</h2>
+                <h2 class="h5 mb-0 fw-bold">Atendimentos</h2>
             </div>
             
             <div class="table-responsive">
@@ -247,7 +247,8 @@
                     </tbody>
                 </table>
                 {% else %}
-                <div class="p-5 text-center">
+                <div class="p-5 text-center" style="min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <i class="fas fa-calendar-times" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
                     <p class="text-muted mb-0">Nenhuma consulta agendada para o dia de hoje.</p>
                 </div>
                 {% endif %}

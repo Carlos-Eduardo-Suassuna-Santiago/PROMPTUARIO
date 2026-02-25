@@ -4,32 +4,243 @@
 {% block title %}Gerenciamento de Usuários{% endblock %}
 
 {% block content %}
+<style>
+    /* ===== FILTER CARD STYLES ===== */
+    .filter-card {
+        border: none !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        margin-bottom: 2rem !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        width: 100% !important;
+    }
+
+    .filter-card .card-header {
+        background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%) !important;
+        padding: 0.875rem 1.25rem !important;
+        border: none !important;
+    }
+
+    .filter-card .card-header h4 {
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+
+    .filter-card .card-body {
+        padding: 1rem 1.25rem !important;
+        background: #ffffff !important;
+        width: 100% !important;
+    }
+
+    .filter-card .form-label {
+        font-weight: 600 !important;
+        color: #333 !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    .filter-card .form-select {
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 6px !important;
+        padding: 0.6rem 0.875rem !important;
+        font-size: 0.9rem !important;
+        background-color: #fff !important;
+        transition: border-color 0.2s !important;
+        height: auto !important;
+        width: 100% !important;
+    }
+
+    .filter-card .form-select:hover,
+    .filter-card .form-select:focus {
+        border-color: #17a2b8 !important;
+        outline: none !important;
+        box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25) !important;
+    }
+
+    .filter-card .filter-btns {
+        display: flex !important;
+        gap: 0.5rem !important;
+        flex-wrap: wrap !important;
+        width: 100% !important;
+    }
+
+    .filter-card .btn {
+        border-radius: 6px !important;
+        padding: 0.6rem 1.2rem !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        transition: all 0.2s !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+        white-space: nowrap !important;
+    }
+
+    .filter-card .btn-primary {
+        background-color: #0a6ebd !important;
+        color: white !important;
+    }
+
+    .filter-card .btn-primary:hover {
+        background-color: #085aaa !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(10, 110, 189, 0.3) !important;
+    }
+
+    .filter-card .btn-secondary {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+
+    .filter-card .btn-secondary:hover {
+        background-color: #5a6268 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3) !important;
+    }
+
+    .filter-card .row {
+        display: flex !important;
+        align-items: flex-end !important;
+        gap: 0.75rem !important;
+        margin: 0 !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .filter-card .col-md-4 {
+        flex: 0 0 auto !important;
+        width: auto !important;
+    }
+
+    .filter-card .col-md-4:nth-child(1) {
+        flex: 0 1 250px !important;
+        min-width: 200px !important;
+    }
+
+    .filter-card .col-md-4:nth-child(2) {
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+    }
+
+    @media (max-width: 768px) {
+        .filter-card .row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+        
+        .filter-card .col-md-4 {
+            flex: 1 0 auto !important;
+            width: 100% !important;
+        }
+
+        .filter-card .filter-btns {
+            width: 100% !important;
+        }
+        
+        .filter-card .btn {
+            flex: 1 !important;
+            justify-content: center !important;
+        }
+    }
+
+    /* ===== ACTION BUTTONS STYLES ===== */
+    .action-buttons {
+        display: flex !important;
+        gap: 0.6rem !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+    }
+
+    .btn-action {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+        padding: 0.6rem 1rem !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        border: none !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+    }
+
+    .btn-details {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    .btn-details:hover {
+        background-color: #138496 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.35) !important;
+    }
+
+    .btn-details:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 6px rgba(23, 162, 184, 0.35) !important;
+    }
+
+    .btn-edit {
+        background-color: #28a745 !important;
+        color: white !important;
+    }
+
+    .btn-edit:hover {
+        background-color: #218838 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35) !important;
+    }
+
+    .btn-edit:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 6px rgba(40, 167, 69, 0.35) !important;
+    }
+
+    .btn-action i {
+        font-size: 0.9rem !important;
+    }
+
+    @media (max-width: 576px) {
+        .action-buttons {
+            gap: 0.4rem !important;
+        }
+
+        .btn-action {
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.75rem !important;
+        }
+    }
+</style>
 
 <div class="container mt-4">
 
-    <!-- ========================= TÍTULO ========================= -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Gerenciamento de Usuários</h1>
-        <a href="{% url 'accounts:register_choice' %}" class="btn-novo-usuario">
+    <div class="header-container mb-4">
+        <h1 class="page-title mb-0">Gerenciamento de Usuários</h1>
+        <a href="{% url 'accounts:register_choice' %}" class="btn btn-primary btn-novo-usuario">
             <i class="fas fa-user-plus"></i> Novo Usuário
         </a>
     </div>
-    <br>
 
-    <!-- ========================= FILTROS ========================= -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Filtros</h4>
+    <div class="card shadow-sm mb-4 filter-card">
+        <div class="card-header card-header-primary">
+            <h4 class="mb-0" style="font-size: 1.1rem;"><i class="fas fa-filter"></i> Filtros</h4>
         </div>
 
         <div class="card-body">
-
-            <form method="get" class="row g-3">
-
-                <div class="col-md-3">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
                     <label class="form-label">Tipo de Usuário</label>
                     <select name="type" class="form-select">
-                        <option value="">Todos</option>
+                        <option value="">Todos os Tipos</option>
                         <option value="admin" {% if request.GET.type == 'admin' %}selected{% endif %}>Administrador</option>
                         <option value="doctor" {% if request.GET.type == 'doctor' %}selected{% endif %}>Médico</option>
                         <option value="attendant" {% if request.GET.type == 'attendant' %}selected{% endif %}>Atendente</option>
@@ -37,124 +248,107 @@
                     </select>
                 </div>
 
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-4">
                     <div class="filter-btns">
-                        <button type="submit" class="btn btn-primary">Filtrar</button>
-                        <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">Limpar Filtros</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Filtrar
+                        </button>
+                        <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">
+                            Limpar
+                        </a>
                     </div>
                 </div>
-
             </form>
-
         </div>
     </div>
 
-
-    <!-- ========================= TABELA ========================= -->
     {% if users %}
-    <div class="card shadow-sm">
+    <div>
         <div class="card-body p-0">
-
             <div class="table-responsive">
-                <table class="table custom-table mb-0">
-
-                    <thead class="table-dark">
+                <table class="data-table mb-0">
+                    <thead>
                         <tr>
                             <th>Nome Completo</th>
                             <th>E-mail</th>
                             <th>Tipo</th>
-                            <th>Status</th>
-                            <th>Ações</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Ações</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {% for user_obj in users %}
                         <tr>
-
-                            <td>{{ user_obj.get_full_name }}</td>
+                            <td class="fw-bold">{{ user_obj.get_full_name }}</td>
                             <td>{{ user_obj.email }}</td>
-
                             <td>
                                 <span class="badge bg-{{ user_obj.get_user_type_color }}">
                                     {{ user_obj.get_user_type_display }}
                                 </span>
                             </td>
-
-                            <td>
+                            <td class="text-center">
                                 {% if user_obj.is_active %}
-                                    <span class="badge-login">Ativo</span>
+                                    <span class="badge-status active">Ativo</span>
                                 {% else %}
-                                    <span class="badge-logout">Inativo</span>
+                                    <span class="badge-status inactive">Inativo</span>
                                 {% endif %}
                             </td>
-
-                            <!-- AÇÕES -->
-                            <td style="display:flex; gap:6px; justify-content:center;">
-
-                                <a href="{% url 'accounts:user_detail' pk=user_obj.pk %}" class="action-btn btn-details">
-                                    Detalhes
-                                </a>
-
-                                <a href="{% url 'accounts:user_update' pk=user_obj.pk %}" class="action-btn btn-edit">
-                                    Editar
-                                </a>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'accounts:user_detail' pk=user_obj.pk %}" class="btn-action btn-details" title="Ver Detalhes">
+                                        <i class="fas fa-eye"></i> Detalhes
+                                    </a>
+                                    <a href="{% url 'accounts:user_update' pk=user_obj.pk %}" class="btn-action btn-edit" title="Editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                </div>
                             </td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     </div>
 
-
-    <!-- ========================= PAGINAÇÃO ========================= -->
     {% if is_paginated %}
-
-<nav aria-label="Page navigation">
-    <div class="pagination-wrapper">
-
-        <!-- PREV (esquerda) -->
-        <div class="pag-nav pag-prev">
-            {% if page_obj.has_previous %}
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a>
-            {% else %}
-                <span class="page-link disabled">Anterior</span>
-            {% endif %}
-        </div>
-
-        <!-- NÚMEROS (centro) -->
-        <ul class="pagination-centered">
-            {% for i in page_obj.paginator.page_range %}
-                {% if page_obj.number == i %}
-                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+    <nav aria-label="Page navigation" class="mt-4">
+        <div class="pagination-wrapper">
+            <div class="pag-nav pag-prev">
+                {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&type={{ request.GET.type|default:'' }}">Anterior</a>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a></li>
+                    <span class="page-link disabled">Anterior</span>
                 {% endif %}
-            {% endfor %}
-        </ul>
+            </div>
 
-        <!-- NEXT (direita) -->
-        <div class="pag-nav pag-next">
-            {% if page_obj.has_next %}
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a>
-            {% else %}
-                <span class="page-link disabled">Próxima</span>
-            {% endif %}
+            <ul class="pagination-centered">
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}&type={{ request.GET.type|default:'' }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <div class="pag-nav pag-next">
+                {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&type={{ request.GET.type|default:'' }}">Próxima</a>
+                {% else %}
+                    <span class="page-link disabled">Próxima</span>
+                {% endif %}
+            </div>
         </div>
-
-    </div>
-</nav>
-{% endif %}
-
-    {% else %}
-    <p class="alert alert-warning">Nenhum usuário encontrado.</p>
+    </nav>
     {% endif %}
 
+    {% else %}
+    <div class="alert alert-warning shadow-sm">
+        <i class="fas fa-exclamation-circle"></i> Nenhum usuário encontrado com os filtros aplicados.
+    </div>
+    {% endif %}
 </div>
-
 {% endblock %}

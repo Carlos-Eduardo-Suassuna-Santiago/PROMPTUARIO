@@ -7,14 +7,21 @@
     <title>{% block title %}Promptuario{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'images/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
     <link rel="stylesheet" href="{% static 'css/loginCadastro.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style_card.css' %}">
-    <link rel="stylesheet" href="{% static 'css/tabela.css' %}">
-    <link rel="stylesheet" href="{% static 'css/attendant.css' %}">
-    <link rel="stylesheet" href="{% static 'css/paginated.css' %}">
-    <link rel="stylesheet" href="{% static 'css/password.css' %}">
-    <link rel="stylesheet" href="{% static 'css/edit.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/form-enhancements.css' %}">
+    <link rel="stylesheet" href="{% static 'css/patient-search.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rich-editor.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cep-lookup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loading-states.css' %}">
+    <link rel="stylesheet" href="{% static 'css/charts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Quill.js CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -23,6 +30,12 @@
     
     <header class="topbar">
         <div class="topbar-content">
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
             <div class="welcome-message">
                 <h1>Bem Vindo {{ user.first_name|default:'Fulano' }}</h1>
             </div>
@@ -64,11 +77,6 @@
                     </li>
 
                     {% if user.user_type != "admin" %}
-                            <li class="active">
-                                <a href="#">
-                                    <img class="icon" src="{% static 'images/verifica (1) 1.png' %}" alt="Exames">Exames
-                                </a>
-                            </li>
                             <li class="active">
                                 <a href="{% url 'patients:vaccine_list' %}">
                                 <img class="icon"  src="{% static 'images/seringa (1) 1.png' %}" alt="Ilustração Vacinas">Vacina
@@ -118,11 +126,6 @@
                     <li class="active">
                         <a href="{% url 'medical_records:medical_record_list' %}">
                             <img class="icon" src="{% static 'images/medical_documentation.png' %}" alt="Prescrição"> Prescrição Eletrônica
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'reports:report_list' %}">
-                            <img class="icon" src="{% static 'images/plano.png' %}" alt="Relatórios">Relatórios
                         </a>
                     </li>
                     {% endif %}
@@ -182,6 +185,17 @@
     </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+    <script src="{% static 'js/patient-search.js' %}"></script>
+    
+    <!-- Quill.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+    <script src="{% static 'js/rich-editor.js' %}"></script>
+    <script src="{% static 'js/cep-lookup.js' %}"></script>
+    <script src="{% static 'js/loading-states.js' %}"></script>
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="{% static 'js/notifications.js' %}"></script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>

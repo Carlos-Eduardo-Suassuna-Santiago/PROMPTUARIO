@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cadastrar Ausência{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card card-form">
+        <div class="card-header card-header-primary">
+            Cadastrar Ausência para {{ doctor.user.get_full_name }}
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.start_datetime.id_for_label }}">Início da Ausência</label>
+                            {{ form.start_datetime }}
+                            {% if form.start_datetime.errors %}
+                                <div class="alert alert-danger mt-2">{{ form.start_datetime.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.end_datetime.id_for_label }}">Fim da Ausência</label>
+                            {{ form.end_datetime }}
+                            {% if form.end_datetime.errors %}
+                                <div class="alert alert-danger mt-2">{{ form.end_datetime.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.reason.id_for_label }}">Motivo</label>
+                    {{ form.reason }}
+                    {% if form.reason.errors %}
+                        <div class="alert alert-danger mt-2">{{ form.reason.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group form-check">
+                    {{ form.is_full_day }}
+                    <label class="form-check-label" for="{{ form.is_full_day.id_for_label }}">Dia Inteiro</label>
+                    {% if form.is_full_day.errors %}
+                        <div class="alert alert-danger mt-2">{{ form.is_full_day.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cadastrar Ausência</button>
+                <a href="{% url 'accounts:doctor_schedule' pk=doctor.pk %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Adicionar classes de estilo aos campos de data/hora
+    document.getElementById("{{ form.start_datetime.id_for_label }}").classList.add('form-control');
+    document.getElementById("{{ form.end_datetime.id_for_label }}").classList.add('form-control');
+    document.getElementById("{{ form.reason.id_for_label }}").classList.add('form-control');
+</script>
+{% endblock %}

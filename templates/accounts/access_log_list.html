@@ -3,129 +3,679 @@
 
 {% block title %}Logs de Acesso (LGPD){% endblock %}
 
-{% block content %}
-
+{% block extra_css %}
 <style>
-    
+    .audit-wrapper {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+
+    .audit-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .audit-header {
+        margin-bottom: 2rem;
+    }
+
+    .audit-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .audit-title i {
+        color: #0ea5e9;
+    }
+
+    .audit-subtitle {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    /* Filter Card */
+    .filter-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        border: 1px solid #e2e8f0;
+    }
+
+    .filter-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-title i {
+        color: #0ea5e9;
+    }
+
+    .filter-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        align-items: flex-end;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        outline: none;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .filter-actions button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-filter {
+        background: #0ea5e9;
+        color: white;
+    }
+
+    .btn-filter:hover {
+        background: #0284c7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-reset {
+        background: #6c757d;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .btn-reset:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        text-decoration: none;
+    }
+
+    .btn-reset:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
+    }
+
+    /* Logs Table */
+    .logs-table-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .logs-table-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logs-table-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logs-table-title i {
+        color: #0ea5e9;
+    }
+
+    .logs-table-stats {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .logs-table-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logs-table-stat strong {
+        color: #0f172a;
+    }
+
+    /* Table */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .logs-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .logs-table thead {
+        background: #f8fafc;
+    }
+
+    .logs-table th {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .logs-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .logs-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .logs-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .logs-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Badges */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .badge-login {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .badge-logout {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    .badge-view {
+        background: rgba(14, 165, 233, 0.1);
+        color: #0ea5e9;
+    }
+
+    .badge-create {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+
+    .badge-update {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+
+    .badge-delete {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    .badge-user {
+        background: rgba(14, 165, 233, 0.1);
+        color: #0ea5e9;
+    }
+
+    .badge-admin {
+        background: rgba(168, 85, 247, 0.1);
+        color: #a855f7;
+    }
+
+    .badge-doctor {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .badge-patient {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #94a3b8;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Pagination */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .pagination-centered {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow-x: auto;
+        max-width: 100%;
+        flex-shrink: 1;
+    }
+
+    .page-item {
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    .page-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        color: #0ea5e9;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .page-link:hover {
+        background: #0ea5e9;
+        color: white;
+        border-color: #0ea5e9;
+    }
+
+    .page-item.active .page-link {
+        background: #0ea5e9;
+        color: white;
+        border-color: #0ea5e9;
+    }
+
+    .page-link.disabled {
+        color: #cbd5e1;
+        cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .filter-row {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-actions {
+            flex-direction: column;
+        }
+
+        .filter-actions button {
+            width: 100%;
+        }
+
+        .logs-table-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .logs-table-stats {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .logs-table th,
+        .logs-table td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.7rem;
+        }
+    }
 </style>
+{% endblock %}
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Logs de Acesso (LGPD)</h1>
-        <br>
-    </div>
+{% block content %}
+<div class="audit-wrapper">
+    <div class="audit-container">
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="get" class="row g-3 align-items-end">
-                <div class="col-md-6">
-                    <label for="id_q" class="form-label">Pesquisar (Usuário, IP, Detalhes)</label>
-                    <input type="text" name="q" id="id_q" class="form-control" value="{{ request.GET.q }}" placeholder="Termo de pesquisa">
+        <!-- Header -->
+        <header class="audit-header">
+            <h1 class="audit-title">
+                <i class="fas fa-shield-alt"></i> Logs de Acesso (LGPD)
+            </h1>
+            <p class="audit-subtitle">Histórico completo de acessos ao sistema para conformidade e auditoria</p>
+        </header>
+
+        <!-- Filters -->
+        <div class="filter-card">
+            <h3 class="filter-title">
+                <i class="fas fa-filter"></i> Filtros
+            </h3>
+            <form method="get" class="filter-row">
+                <div class="filter-group">
+                    <label for="id_q">Pesquisar</label>
+                    <input type="text" name="q" id="id_q" class="form-control" 
+                           value="{{ request.GET.q }}" 
+                           placeholder="Usuário, IP, Detalhes...">
                 </div>
-                <div class="col-md-4">
-                    <label for="id_action" class="form-label">Filtrar por Ação</label>
+
+                <div class="filter-group">
+                    <label for="id_action">Ação</label>
                     <select name="action" id="id_action" class="form-select">
                         <option value="">Todas as Ações</option>
                         {% for value, label in logs.model.ACTION_CHOICES %}
-                            <option value="{{ value }}" {% if request.GET.action == value %}selected{% endif %}>{{ label }}</option>
+                            <option value="{{ value }}" {% if request.GET.action == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter">
+                        <i class="fas fa-search"></i> Filtrar
+                    </button>
+                    <a href="{% url 'accounts:access_log_list' %}" class="btn-reset">
+                        <i class="fas fa-redo"></i> Limpar
+                    </a>
                 </div>
             </form>
         </div>
-    </div>
-<br>
-    <div class="table-responsive">
-        <table class="table table-hover table-striped logs-table">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th class="col-id">ID</th>
-                    <th class="col-user">Usuário</th>
-                    <th class="col-action">Ação</th>
-                    <th class="col-datetime">Data/Hora</th>
-                    <th class="col-ip">IP</th>
-                    <th class="col-details">Detalhes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                <tr>
-                    <td>{{ log.pk }}</td>
 
-                    <td>
-                        {% if log.user %}
-                            <span class="badge bg-{{ log.user.get_user_type_color }}">{{ log.user.get_full_name }}</span>
-                        {% else %}
-                            <span class="badge bg-secondary">N/A</span>
-                        {% endif %}
-                    </td>
+        <!-- Logs Table -->
+        <div class="logs-table-card">
+            <div class="logs-table-header">
+                <h3 class="logs-table-title">
+                    <i class="fas fa-history"></i> Histórico de Acessos
+                </h3>
+                <div class="logs-table-stats">
+                    <div class="logs-table-stat">
+                        <i class="fas fa-list"></i>
+                        <span>Total: <strong>{{ logs.paginator.count }}</strong></span>
+                    </div>
+                    {% if is_paginated %}
+                    <div class="logs-table-stat">
+                        <i class="fas fa-page"></i>
+                        <span>Página <strong>{{ page_obj.number }}</strong> de <strong>{{ page_obj.paginator.num_pages }}</strong></span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
 
-                    <!-- Cor dinâmica por ação -->
-                    <td>
-                        <span class="badge
-                            {% if log.action == 'login' %}action-login
-                            {% elif log.action == 'logout' %}action-logout
-                            {% elif log.action == 'view' %}action-view
-                            {% else %}bg-info
-                            {% endif %}
-                        ">
-                            {{ log.get_action_display }}
-                        </span>
-                    </td>
+            <div class="table-responsive">
+                {% if logs %}
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Usuário</th>
+                            <th>Tipo</th>
+                            <th>Ação</th>
+                            <th>IP Address</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>
+                                <strong>{{ log.timestamp|date:"d/m/Y" }}</strong><br>
+                                <span style="color: #94a3b8; font-size: 0.85rem;">{{ log.timestamp|time:"H:i:s" }}</span>
+                            </td>
 
-                    <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
-                    <td>{{ log.ip_address|default:"N/A" }}</td>
-                    <td>{{ log.details|default:"-" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">Nenhum log de acesso encontrado.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                            <td>
+                                {% if log.user %}
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <strong style="color: #0f172a;">{{ log.user.get_full_name }}</strong>
+                                    </div>
+                                    <span class="badge badge-{{ log.user.get_user_type|lower }}">
+                                        {{ log.user.get_user_type }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge" style="background: #f1f5f9; color: #94a3b8;">
+                                        Anônimo
+                                    </span>
+                                {% endif %}
+                            </td>
 
-    {% if is_paginated %}
+                            <td>
+                                {% if log.user.is_superuser %}
+                                    <span class="badge badge-admin">
+                                        <i class="fas fa-crown"></i> Admin
+                                    </span>
+                                {% elif log.user.is_doctor %}
+                                    <span class="badge badge-doctor">
+                                        <i class="fas fa-stethoscope"></i> Médico
+                                    </span>
+                                {% elif log.user.is_patient %}
+                                    <span class="badge badge-patient">
+                                        <i class="fas fa-user-injured"></i> Paciente
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-user">
+                                        <i class="fas fa-user"></i> Usuário
+                                    </span>
+                                {% endif %}
+                            </td>
 
-<nav aria-label="Page navigation">
-    <div class="pagination-wrapper">
+                            <td>
+                                {% if log.action == 'login' %}
+                                    <span class="badge badge-login">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </span>
+                                {% elif log.action == 'logout' %}
+                                    <span class="badge badge-logout">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </span>
+                                {% elif log.action == 'view' %}
+                                    <span class="badge badge-view">
+                                        <i class="fas fa-eye"></i> Visualização
+                                    </span>
+                                {% elif log.action == 'create' %}
+                                    <span class="badge badge-create">
+                                        <i class="fas fa-plus"></i> Criação
+                                    </span>
+                                {% elif log.action == 'update' %}
+                                    <span class="badge badge-update">
+                                        <i class="fas fa-edit"></i> Atualização
+                                    </span>
+                                {% elif log.action == 'delete' %}
+                                    <span class="badge badge-delete">
+                                        <i class="fas fa-trash"></i> Exclusão
+                                    </span>
+                                {% else %}
+                                    <span class="badge" style="background: #f1f5f9; color: #94a3b8;">
+                                        {{ log.get_action_display }}
+                                    </span>
+                                {% endif %}
+                            </td>
 
-        <!-- PREV (esquerda) -->
-        <div class="pag-nav pag-prev">
-            {% if page_obj.has_previous %}
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Anterior</a>
-            {% else %}
-                <span class="page-link disabled">Anterior</span>
-            {% endif %}
-        </div>
+                            <td>
+                                <code style="background: #f1f5f9; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem;">
+                                    {{ log.ip_address|default:"N/A" }}
+                                </code>
+                            </td>
 
-        <!-- NÚMEROS (centro) -->
-        <ul class="pagination-centered">
-            {% for i in page_obj.paginator.page_range %}
-                {% if page_obj.number == i %}
-                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                            <td>
+                                <span style="color: #64748b; font-size: 0.9rem;">
+                                    {{ log.details|default:"—" }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a></li>
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhum log de acesso encontrado com os filtros aplicados.</p>
+                </div>
                 {% endif %}
-            {% endfor %}
-        </ul>
+            </div>
 
-        <!-- NEXT (direita) -->
-        <div class="pag-nav pag-next">
-            {% if page_obj.has_next %}
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">Próxima</a>
-            {% else %}
-                <span class="page-link disabled">Próxima</span>
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Paginação">
+                <div class="pagination-wrapper">
+                    <div class="pag-nav pag-first">
+                        {% if page_obj.has_previous %}
+                            <a class="page-link" href="?page=1&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}" title="Primeira página">
+                                <i class="fas fa-step-backward"></i>
+                            </a>
+                        {% else %}
+                            <span class="page-link disabled" title="Primeira página">
+                                <i class="fas fa-step-backward"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="pag-nav pag-prev">
+                        {% if page_obj.has_previous %}
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}" title="Página anterior">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        {% else %}
+                            <span class="page-link disabled" title="Página anterior">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <ul class="pagination-centered">
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ i }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+
+                    <div class="pag-nav pag-next">
+                        {% if page_obj.has_next %}
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}" title="Próxima página">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        {% else %}
+                            <span class="page-link disabled" title="Próxima página">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="pag-nav pag-last">
+                        {% if page_obj.has_next %}
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&q={{ request.GET.q|default:"" }}&action={{ request.GET.action|default:"" }}" title="Última página">
+                                <i class="fas fa-step-forward"></i>
+                            </a>
+                        {% else %}
+                            <span class="page-link disabled" title="Última página">
+                                <i class="fas fa-step-forward"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
             {% endif %}
         </div>
 
     </div>
-</nav>
-{% endif %}
 </div>
-
 {% endblock %}

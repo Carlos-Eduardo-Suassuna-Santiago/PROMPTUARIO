@@ -8,14 +8,10 @@ class MedicalRecordForm(forms.ModelForm):
     class Meta:
         model = MedicalRecord
         fields = [
-            'appointment', 'patient', 'doctor', 
             'chief_complaint', 'symptoms', 'physical_examination', 
             'diagnosis', 'treatment_plan', 'observations'
         ]
         widgets = {
-            'appointment': forms.Select(attrs={'class': 'form-control'}),
-            'patient': forms.Select(attrs={'class': 'form-control'}),
-            'doctor': forms.Select(attrs={'class': 'form-control'}),
             'chief_complaint': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'symptoms': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'physical_examination': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
@@ -23,15 +19,6 @@ class MedicalRecordForm(forms.ModelForm):
             'treatment_plan': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'observations': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
-        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Campos 'appointment', 'patient' e 'doctor' devem ser preenchidos automaticamente
-        # ou restritos no contexto da view, mas mantidos no form para validação do modelo.
-        # Por enquanto, vamos torná-los hidden.
-        self.fields['appointment'].widget = forms.HiddenInput()
-        self.fields['patient'].widget = forms.HiddenInput()
-        self.fields['doctor'].widget = forms.HiddenInput()
 
 
 class PrescriptionForm(forms.ModelForm):

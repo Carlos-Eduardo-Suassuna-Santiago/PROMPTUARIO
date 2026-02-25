@@ -1,0 +1,113 @@
+{% comment %}
+Componente de Breadcrumbs
+Uso: {% include 'components/breadcrumbs.html' with breadcrumbs=breadcrumbs %}
+
+Exemplo de breadcrumbs:
+breadcrumbs = [
+    {'label': 'Dashboard', 'url': '/dashboard/'},
+    {'label': 'Pacientes', 'url': '/patients/'},
+    {'label': 'João Silva', 'url': '/patients/1/'},
+]
+{% endcomment %}
+
+{% if breadcrumbs %}
+<nav aria-label="breadcrumb" class="breadcrumb-container">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'accounts:dashboard' %}" class="breadcrumb-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        {% for item in breadcrumbs %}
+            {% if forloop.last %}
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span class="breadcrumb-text">
+                        {% if item.icon %}
+                            <i class="fas fa-{{ item.icon }}"></i>
+                        {% endif %}
+                        {{ item.label }}
+                    </span>
+                </li>
+            {% else %}
+                <li class="breadcrumb-item">
+                    <a href="{{ item.url }}" class="breadcrumb-link">
+                        {% if item.icon %}
+                            <i class="fas fa-{{ item.icon }}"></i>
+                        {% endif %}
+                        {{ item.label }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+</nav>
+{% endif %}
+
+<style>
+.breadcrumb-container {
+    background-color: #f8fafc;
+    padding: 0.75rem 0;
+    margin-bottom: 1.5rem;
+    border-radius: 6px;
+}
+
+.breadcrumb {
+    margin: 0;
+    padding: 0 1rem;
+    background-color: transparent;
+}
+
+.breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding: 0 0.5rem;
+    color: #cbd5e1;
+    content: "/";
+}
+
+.breadcrumb-link {
+    color: #0ea5e9;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.breadcrumb-link:hover {
+    color: #0284c7;
+    text-decoration: underline;
+}
+
+.breadcrumb-text {
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.breadcrumb-item.active .breadcrumb-text {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb-container {
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+    }
+
+    .breadcrumb {
+        padding: 0 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        padding: 0 0.25rem;
+    }
+}
+</style>

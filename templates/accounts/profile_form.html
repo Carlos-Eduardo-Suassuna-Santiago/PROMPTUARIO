@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{% static 'css/profile_form_style.css' %}">
 {% endblock %}
 
+{% block extra_js %}
+    <script src="{% static 'js/profile_form.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="profile-update-container">
     <form method="post" enctype="multipart/form-data" novalidate>
@@ -15,11 +19,11 @@
     <div class="profile-header-edit">
         <div class="profile-info-display">
 
-            <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/default_avatar.png' %}{% endif %}" 
+            <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}" 
                  alt="{{ user.get_full_name }}" 
                  class="profile-avatar">
 
-            <!-- ⭐ CAMPO DE ALTERAR FOTO DE PERFIL -->
+            <!-- CAMPO DE ALTERAR FOTO DE PERFIL -->
             <div class="profile-photo-upload">
                 <label class="upload-label">
                     Alterar foto
@@ -30,15 +34,12 @@
                     <p class="text-danger">{{ error }}</p>
                 {% endfor %}
             </div>
-            <!-- ⭐ FIM DO CAMPO -->
 
             <div>
                 <h3 class="profile-name">{{ user.get_full_name|default:"Nome Não Informado" }}</h3>
                 <p class="profile-email">{{ user.email }}</p>
             </div>
         </div>
-
-        <button type="submit" class="btn-edit-profile">Salvar</button>
     </div>
 
 
@@ -47,14 +48,30 @@
             <!-- NOME COMPLETO -->
             <div class="form-group field-group-lg">
                 <label>Nome Completo</label>
-                {{ form.first_name }} {{ form.last_name }}
-                {% for error in form.first_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
-                {% for error in form.last_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 500;">Primeiro Nome</label>
+                        {{ form.first_name }}
+                        {% for error in form.first_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 500;">Sobrenome</label>
+                        {{ form.last_name }}
+                        {% for error in form.last_name.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="form-group field-group-lg">
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                {{ form.email }}
+                {% for error in form.email.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
 
             <!-- DATA DE NASCIMENTO -->
             <div class="form-group">
-                <label for="{{ form.birth_date.id_for_label }}">Data Nascimento</label>
+                <label for="{{ form.birth_date.id_for_label }}">Data de Nascimento</label>
                 {{ form.birth_date }}
                 {% for error in form.birth_date.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
@@ -73,49 +90,37 @@
                 {% for error in form.phone.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
             </div>
 
-            <!-- EMAIL -->
-            <div class="form-group field-group-lg">
-                <label for="{{ form.email.id_for_label }}">Email</label>
-                {{ form.email }}
-                {% for error in form.email.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
-            </div>
-
             <!-- SENHA -->
             <div class="form-group">
                 <label>Senha</label>
                 <a href="{% url 'accounts:password_change' %}" class="input-placeholder-link">Alterar Senha</a>
             </div>
 
-            <!-- TIPO DE CONTA — REMOVIDO (não existe no form!)
-            <div class="form-group field-group-lg">
-                <label for="{{ form.user_type.id_for_label }}">Tipo de conta</label>
-                {{ form.user_type }}
-            </div>
-            -->
-
-            <div class="form-group"></div>
-
             <!-- ENDEREÇO -->
             <div class="form-section-full">
                 <h3>Endereço</h3>
 
                 <div class="form-group">
-                    <label for="{{ form.address.id_for_label }}">Endereço</label>
+                    <label for="{{ form.address.id_for_label }}">Rua e Número</label>
                     {{ form.address }}
+                    {% for error in form.address.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="{{ form.city.id_for_label }}">Cidade</label>
                         {{ form.city }}
+                        {% for error in form.city.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.state.id_for_label }}">Estado</label>
                         {{ form.state }}
+                        {% for error in form.state.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.zip_code.id_for_label }}">CEP</label>
                         {{ form.zip_code }}
+                        {% for error in form.zip_code.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                     </div>
                 </div>
             </div>
@@ -127,17 +132,7 @@
                 <div class="form-group">
                     <label for="{{ patient_form.medical_notes.id_for_label }}">{{ patient_form.medical_notes.label }}</label>
                     {{ patient_form.medical_notes }}
-                </div>
-            </div>
-            {% endif %}
-
-            {% if user.is_doctor and doctor_form %}
-            <div class="form-section">
-                <h3>Informações Profissionais (Médico)</h3>
-
-                <div class="form-group">
-                    <label for="{{ doctor_form.bio.id_for_label }}">{{ doctor_form.bio.label }}</label>
-                    {{ doctor_form.bio }}
+                    {% for error in patient_form.medical_notes.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
                 </div>
             </div>
             {% endif %}
@@ -145,12 +140,20 @@
             {% if user.is_attendant and attendant_form %}
             <div class="form-section">
                 <h3>Informações Profissionais (Atendente)</h3>
+                <p style="color: var(--text-secondary); margin: 0;">Suas informações profissionais foram registradas no sistema.</p>
+            </div>
+            {% endif %}
+
+            {% if user.is_doctor %}
+            <div class="form-section">
+                <h3>Informações Profissionais (Médico)</h3>
+                <p style="color: var(--text-secondary); margin: 0;">Seus dados profissionais estão seguros e auditados.</p>
             </div>
             {% endif %}
 
         </div>
 
-        <div style="display: flex; gap: 1rem; margin-top: 3rem; justify-content: flex-end; padding-top: 20px; border-top: 1px solid var(--color-border-light);">
+        <div class="form-footer">
             <a href="{% url 'accounts:profile' %}" class="btn-cancel">Cancelar</a>
             <button type="submit" class="btn-save">Salvar Alterações</button>
         </div>

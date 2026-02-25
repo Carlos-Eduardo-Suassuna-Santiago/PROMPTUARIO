@@ -48,6 +48,10 @@
                     {% endif %}
 
                     <button type="submit" class="btn btn-primary">Entrar</button>
+                    
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="{% url 'accounts:password_reset' %}" style="color: var(--primary-color); font-size: 0.9rem;">Esqueceu sua senha?</a>
+                    </div>
                 </form>
 
                 <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">

@@ -5,7 +5,7 @@ Formulários para o app accounts.
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from .models import User, DoctorProfile, AttendantProfile
+from .models import User, DoctorProfile, AttendantProfile, DoctorAbsence
 from patients.models import Patient
 
 
@@ -352,6 +352,30 @@ class DoctorProfileUpdateForm(forms.ModelForm):
             'salary': forms.NumberInput(attrs={'class': 'form-control'}),
             'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+
+class DoctorAbsenceForm(forms.ModelForm):
+    """Formulário para cadastro de ausência de médico."""
+    
+    class Meta:
+        model = DoctorAbsence
+        fields = ['start_datetime', 'end_datetime', 'reason', 'is_full_day']
+        widgets = {
+            'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'reason': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'is_full_day': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start = cleaned_data.get('start_datetime')
+        end = cleaned_data.get('end_datetime')
+
+        if start and end and start >= end:
+            raise forms.ValidationError("A data/hora de início deve ser anterior à data/hora de fim.")
+        
+        return cleaned_data
 
 
 class AttendantProfileUpdateForm(forms.ModelForm):

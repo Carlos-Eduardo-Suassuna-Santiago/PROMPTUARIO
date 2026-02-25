@@ -1,0 +1,494 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Horários de {{ doctor.user.get_full_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .schedule-wrapper {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+
+    .schedule-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .schedule-header {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .schedule-doctor-info {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .schedule-doctor-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+
+    .schedule-doctor-details h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .schedule-doctor-details p {
+        margin: 0.25rem 0;
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .schedule-doctor-details strong {
+        color: #0f172a;
+    }
+
+    /* Section */
+    .schedule-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #0ea5e9;
+    }
+
+    .section-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: #0ea5e9;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #0284c7;
+    }
+
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #64748b;
+    }
+
+    .btn-secondary:hover {
+        background: #cbd5e1;
+    }
+
+    /* Schedule Table */
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .schedule-table thead {
+        background: #f8fafc;
+    }
+
+    .schedule-table th {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .schedule-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .schedule-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .schedule-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Day Badge */
+    .day-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(14, 165, 233, 0.1);
+        color: #0ea5e9;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    /* Time Badge */
+    .time-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        background: #f8fafc;
+        color: #0f172a;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        border: 1px solid #e2e8f0;
+    }
+
+    .time-badge i {
+        color: #0ea5e9;
+    }
+
+    /* Duration Badge */
+    .duration-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    /* Absence Card */
+    .absence-card {
+        background: #fef2f2;
+        border-left: 4px solid #ef4444;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .absence-card.full-day {
+        background: #fef3c7;
+        border-left-color: #f59e0b;
+    }
+
+    .absence-content {
+        flex: 1;
+    }
+
+    .absence-title {
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+    }
+
+    .absence-dates {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+    }
+
+    .absence-reason {
+        font-size: 0.9rem;
+        color: #0f172a;
+    }
+
+    .absence-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.6rem;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .absence-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .absence-btn {
+        padding: 0.4rem 0.8rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .absence-btn-edit {
+        background: #0ea5e9;
+        color: white;
+    }
+
+    .absence-btn-edit:hover {
+        background: #0284c7;
+    }
+
+    .absence-btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+
+    .absence-btn-delete:hover {
+        background: #dc2626;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #94a3b8;
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .schedule-header {
+            padding: 1.5rem;
+        }
+
+        .schedule-doctor-info {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .schedule-doctor-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .absence-card {
+            flex-direction: column;
+        }
+
+        .absence-actions {
+            width: 100%;
+        }
+
+        .absence-btn {
+            flex: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="schedule-wrapper">
+    <div class="schedule-container">
+
+        <!-- Header -->
+        <div class="schedule-header">
+            <div class="schedule-doctor-info">
+                <div class="schedule-doctor-avatar">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="schedule-doctor-details">
+                    <h1>{{ doctor.user.get_full_name }}</h1>
+                    <p><strong>Especialidade:</strong> {{ doctor.speciality }}</p>
+                    <p><strong>CRM:</strong> {{ doctor.crm }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Horários Fixos -->
+        <div class="schedule-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i> Horários Fixos de Atendimento
+                </h2>
+            </div>
+
+            {% if schedules %}
+                <div class="table-responsive">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Dia da Semana</th>
+                                <th>Horário</th>
+                                <th>Duração da Consulta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                                <tr>
+                                    <td>
+                                        <span class="day-badge">
+                                            <i class="fas fa-calendar-day"></i>
+                                            {{ schedule.get_day_of_week_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="time-badge">
+                                            <i class="fas fa-play"></i>
+                                            {{ schedule.start_time|time:"H:i" }}
+                                        </span>
+                                        <span style="margin: 0 0.5rem; color: #cbd5e1;">—</span>
+                                        <span class="time-badge">
+                                            <i class="fas fa-stop"></i>
+                                            {{ schedule.end_time|time:"H:i" }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="duration-badge">
+                                            <i class="fas fa-hourglass-half"></i>
+                                            {{ schedule.appointment_duration }} min
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>Nenhum horário de atendimento fixo cadastrado.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Ausências Programadas -->
+        <div class="schedule-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-ban"></i> Ausências Programadas
+                </h2>
+                <div class="section-actions">
+                    <a href="{% url 'accounts:doctor_absence_create' pk=doctor.pk %}" class="btn-action btn-primary">
+                        <i class="fas fa-plus"></i> Nova Ausência
+                    </a>
+                </div>
+            </div>
+
+            {% if doctor.absences.all %}
+                <div>
+                    {% for absence in doctor.absences.all %}
+                        <div class="absence-card {% if absence.is_full_day %}full-day{% endif %}">
+                            <div class="absence-content">
+                                <div class="absence-title">
+                                    <i class="fas fa-{% if absence.is_full_day %}calendar-alt{% else %}clock{% endif %}"></i>
+                                    {{ absence.reason }}
+                                </div>
+                                <div class="absence-dates">
+                                    <strong>Início:</strong> {{ absence.start_datetime|date:"d/m/Y H:i" }} <br>
+                                    <strong>Fim:</strong> {{ absence.end_datetime|date:"d/m/Y H:i" }}
+                                </div>
+                                {% if absence.is_full_day %}
+                                    <span class="absence-badge">
+                                        <i class="fas fa-check-circle"></i> Dia Inteiro
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="absence-actions">
+                                <a href="{% url 'accounts:doctor_absence_edit' pk=absence.pk %}" class="absence-btn absence-btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'accounts:doctor_absence_delete' pk=absence.pk %}" class="absence-btn absence-btn-delete" title="Deletar" onclick="return confirm('Tem certeza?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-smile"></i>
+                    <p>Nenhuma ausência programada. Você está sempre disponível!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Voltar -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{% url 'accounts:doctor_list' %}" class="btn-action btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar para Lista de Médicos
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

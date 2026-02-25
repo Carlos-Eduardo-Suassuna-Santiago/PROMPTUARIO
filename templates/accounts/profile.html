@@ -8,6 +8,102 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    /* ===== PROFILE AVATAR STYLES ===== */
+    .profile-avatar {
+        width: 120px !important;
+        height: 120px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 4px solid #17a2b8 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* ===== PROFILE HEADER LAYOUT ===== */
+    .profile-header-card {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 2rem !important;
+        padding: 2rem !important;
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .profile-info-display {
+        display: flex !important;
+        align-items: center !important;
+        gap: 1.5rem !important;
+        flex: 1 !important;
+    }
+
+    .profile-info-display > div {
+        flex: 1 !important;
+    }
+
+    .profile-name {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        margin: 0 0 0.5rem 0 !important;
+    }
+
+    .profile-email {
+        font-size: 0.95rem !important;
+        color: #64748b !important;
+        margin: 0 !important;
+    }
+
+    /* ===== EDIT PROFILE BUTTON STYLES ===== */
+    .btn-edit-profile {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+        padding: 0.5rem 1rem !important;
+        background-color: #28a745 !important;
+        color: white !important;
+        text-decoration: none !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    .btn-edit-profile:hover {
+        background-color: #218838 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35) !important;
+        text-decoration: none !important;
+    }
+
+    .btn-edit-profile:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 6px rgba(40, 167, 69, 0.35) !important;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header-card {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+
+        .profile-info-display {
+            width: 100% !important;
+        }
+
+        .profile-name {
+            font-size: 1.25rem !important;
+        }
+    }
+</style>
+
 <div class="profile-container">
     <div class="profile-header-card">
         <div class="profile-info-display">

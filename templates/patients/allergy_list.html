@@ -1,45 +1,53 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Alergias{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="header-section">
-        <h1>Alergias Registradas</h1>
-        
-    </div>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            Lista de Alergias
+        </div>
+        <div class="card-body">
 
-    
-    <div class="table-responsive">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Tipo de Alergia</th>
-                    <th>Descrição</th>
-                    <th>Data de Registro</th>
-                </tr>
-            </thead>
-           
-        </table>
-    </div>
-    {% if patients %} <!--precisa ajustar-->
-    {% if is_paginated %}
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Anterior</a>
-        {% endif %}
-        <span class="current">
-            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Próxima</a>
-        {% endif %}
-    </div>
-    {% endif %}
+            {% if allergies %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Alérgeno</th>
+                                <th>Gravidade</th>
+                                <th>Reação</th>
+                                <th>Data Diagnóstico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for allergy in allergies %}
+                                <tr>
+                                    <td>{{ allergy.patient.user.get_full_name }}</td>
+                                    <td>{{ allergy.allergen }}</td>
+                                    <td><span class="badge bg-info">{{ allergy.get_severity_display }}</span></td>
+                                    <td>{{ allergy.reaction|default:"N/A" }}</td>
+                                    <td>{{ allergy.diagnosed_date|date:"d/m/Y"|default:"N/A" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    Nenhuma alergia encontrada.
+                </div>
+            {% endif %}
 
-    {% else %}
-    <p class="alert alert-warning">Nenhuma alergia registrada.</p>
-    {% endif %}
+            {% if user.is_doctor or user.is_attendant %}
+            <div class="mt-4">
+                <a href="{% url 'patients:patient_list' %}" class="btn btn-secondary">Voltar para Pacientes</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -38,20 +38,6 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="records-tab" data-toggle="tab" href="#records" role="tab">Consultas</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="allergies-tab" data-toggle="tab" href="#allergies" role="tab">Alergias</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="vaccines-tab" data-toggle="tab" href="#vaccines" role="tab">Vacinas</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="medications-tab" data-toggle="tab" href="#medications" role="tab">Medicamentos</a>
-        </li>
-    </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="records" role="tabpanel">
             <div class="card mt-3">
@@ -62,13 +48,13 @@
                     {% endif %}
                 </div>
                 <div class="card-body">
-                    {% for record in medical_records %}
+                    {% for item in medical_records %}
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title">Prontuário de {{ record.created_at|date:"d/m/Y" }} com Dr(a). {{ record.doctor.user.get_full_name }}</h5>
-                                <p class="card-text"><strong>Queixa Principal:</strong> {{ record.chief_complaint|truncatechars:100 }}</p>
-                                <p class="card-text"><strong>Diagnóstico:</strong> {{ record.diagnosis|truncatechars:100 }}</p>
-                                <a href="{% url 'medical_records:record_detail' pk=record.pk %}" class="btn btn-sm btn-outline-primary">Ver Detalhes do Prontuário</a>
+                                <h5 class="card-title">Prontuário de {{ item.record.created_at|date:"d/m/Y" }} com Dr(a). {{ item.record.doctor.user.get_full_name }}</h5>
+                                <p class="card-text"><strong>Queixa Principal:</strong> {{ item.chief_complaint_text|truncatechars:100 }}</p>
+                                <p class="card-text"><strong>Diagnóstico:</strong> {{ item.diagnosis_text|truncatechars:100 }}</p>
+                                <a href="{% url 'medical_records:record_detail' pk=item.record.pk %}" class="btn btn-sm btn-outline-primary">Ver Detalhes do Prontuário</a>
                             </div>
                         </div>
                     {% empty %}
@@ -82,8 +68,8 @@
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Alergias</h4>
-                    {% if request.user.is_doctor %}
-                    <a href="#" class="btn btn-primary">Adicionar Alergia</a>
+                    {% if request.user.is_doctor or request.user.is_attendant or request.user == patient.user %}
+                    <a href="{% url 'patients:allergy_add' patient.pk %}" class="btn btn-primary">Adicionar Alergia</a>
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -105,8 +91,8 @@
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Vacinas</h4>
-                    {% if request.user.is_doctor %}
-                    <a href="#" class="btn btn-primary">Adicionar Vacina</a>
+                    {% if request.user.is_doctor or request.user.is_attendant or request.user == patient.user %}
+                    <a href="{% url 'patients:vaccine_add' patient.pk %}" class="btn btn-primary">Adicionar Vacina</a>
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -127,8 +113,8 @@
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Medicamentos em Uso</h4>
-                    {% if request.user.is_doctor %}
-                    <a href="#" class="btn btn-primary">Adicionar Medicamento</a>
+                    {% if request.user.is_doctor or request.user.is_attendant %}
+                    <a href="{% url 'patients:medication_add' patient.pk %}" class="btn btn-primary">Adicionar Medicamento</a>
                     {% endif %}
                 </div>
                 <div class="card-body">

@@ -22,7 +22,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'promptuario-black-wind-6170.fly.dev'])
 
 
 # Application definition
@@ -87,9 +87,26 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3')
-}
+# Prefer DATABASE_URL if provided (e.g., postgres://...); otherwise use SQLite.
+# When running on a platform that mounts a persistent volume at /data (e.g., Fly.io),
+# prefer storing the SQLite DB at /data/db.sqlite3 so data persists across deploys.
+db_url = env('DATABASE_URL', default=None)
+if db_url:
+    DATABASES = {
+        'default': env.db('DATABASE_URL')
+    }
+else:
+    # Allow override via SQLITE_PATH env var for flexibility
+    sqlite_path = env('SQLITE_PATH', default=str(BASE_DIR / 'db.sqlite3'))
+    # If a persistent /data mount exists, prefer it
+    if os.path.isdir('/data'):
+        sqlite_path = '/data/db.sqlite3'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': sqlite_path,
+        }
+    }
 
 
 # Custom User Model
@@ -165,12 +182,13 @@ LOGOUT_REDIRECT_URL = 'accounts:login'
 
 
 # Email Configuration
-EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = env.int('EMAIL_PORT', default=587)
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@promptuario.com')
 
 
 # CORS Settings (se necessário para API)
@@ -179,6 +197,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
 ]
 
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 
 # Security Settings
 if not DEBUG:

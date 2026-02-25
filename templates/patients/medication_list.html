@@ -1,46 +1,61 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Medicamentos{% endblock %}
+{% block title %}Medicações{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="header-section">
-        <h1>Medicações Registradas</h1>
-   
-    </div>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            Lista de Medicações em Uso
+        </div>
+        <div class="card-body">
 
-    
-    <div class="table-responsive">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Medicação</th>
-                    <th>Tipo de Uso</th>
-                    <th>Dose</th>
-                    <th>Período</th>
-                </tr>
-            </thead>
-            
-        </table>
-    </div>
-    {% if patients %} <!--precisa ajustar-->
-    {% if is_paginated %}
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Anterior</a>
-        {% endif %}
-        <span class="current">
-            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn btn-secondary">Próxima</a>
-        {% endif %}
-    </div>
-    {% endif %}
+            {% if medications %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Medicamento</th>
+                                <th>Dosagem</th>
+                                <th>Frequência</th>
+                                <th>Início</th>
+                                <th>Ativo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medication in medications %}
+                                <tr>
+                                    <td>{{ medication.patient.user.get_full_name }}</td>
+                                    <td>{{ medication.name }}</td>
+                                    <td>{{ medication.dosage }}</td>
+                                    <td>{{ medication.frequency }}</td>
+                                    <td>{{ medication.start_date|date:"d/m/Y" }}</td>
+                                    <td>
+                                        {% if medication.is_active %}
+                                            <span class="badge bg-success">Sim</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Não</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    Nenhuma medicação em uso encontrada.
+                </div>
+            {% endif %}
 
-    {% else %}
-    <p class="alert alert-warning">Nenhuma medicação registrada.</p>
-    {% endif %}
+            {% if user.is_doctor or user.is_attendant %}
+            <div class="mt-4">
+                <a href="{% url 'patients:patient_list' %}" class="btn btn-secondary">Voltar para Pacientes</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

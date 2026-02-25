@@ -1,40 +1,38 @@
-# Dockerfile para Promptuario
-FROM python:3.11-slim
+ARG PYTHON_VERSION=3.12-slim
 
-# Definir variáveis de ambiente
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+FROM python:${PYTHON_VERSION}
 
-# Criar diretório de trabalho
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y sqlite3
+# install psycopg2 dependencies.
 RUN apt-get update && apt-get install -y \
-    gcc \
-    postgresql-client \
     libpq-dev \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements
-COPY requirements.txt .
+RUN mkdir -p /code
 
-# Instalar dependências Python
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+WORKDIR /code
 
-# Copiar código do projeto
-COPY . .
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+COPY . /code
 
-# Coletar arquivos estáticos
-RUN python manage.py collectstatic --noinput
+ENV SECRET_KEY "L4F4xjJ175gMHQZJoRj1D8FRZd7JqRDFEPH4fUIo1mLdI2uXUj"
 
-# Criar diretórios necessários
-RUN mkdir -p /app/media /app/staticfiles
+# Copiar entrypoint que aplica tarefas de setup no start do container
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY setup.sh /usr/local/bin/setup.sh
+RUN chmod +x /usr/local/bin/setup.sh
 
-# Expor porta
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
 EXPOSE 8000
 
-# Comando padrão
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+CMD ["gunicorn","--bind",":8000","--workers","2","config.wsgi"]

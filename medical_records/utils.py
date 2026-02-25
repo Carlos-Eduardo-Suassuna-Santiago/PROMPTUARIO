@@ -1,7 +1,8 @@
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 from django.conf import settings
 import os
@@ -25,22 +26,22 @@ def generate_prescription_pdf(prescription_instance, file_path):
     )
     
     styles = getSampleStyleSheet()
+    centered_title = ParagraphStyle('CenteredTitle', parent=styles.get('Title', styles['Normal']), alignment=TA_CENTER)
     Story = []
+    # --- Título (Topo da folha) ---
+    Story.append(Paragraph("<b>RECEITUÁRIO MÉDICO</b>", centered_title))
+    Story.append(Spacer(1, 0.5*cm))
 
     # --- Cabeçalho (Dados do Médico) ---
     doctor = prescription_instance.doctor
     doctor_info = [
         Paragraph(f"<b>Dr(a). {doctor.user.get_full_name()}</b>", styles['h2']),
-        Paragraph(f"CRM: {doctor.crm} - {doctor.crm_state}", styles['Normal']),
+        Paragraph(f"CRM: {doctor.crm}", styles['Normal']),
         Paragraph(f"Especialidade: {doctor.specialty}", styles['Normal']),
         Paragraph(f"Telefone: {doctor.user.phone or 'N/A'}", styles['Normal']),
         Spacer(1, 0.5*cm)
     ]
     Story.extend(doctor_info)
-
-    # --- Título ---
-    Story.append(Paragraph("<b>RECEITUÁRIO MÉDICO</b>", styles['h1']))
-    Story.append(Spacer(1, 0.5*cm))
 
     # --- Dados do Paciente ---
     patient = prescription_instance.patient

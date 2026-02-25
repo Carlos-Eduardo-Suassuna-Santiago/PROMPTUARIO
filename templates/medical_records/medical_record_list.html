@@ -1,27 +1,152 @@
 {% extends 'base.html' %}
-{% load static %} <!-- CORREÇÃO: Necessário para carregar o CSS -->
+{% load static %}
 
 {% block title %}Lista de Prontuários{% endblock %}
 
 {% block extra_css %}
-    <!-- Link para o novo arquivo CSS -->
     <link rel="stylesheet" href="{% static 'css/medical_record.css' %}">
+    <style>
+        .medical-records-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .medical-records-header {
+            margin-bottom: 2rem;
+        }
+
+        .medical-records-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .records-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .records-table thead {
+            background: #f8fafc;
+        }
+
+        .records-table th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .records-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .records-table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .records-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .records-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .record-date {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .medical-records-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div class="container"> <!-- Div container para centralizar o layout -->
-    <h2>Lista de Prontuários</h2>
+<div class="medical-records-container">
+    <div class="medical-records-header">
+        <h2>Lista de Prontuários</h2>
+    </div>
 
-    <ul>
-        {% for record in records %}
-            <li>
-                <!-- Exemplo de formatação para destacar o paciente -->
-                <strong>{{ record.patient }}</strong> - {{ record.created_at|date:"d/m/Y H:i" }}
-            </li>
-        {% empty %}
-            <!-- Classe para estilizar a mensagem de lista vazia -->
-            <li class="empty-list-message">Nenhum prontuário encontrado.</li>
-        {% endfor %}
-    </ul>
+    <div class="records-card">
+        <div class="table-responsive">
+            {% if records %}
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Data Criação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td class="patient-name">{{ record.patient }}</td>
+                                <td class="record-date">{{ record.created_at|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhum prontuário encontrado.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

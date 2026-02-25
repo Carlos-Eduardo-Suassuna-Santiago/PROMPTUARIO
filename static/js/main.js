@@ -11,6 +11,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 5000);
     });
+
+    // Menu toggle functionality
+    const menuToggle = document.getElementById('menu-toggle');
+    const asideMenu = document.querySelector('.aside-menu');
+
+    if (menuToggle && asideMenu) {
+        menuToggle.addEventListener('click', function() {
+            asideMenu.classList.toggle('open');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!asideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                asideMenu.classList.remove('open');
+            }
+        });
+    }
 });
 
 // Confirm delete actions

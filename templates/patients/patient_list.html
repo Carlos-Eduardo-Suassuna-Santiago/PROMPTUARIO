@@ -10,13 +10,16 @@
 {% block content %}
 <div class="container">
     <div class="header-section">
+        <br>
         <h1>Pacientes Cadastrados</h1>
+        <br><br>
         <form method="get" class="search-form">
             <input type="text" name="q" placeholder="Buscar por nome, CPF..." value="{{ request.GET.q }}">
+            <br>
             <button type="submit" class="btn btn-search">Buscar</button>
         </form>
     </div>
-
+    <br>
     {% if patients %}
     <div class="table-responsive">
         <table class="data-table">
